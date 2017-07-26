@@ -1,0 +1,63 @@
+\documentclass[oneside,openany]{jsbook}
+% 南山大学 理工学部 卒業論文
+\usepackage[dvipdfmx]{graphicx} % epsファイルを使う場合
+\usepackage{nitSot}          % 情報通信学科 卒業論文用のスタイル
+\usepackage{authblk}
+\usepackage{latexsym}
+\usepackage{caption}
+\usepackage{subcaption}
+\newcommand{\jump}[1]{\ensuremath{[\![#1]\!]} }
+\usepackage{listings}
+\usepackage{alltt}	% required for `\alltt' (yatex added)
+\usepackage{doi}
+\pagestyle{empty}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\newcommand{\beforesection}[1]{
+ \vspace{-#1mm}
+}
+\makeatletter
+\newcommand{\xRightarrow}[2][]{%
+\ext@arrow 0055{\Rightarrowfill@}{#1}{#2}%
+}
+\def\Rightarrowfill@{\arrowfill@\Relbar\Relbar\Rightarrow}
+\newcommand{\xLeftarrow}[2][]{%
+\ext@arrow 0055{\Leftarrowfill@}{#1}{#2}%
+}
+\def\Leftarrowfill@{\arrowfill@\Leftarrow\Relbar\Relbar}
+\newcommand{\xLongleftrightarrow}[2][]{%
+\ext@arrow 0055{\llrafill@}{#1}{#2}%
+}
+
+% 目次はsectionレベルまで。
+% subsectionレベルまで出したいのであれば、次のコマンドを有効にする。
+% \setcounter{tocdepth}{2}
+
+\begin{document}
+
+% 表紙
+\thispagestyle{empty}
+\include{title}
+
+% 要約
+\renewcommand{\thepage}{\roman{page}}
+\setcounter{page}{1}
+\include{summary}
+
+% 目次
+\tableofcontents
+
+% 本文
+\newpage
+\setcounter{page}{1}
+\renewcommand{\thepage}{\arabic{page}}
+\include{chap1}
+\include{chap2}
+\include{chap3}
+\include{chap4}
+\include{chap5}
+
+% 参考文献
+\include{ref}
+
+\end{document}
