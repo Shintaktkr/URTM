@@ -1,7 +1,7 @@
 # URTM
  =======\ 
  　卒論\
- =======
+ =======\
 
 ### MainPrograme 
    * thesis.tex:(本稿の概要)
