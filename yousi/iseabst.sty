@@ -1,0 +1,205 @@
+% msabst.sty
+%
+% Copyright (C) 2005 by 
+%   Dept. of Systems and Mathematical Sciences, 
+%   Faculty of Mathematical Sciences and Information Engineering,
+%   Nanzan University, 
+% All Rights Reserved
+% email: g c @ ieee . org
+% Last modified: 24 Oct 2005
+% Modified by Y. Oishi (August 17, 2008)
+
+% 使い方
+% \documentclass[twoside,twocolumn,10pt]{jarticle}
+% \usepackage{latexsym}
+% \usepackage[dvips]{graphicx}
+% \usepackage{iseabst}
+% \title{卒業論文タイトル}
+% \subtitle{ ---副題--- }
+% \author{学生番号 著者1 学生番号 著者2 \\ 学生番号 著者3 学生番号 著者4}
+% \professor{指導教員: 指導教員名}
+% \begin{document}
+% \maketitle
+%
+% 本文
+%
+% \end{document}
+
+%
+% 日本語/英語判定
+%
+% 英語で執筆する場合は \english を宣言し, article を利用してください. 
+% \english は参考文献/References, 図/Figure, 表/Table の制御を行いません. 
+% newtheorem のみを変更します. 
+%
+\newif\ifenglish
+\englishfalse
+\def\english{\englishtrue}
+
+%
+% title, subtitle, author, professor
+%
+%\newcommand{\title}[1]{\gdef\@title{#1}}
+\newcommand{\subtitle}[1]{\gdef\@subtitle{#1}}  \subtitle{}
+%\newcommand{\author}[1]{\gdef\@author{#1}}
+\newcommand{\professor}[1]{\gdef\@professor{#1}}
+
+% original from article.sty of LaTeX 209
+\def\maketitle{\par
+ \begingroup
+ \def\thefootnote{\fnsymbol{footnote}}
+ \def\@makefnmark{\hbox{$^{\@thefnmark}$\hss}}
+ \if@twocolumn 
+ \twocolumn[\@maketitle] 
+ \else \newpage
+ %
+ % suppress page number 
+ %
+ \global\@topnum\z@ \@maketitle \fi\thispagestyle{plain}\@thanks %original
+% \global\@topnum\z@ \@maketitle \fi\thispagestyle{empty}\@thanks
+ \endgroup
+ \setcounter{footnote}{0}
+ \let\maketitle\relax
+ \let\@maketitle\relax
+ \gdef\@thanks{}\gdef\@author{}\gdef\@title{}\let\thanks\relax}
+
+\def\@maketitle{%
+  \newpage
+  \null
+  \begin{center}%
+  \let \footnote \thanks
+    {\LARGE \bf \@title \par}%
+    \vskip 0.1pt 
+    {\Large \bf \@subtitle \par}%
+    \vskip 5pt
+    {\normalsize \@author \par}%
+    \vskip 2pt
+    {\normalsize \@professor \par}% 
+  \end{center}%
+  \par
+  \vskip 0.5em 
+}
+
+%
+% theorem text in \rm and label in \bf
+%
+\renewcommand{\@begintheorem}[2]{\trivlist \item[\hskip 
+  \labelsep{\bf #1\ \bf #2\ }]}
+\renewcommand{\@opargbegintheorem}[3]{\trivlist \item[\hskip 
+  \labelsep{\bf #1\ \bf #2\ \rm [#3]\ }]}
+
+%
+% narrower spaces in equation array
+%
+\def\eqnarray{\stepcounter{equation}\let\@currentlabel=\theequation
+\global\@eqnswtrue
+\global\@eqcnt\z@\tabskip\@centering\let\\=\@eqncr
+$$\halign to \displaywidth\bgroup\@eqnsel\hskip\@centering
+  $\displaystyle\tabskip\z@{##}$&\global\@eqcnt\@ne 
+%  \hskip 2\arraycolsep \hfil${##}$\hfil % original
+  \hfil$\displaystyle{{}##{}}$\hfil 
+%  &\global\@eqcnt\tw@ \hskip 2\arraycolsep % original
+  &\global\@eqcnt\tw@ 
+   $\displaystyle\tabskip\z@{##}$\hfil 
+   \tabskip\@centering&\llap{##}\tabskip\z@\cr}
+
+%
+% adjust character size and spaces around section header
+% Original from art10.sty
+%
+\def\section{\@startsection {section}{1}{\z@}{1.5ex plus .2ex minus 
+ .2ex}{1.0ex plus .2ex}{\large\bf}}
+\def\subsection{\@startsection{subsection}{2}{\z@}{1.5ex plus .2ex minus 
+ .2ex}{1.0ex plus .2ex}{\normalsize\bf}}
+\def\subsubsection{\@startsection{subsubsection}{3}{\z@}{1.5ex plus .2ex minus 
+ .2ex}{1.0ex plus .2ex}{\normalsize\bf}}
+\def\paragraph{\@startsection
+ {paragraph}{4}{\z@}{1.5ex plus .2ex minus .1ex}{-1em}
+ {\normalsize\bf}}
+\def\subparagraph{\@startsection
+ {subparagraph}{4}{\parindent}{1.5ex plus .2ex minus .1ex}{-1em}
+ {\normalsize\bf}}
+
+%
+% initialization 
+%
+% one column, pagenumber ありにしたい場合は以下をコメント
+%
+\twocolumn
+%\pagestyle{empty}
+
+% 
+% paper size for A4
+%
+% do NOT change \headheight, \hedsep, \footskip, \textheight and \textwidth
+%
+\setlength{\textwidth}     { 174mm}
+\setlength{\textheight}    { 254mm}
+\setlength{\oddsidemargin} {   0mm}
+\setlength{\evensidemargin}{   0mm}
+\setlength{\topmargin}     {   0mm}
+\setlength{\headheight}    {   0mm}
+\setlength{\headsep}       {   0mm}
+\setlength{\footskip}      {   7mm}
+\setlength{\hoffset}       {-7.4mm}
+\setlength{\voffset}       {-7.4mm}
+
+\setlength{\parindent}     {   3mm}
+\setlength{\columnseprule} {   0mm}
+\setlength{\columnsep}     {   4mm}
+
+
+%\setlength{\kanjiskip} {0.00zw} % これを有効にすると Underfull がでる。なぜ？
+%\setlength{\xkanjiskip}{0.01zw} % (commented out by Y. Oishi)
+\renewcommand{\baselinestretch}{0.9}
+
+% itemize, enumerate, description の行間を本文と一致させる。
+%\setlength{\itemsep}{12pt}
+%\setlength{\parskip}{-12pt}
+\def\@listI{\leftmargin\leftmargini
+             %\parskip=0pt
+             \topsep=1.5\p@
+             \parsep=1.5\p@
+             \itemsep \parsep}
+\let \@listi=\@listI
+\@listi
+%\def\@listi{\leftmargin\leftmargini
+%             \topsep \z@
+%             \parsep \z@
+%             \itemsep \parsep}
+
+
+% 
+% preparation for theorems and lemmas
+%
+\newtheorem{definition}{\ifenglish Definition\else 定義\fi}
+\newtheorem{theorem}{\ifenglish Theorem\else 定理\fi}
+\newtheorem{corollary}{\ifenglish Corollary\else 系\fi}
+\newtheorem{lemma}{\ifenglish Lemma\else 補題\fi}
+\newtheorem{proof}{\ifenglish Proof\else 証明\fi}
+  %
+  % suppress numbering
+  %
+  \renewcommand{\theproof}{} 
+  %
+  % put a box at the end of proof
+  % LaTeX2e: \usepackage{latexsym} is required
+  %
+  %\renewcommand{\endproof}{$\Box$\endtrivlist}
+
+% Modification in jarticle.cls (Y. Oishi)
+\long\def\@makecaption#1#2{%
+  \vskip\abovecaptionskip
+  \iftdir\sbox\@tempboxa{#1\hskip1zw#2}%
+    \else\sbox\@tempboxa{#1\ \ #2}%
+  \fi
+  \ifdim \wd\@tempboxa >\hsize
+    \iftdir #1\hskip1zw#2\relax\par
+      \else #1\ \ #2\relax\par\fi
+  \else
+    \global \@minipagefalse
+    \hbox to\hsize{\hfil\box\@tempboxa\hfil}%
+  \fi
+  \vskip\belowcaptionskip}
+
+% end of iseabst.sty
