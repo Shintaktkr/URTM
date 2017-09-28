@@ -130,11 +130,11 @@ $Landauer$は，計算機において非可逆な演算はエネルギーの放出を伴うことを指摘した．
  \begin{figure}[t]
   \begin{center}
   \includegraphics[width=10.0cm ,bb=0 0 320 140]{TM.png}
-　　　\caption{チューリング機械の様式図}\label{fig:TM}
-
+　　　\caption{チューリング機械の模式図}\label{fig:TM}
+\vspace{-10.0mm}
   \end{center}
  \end{figure}
-\\
+
  $(q,q'\in Q, s,s'\in \Sigma, d\in \{←,↓,→ \})$．前者の3項組は$T$が
  状態$q$で記号$s$を読んだ場合，記号$s'$に書き換え，状態を$q'$にすること
  を意味する．また，後者の3項組は$T$が状態$q$の場合ヘッドを$d$の方向に動
@@ -199,9 +199,7 @@ $n$を$n$に1を加えたものに書き換え，2進数表現の左隣のます目までヘッドを移動し，最
 終状態$q_f$で停止するチューリング機械である(テープに書かれる２進数表現は
 反転されたものとする)．このとき，$T_1$は２進
 数表現の一番下位の桁から読んでいく．1を読んだとき，1を0に書き換える．また，0ま
-たは$b$を読み込んだときにそれを1に書き換える．各状態における$T_1$の動作
-を以下に説明する．また実際の動作の例は[図\ref{fig:tu-ex}]である．このと
-き，あらかじめ格納されている2進数を「101」とする 
+たは$b$を読み込んだときにそれを1に書き換える．
 
 \subsection{可逆チューリング機械}
 
@@ -443,14 +441,15 @@ Philosophy(online), available from $<$https://plato.stanford.edu/entries/church-
 Axelsen, H. B. and Gl{\"u}ck, R.: 
 What Do Reversible Programs Compute?,
 {\it Foundations of Software Science and Computational
-	Structures.Proceedings}(Hofmann,M.,ed.),
-LNCS,Vol6604,Springer-Verlag,pp. 42-56(2011)
+	Structures. Proceedings}(Hofmann, M. , ed. ),
+LNCS, Vol6604, Springer-Verlag, pp. 42-56(2011)
 
 \bibitem{4}
-Yokoyama, T., Axelsen, H. B. and Gl{\"u}ck,R.: 
+Yokoyama, T. , Axelsen, H. B. and Gl{\"u}ck, R.: 
 Towards a Reversible Functional Language,
-{\it Reversible Computation.Proceedings}(De Vos, A.and Wille,R.,eds.),
-LNCS,Vol.7165,SpringerVerlag,pp.14-29(2012)
+{\it Reversible Computation.Proceedings}(De Vos, A. and Wille, R . ,
+	eds. ),
+LNCS, Vol. 7165, SpringerVerlag, pp. 14-29(2012)
 
 \bibitem{3}
 Jones, N. D.: Computability and Complexity: 
