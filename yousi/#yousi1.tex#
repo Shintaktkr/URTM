@@ -1,0 +1,458 @@
+\documentclass[twoside,twocolumn,10t]{jsarticle}
+\usepackage[dvipdfmx]{graphicx}         
+\usepackage{authblk}
+\usepackage{latexsym}
+\newcommand{\jump}[1]{\ensuremath{[\![#1]\!]} }
+\usepackage{listings}
+\usepackage{alltt}
+\usepackage{doi}
+\pagestyle{empty}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{enumerate}      
+\usepackage{iseabst}         % 理工学部の予稿用スタイル
+%\english %英語で論文を書く場合に宣言する. jasrticle の代わりに article
+%を使用すること. 
+\usepackage{caption}
+\usepackage{subcaption}
+
+\newcommand{\beforesection}[1]{
+ \vspace{-#1mm}
+}
+
+\makeatletter
+\newcommand{\xRightarrow}[2][]{%
+\ext@arrow 0055{\Rightarrowfill@}{#1}{#2}%
+}
+\def\Rightarrowfill@{\arrowfill@\Relbar\Relbar\Rightarrow}
+\newcommand{\xLeftarrow}[2][]{%
+\ext@arrow 0055{\Leftarrowfill@}{#1}{#2}%
+}
+\def\Leftarrowfill@{\arrowfill@\Leftarrow\Relbar\Relbar}
+\newcommand{\xLongleftrightarrow}[2][]{%
+\ext@arrow 0055{\llrafill@}{#1}{#2}%
+}
+
+
+
+\title{可逆プログラミング言語\texttt{R-WHILE}による \\
+       万能可逆チューリング機械の構成}
+
+\author{2014SE006 青木　崚\ \ \ 2014SE059  増田　大輝\ \ \
+        2014SE089 柴田　心太郎}
+\professor{指導教員：横山　哲郎}
+
+\begin{document}
+\maketitle
+
+\section{はじめに}
+
+% あらゆる計算できる関数をチューリング機械の枠組みの中で定式化できるという
+% 主張は広くに認められている．
+計算できるという概念をチューリング機械（以下，TM）で計算できるということ
+にしようという主張は広く認められている\cite{1}． 
+%
+TMは計算の効率を問題としなければ現在のコンピュータをも模倣できるとされている強力な計算モデルであり，計算可能性理論を議論する際に重要である．
+% 任意のチューリング機械に対して，それをシュミレートするような計算システムは計算万能性を持つといわれる.
+任意のTMを模倣できる計算システムは計算万能性をもつといわれる.
+プログラミング言語の計算モデルが計算万能性をもつことを示すことは重要である．
+
+可逆計算とは，計算過程においてどの状態においても直前と直後のにとり得る
+状態を高々1つもつものである．
+$Landauer$は，計算機において非可逆な演算はエネルギーの放出を伴うことを指摘した．可逆的な演算はこのような不可避なエネルギーの放出を減らす1つの解
+決策として用いられる．すなわち，可逆計算では，入力から出力までの過程を出力から逆算
+して入力を求めることが可能であるため，情報を消失することなく出力結果を導
+くことが出来る．
+% 可逆計算システム
+% が計算できるのは単射な計算可能関数であることが知られている\cite{AxGl11b}．
+% 可逆チューリング機械とはチューリング機械の計算過程が常に可逆であるよう
+% に設計されたものである．
+可逆チューリング機械（以下，RTM）が計算できるのは単射な計算可能関数であることが知られている\cite{2}．
+可逆プログラミング言語とは，そのプログラムの実行過程が必ず可逆になるよう
+な言語設計がなされているプログラミング言語である．
+可逆プログラミング言語が可逆チューリング言語を模倣できること，すなわちその計算モデルが可逆的計算万能性をもつことを示すことは重要である．
+
+可逆プログラミング言語\texttt{R-WHILE}は，命令型の可逆プログラミング言語
+であり，
+%Jonesの言語\texttt{WHILE}\cite{3}を可逆化したものであり，任意の命令\texttt{C}に対して逆命令$\mathcal{I}\jump{\texttt{C}}$があるという特徴をもち，木構造のデータをもつ．
+%それにより単純な方法で身近なデータ構造をモデリングできる言語である．
+% この言語にはプログラム逆変換器$\mathcal{I}$が定義されている．それによって反転されたプログラムを再帰下降によって得ることができる．
+% 言語\texttt{R-WHILE}が可逆的にチューリング完全であることが文献\cite{GlYo16}などでは仮定されているが，筆者の知る範囲では\texttt{R-WHILE}で任意の可逆チューリング機械を構成できることを示したという報告はない．
+% 可逆的にチューリング完全とは，言語がチューリング完全であるということは，その言語が任意の可逆チューリング機械を模倣することができるということである．
+我々の知る範囲では，\texttt{R-WHILE}が可逆的計算万能性をもつという報告はない．\\
+
+\section{関連研究}
+本章では，１章で述べた可逆計算に関連するものをはじめとした本稿に関連する
+研究について説明する．
+ \subsection{Janus}
+\texttt{Janus}は\texttt{R-WHILE}と同様に可逆プログラミング言語の一種で，多重集合と配列の書木換えに基づく制約処理モデルを持つ．\texttt{Janus}は，C言語に似た構文に加えて可逆性を保証するための構文規則を持つ．
+ \subsection{セルオートマトン}
+セルオートマトンとは1950年代にJohn von Neumann(ジョン・フォン・ノイマン)　が自己増殖オートマトンを設計するための理論的枠組みとして提案されたモデルである．
+いくつかの状態を持つセルという単位によって構成され，事前に設定された規則に従い，そのセル自身や近傍の状態によって，時間発展と共に，その時間における各セルの状態が決定される．
+現在では，計算システムの数理モデルの一種として扱われ，計算の基礎理論をは
+じめとして，交通流や生物などのシステムのシミュレーションに用いられている．   
+\subsection{可逆セルオートマトン}
+可逆セルオートマトンとは，可逆性が保証されたセルオートマトン，つまり，現
+在の状態から1つ前の状態を一意に決めることができるセルオートマトンのこと
+である．
+\section{可逆チューリング機械}
+% さきほどチューリング機械と可逆チューリング機械がどのようなものを説明したが，この章ではそれらの定義について述べる．
+% ヘッドはテープ上の記号を読み書きする為のものであり，内部状態は有限制御部のことを表している．またチューリング機械はすべて１テープ・チューリング機械のことを表している．
+本章では，TMとTMに制限を加えたRTMの定義を述べる．
+本稿では，簡単のため1テープのTMのみを考える．また，文献\cite{4}の表記を用いる．
+\subsection{チューリング機械}
+ TMはマス目に分割された左右に無限長のテープをもち，有限制御
+ 部，及びテープ上の記号を読み書きするためのヘッドから構成されている（図
+ \ref{fig:TM}）．テープには予め入力情報(2進数の0と1や多数のアルファベット)が
+ 格納されており，ヘッドが位置するマス目の記号を読み取る．そして,この記号
+ と現在の有限制御部の状態(内部状態，図\ref{fig:TM}においては状態$q$を指す)に
+ 依存して，マス目の記号を書き換え，ヘッドを左か右に1コマ移動もしくは不動
+ にし，内部状態を遷移させる．この一連の振る舞い(動作)を繰り返すことで計
+ 算を行う．\\
+ 　本稿では，1テープTMを$T=(Q,\Sigma,b,\delta,q_s,Q_f)$とし
+ て定める．(以下，1テープTMのことをTMと呼ぶことにする．)た
+ だし$Q$は内部状態の空でない有限集合，$\Sigma$ はテープ記号の空でない有限
+ 集合であり，$b (\in \Sigma )$は空白記号でテープの有限個
+ のマス目を除く残り全てのマス目に$b$が格納されていると仮定する．$\delta $
+ は$(Q \times $
+ $ [\Sigma\times\Sigma]\times Q) \cup (Q\times \{←,↓,→ \}\times Q)$
+ の部分集合，$q_s(\in Q)$は初期状態，$Q_f(\subset Q)$は最終状態
+ の集合とする．\par
+ $ \delta $は遷移規則の集合である．矢印$(←,↓,→)$はそれぞれヘッドの移動(左，
+ 不動，右)を表す．遷移規則は3項組であり，$(q,\langle s,s'\rangle ,q')$または
+ $(q,d,q')$である．
+
+ \begin{figure}[t]
+  \begin{center}
+  \includegraphics[width=10.0cm ,bb=0 0 320 140]{TM.png}
+　　　\caption{チューリング機械の模式図}\label{fig:TM}
+\vspace{-10.0mm}
+  \end{center}
+ \end{figure}
+
+ $(q,q'\in Q, s,s'\in \Sigma, d\in \{←,↓,→ \})$．前者の3項組は$T$が
+ 状態$q$で記号$s$を読んだ場合，記号$s'$に書き換え，状態を$q'$にすること
+ を意味する．また，後者の3項組は$T$が状態$q$の場合ヘッドを$d$の方向に動
+ かし, 状態を$q'$にすることを意味する．遷移規則に5項組を用いることもある
+ が，5項組で設計を行った場合，ヘッダの移動とテープの記号の書き換えを1つ
+ の遷移規則で行うことができる為，少ない遷移規則で記述することが出来る．
+ 一方3項組は，遷移規則の数は5項組と比べてヘッダの移動とテープの記号書き
+ 換えが別々なため多くなってしまうが，遷移規則に対称性があるため，以降の
+ 小節で説明するRTMを設計する際に前方決定的または後方決
+ 定的であるということの判断がしやすいと判断したため今回は3項組を用いる．\par
+ ここで，TMが計算を行っているある時点での様子を様相と呼ぶことにする．
+ このとき，TM $ T = (Q,\Sigma,b,\delta,q_s,q_f)$の様相とは
+ 組 $(q,(l,s,r))\in Q\times ((\Sigma \backslash \{b\})^* \times \Sigma
+ \times (\Sigma \backslash \{b\})^*)$である．ここで$V^*$はV中の記号を0個
+ 以上並べたものの集合を表す．ただし$q$は内部状態,$s$はヘッドの下にある記
+ 号，$l$はヘッドの左側のテープを表す記号列，$r$はヘッドの右側のテープを
+ 表す記号列を表す．\par
+ TM$T = (Q,\Sigma,b,\delta,q_s,Q_f)$の計算ステップ
+ は，$c\xRightarrow[T]{}c'$を満たすように様相$c$を様相$c'$に移すものとす
+ る．ただし，ここで，$b$つまり空白記号が無限に続くときを$\lambda $として\\  
+\[
+ \begin{array}{l@{~}c@{~}lll@{~}l}\small
+  (q,(l,s,r))   &\xRightarrow[T]{}& (q',(l,s',r)) & \mbox{if} & (q,(s,s'),q') &\in \delta\\
+  (q,(\lambda,s,r)) &\xRightarrow[T]{}& (q',(\lambda,b,sr)) & \mbox{if} & (q,\leftarrow,q') &\in \delta\\
+  (q,(ls',s,r)) &\xRightarrow[T]{}& (q',(l,s',sr)) & \mbox{if} & (q,\leftarrow,q') &\in \delta\\
+  (q,(ls,b,\lambda))   &\xRightarrow[T]{}& (q',(l,s,\lambda)) & \mbox{if} & (q,\leftarrow,q') &\in \delta\\
+  (q,(l,s,r)) &\xRightarrow[T]{}& (q',(l,s,r)) & \mbox{if} & (q,\downarrow,q') &\in \delta\\
+  (q,(l,s,\lambda)) &\xRightarrow[T]{}& (q',(ls,b,\lambda)) & \mbox{if} & (q,\rightarrow,q') &\in \delta\\
+  (q,(l,s,s'r)) &\xRightarrow[T]{}& (q',(ls,s',r)) & \mbox{if} & (q,\rightarrow,q') &\in \delta\\
+  (q,(\lambda,b,sr)) &\xRightarrow[T]{}& (q',(\lambda,s,r)) & \mbox{if} & (q,\rightarrow,q') &\in \delta\\
+  % (q,(\lambda,b,\lambda)) &\xRightarrow[T]{}& (q',(\lambda,b,\lambda)) & \mbox{if} & (q,d,q') &\in \delta\,.
+ \end{array}
+\] \\
+ \noindent である．$ \xRightarrow[T]{} $の反射推移閉包を
+ $\xRightarrow[T]{}^* $と記す．\par
+ チューリング機械 $T =(Q,\Sigma,b,\delta,q_s,\{q_f\})$の意味を
+ として，
+
+ $[\![T]\!] =
+ \{(r,r')|(q_s,(\lambda,b,r))\xRightarrow[T]{}^*(q_f,(\lambda,b,r')) \}$
+ とする．これは初期状態$q_s$でテープ内が$(\lambda,b,r)$の状態のと
+ き，遷移を繰り返し最終状態になったときのテープ内が$(\lambda,b,r')$にな
+ るということを表している．\\
+ \subsection{チューリング機械の例}
+ これまでに定義したチューリング機械に基づいて，簡単なチューリング機械を
+ 考えてみる．\par
+例　与えられた2進数に1を加えるチューリング機械　$T_1 = (Q_1,{b,0,1},b,\delta_1 ,q_s,{q_f})$を考える．ただし，
+$Q_1 = \{q_s,q_1,q_2,q_3,q_4,q_f\}$であり，$\delta_1$は以下の3項組の集合である.\\
+\\
+$\delta_1 = \{[q_s,\langle b,b \rangle ,q_1],[q_1,\rightarrow,q_2], $\\
+          $\qquad\ \ [q_2,\langle 1,0 \rangle,q_1],$\\
+          $\qquad\ \ [q_2,\langle 0,1 \rangle,q_3],[q_3,\leftarrow,q_4],$\\
+           $\qquad\ \  [q_2,\langle b,1 \rangle,q_3],$\\
+           $\qquad\ \  [q_4,\langle 0,0 \rangle,q_3],$\\
+           $\qquad\ \  [q_4,\langle 1,1 \rangle,q_3],$\\
+           $\qquad\ \  [q_4,\langle b,b \rangle,q_f]\}$\\
+\\
+
+$T_1$は，非負整数$n$の2進数表現が書かれたテープが与えられ，ヘッ
+ドを2進数表現の左隣のます目に置いて初期状態$q_s$から動作を開始したとき，
+$n$を$n$に1を加えたものに書き換え，2進数表現の左隣のます目までヘッドを移動し，最
+終状態$q_f$で停止するチューリング機械である(テープに書かれる２進数表現は
+反転されたものとする)．このとき，$T_1$は２進
+数表現の一番下位の桁から読んでいく．1を読んだとき，1を0に書き換える．また，0ま
+たは$b$を読み込んだときにそれを1に書き換える．
+
+\subsection{可逆チューリング機械}
+
+TM $T$は任意の異なる遷移規則$(q_1,a_1,q'_1), (q_2,a_2,q'_2)\in \delta $に対して，$q_1=q_2$ならば
+$a_1=(s_1,s'_1)$, $a_2=(s_2,s'_2)$およびに$s_1 \neq s_2$であるならば局所
+的に前方決定的であるという．またTM $T$は任意の異なる遷移規
+則$(q_1,a_1,q'_1), (q_2,a_2,q'_2)\in \delta$に対して
+$q'_1=q'_2$ならば$a_1=(s_1,s'_1)$, $a_2=(s_2,s'_2)$および$s'_1 \neq s'_2$であ
+るならば局所的に後方決定的であるという．
+
+TM $T=(Q,\Sigma,b,\delta,q_s,q_f)$は，局所的に前方決定的かつ後方決定的であり，最終状態からの遷移および
+初期状態への遷移がないとき，
+% 初期のテープが$(\lambda,b,r)$であり，最終のテープが$(\lambda,b,r')$であり，
+可逆
+%チューリング機械
+%（Reversible Turing Machine）
+と呼ぶ．\\
+% \section{可逆チューリング機械プログラムから\texttt{R-WHILE}プログラム
+% への変換$\mathcal{T}$}
+\begin{figure*}[t]
+\begin{alltt}
+                E,F \(::=\) X | d | cons E F | hd E | tl E | =? E F    式
+                Q,R \(::=\) X | d | cons Q R                       　  パターン
+                C,D \(::=\) X ^= E                                     命令
+                     |  Q <= R
+                     |  C; D
+                     |  if E then C else D fi F
+                     |  from E do C loop D until F
+                P   \(::=\) read X; C; write Y                         R-WHILEのプログラム
+ 
+\end{alltt}
+\caption{言語\texttt{R-WHILE}の構文規則}\label{fig:regR}
+\end{figure*}
+\begin{figure*}[t]
+\[
+\begin{array}{lll}
+\mathcal{I} \jump{\texttt{X \textasciicircum= E}}& = &\texttt{X \textasciicircum= E}\\
+\mathcal{I} \jump{\texttt{Q <= R}}&=& \texttt{Q <= R}  \\
+\mathcal{I} \jump{\texttt{C; D}}&=& \mathcal{I}
+ \jump{\texttt{D}}\texttt{; }\mathcal{I} \jump{\texttt{C}}\\
+\mathcal{I} \jump{\texttt{if E then C else D fi F}}&=&\texttt{if F then}
+ \ \mathcal{I} \jump{\texttt{C}}\ \texttt{else}\ \mathcal{I}
+ \jump{\texttt{D}}\ \texttt{fi E}\\
+\mathcal{I} \jump{\texttt{from E do C loop D until F}}&=& \texttt{from F do}
+ \ \mathcal{I} \jump{\texttt{C}}\ \texttt{loop}\ \mathcal{I}
+ \jump{\texttt{D}}\ \texttt{until E}\\
+\mathcal{I} \jump{\texttt{read X; C; write Y}}&=& \texttt{read Y;}
+ \mathcal{I} \jump{\texttt{C}}\texttt{; write X}
+
+\end{array}
+\]
+\caption{\texttt{R-WHILE}の逆変換器$\mathcal{I}$}\label{fig:i}
+\end{figure*}
+\section{可逆プログラミング言語R-WHILE}
+ここでは\texttt{R-WHILE}について説明する．
+\texttt{R-WHILE}は，Jonesの言語\texttt{WHILE}を可逆化したものである．
+\texttt{R-WHILE}は非可逆なプログラムを記述することがでない．そのため単射
+関数しか表すことはできない．この言語の特徴は木構造のデータを表現できるこ
+とである．それにより単純な方法で身近なデータ構造をモデリングが可能である，
+これは，既存の可逆命令言語\texttt{Janus}では難しいことである.\\
+\texttt{R-WHILE}の構文規則は単純である（図\ref{fig:regR}）．プログラム\texttt{P}はただ一つの入口と出口の点(\texttt{read,write})をもち，命令\texttt{C}がプログラムの本体である．\\
+　プログラムのデータ領域$\mathbb{D}$はアトム\texttt{nil}とすべての組($\mathtt{d_1,d_2}$)を含
+む（$\mathtt{d_1,d_2} \in \mathbb{D}$）最小の集合である．$Var$は変数名の無限集合で
+ある．本稿では$\mathtt{d,e,f,...} \in \mathbb{D}$とする．また，\texttt{X,Y,Z,}$... \in$
+$Vars$とする．\\
+　式は変数\texttt{X}，定数\texttt{d}，または複数の演算子からなる(先頭と
+それ以降を表す\texttt{hd}と\texttt{tail}，組を表す\texttt{cons}また等
+号を表す\texttt{=?}）からなる．パターンは式の部分集合であり，変数
+\texttt{X}，定数\texttt{d}またはパターンのペアを表す\texttt{cons Q R}からなる．
+本稿では以後ペアを表す\texttt{cons E F}または\texttt{cons Q R}をそれぞれ
+\texttt{(E.F)}または\texttt{(Q.R)}と表記する．パターンは線形的でなくては
+ならない．すなわち，反復変数は含まれない．また，この言語は局所変数をもたない．\\
+　次に命令\texttt{C}について説明する．
+非可逆なプログラミング言語における代入は左辺の変数の値を上書きする．そし
+て，代入後に再び値を取り戻すことはできない．そのため，可逆プログラミング
+言語に用いることは出来ない．可逆的代入\texttt{X \textasciicircum= E}では，
+\texttt{X}の値が\texttt{nil}のとき\texttt{X}の値を\texttt{E}の値にする．
+また，\texttt{X}の値が\texttt{E}の値と等しいとき，\texttt{X}の値を
+\texttt{nil}にする．\texttt{X \textasciicircum= E}でなぜなら，\texttt{X
+\textasciicircum= X}のとき，\texttt{X}がどのような値であっても\texttt{X}
+が\texttt{nil}の値になるため，単射ではなくなってしまうからである．
+可逆的置換\texttt{Q <= R}は\texttt{Q}の変数を\texttt{R}の変数を使って更新する．
+例えば
+\begin{center}
+\texttt{
+\{Q = nil,R = a\}\\
+\ \ Q <= R;\\
+\ \{Q = a,R = nil\} }
+\end{center}
+となる．
+可逆的代入と比べ両辺に表されるのはパターンの\texttt{Q}と\texttt{R}である．
+\\
+　\texttt{R-WHILE}の２つの構造化された制御フロー演算子は条件文の
+\texttt{if E then C else D fi}と繰り返し文の\texttt{from E do C loop D
+until F}である．繰り返し文はエントリーアサーション\texttt{E}をもち，条件
+文は出口アサーション\texttt{F}をもつ．\\　
+可逆的条件文\texttt{if E then C else D fi F}の制御フローの分岐はテスト
+\texttt{E}に依存する．もし真であれば命令\texttt{C}が実行され，アサーショ
+ン\texttt{E}は真でなくてはならない．また，もし偽であった場合命令
+\texttt{D}が実行され，アサーション\texttt{E}は偽でなくてはならない．
+\texttt{E}と\texttt{F}の返す値が対応していない場合，条件文は定義されない．
+可逆的ループ\texttt{from E do C loop D until F }は繰り返しを行うとき，
+アサーション\texttt{E}は真でなくてはならない．そして，命令\texttt{C}が実
+行される．
+実行後のテスト\texttt{F}が真であれば繰り返しは続行される．もし\texttt{F}
+が偽であった場合, 命令\texttt{D}が実行される．また，アサーション
+\texttt{E}は偽でなくてはならない．\\
+　可逆プログラミング言語である\texttt{R-WHILE}にはプログラミング逆変換器
+$\mathcal(I)$[図\ref{fig:i}が定義されている．それにより反転されたプログラムを再帰
+的降下によって得ることができる．
+
+\section{RTMから\texttt{R-WHILE}への変換}
+[図\ref{fig:rtmprog:main}]にチューリング機械プログラムからの変換で得られた
+\texttt{R-WHILE}プログラムを示す．なお記述には変換規則を用いた．\\
+　mainプログラム[図\ref{fig:rtmprog:main}]は入力としてチューリング機械
+のテープ上に書かれている記号列\texttt{R}を読み込む．その後，計算を実行し，
+書き換えられた記号列\texttt{R'}を出力するというものである．mainプログラ
+ム本体の\texttt{Q}はチューリング機械の内部状態を表している．また，
+\texttt{T}はチューリング機械のテープの状態を表している．そのため，可逆的
+代入\texttt{Q} \texttt{\string^=} \(\overline{q\sb{s}}\);によって，
+内部状態を表す\texttt{Q}は初期状態になる．また可逆的置換\texttt{T <=}
+\texttt{(nil }\(\overline{b}\) \texttt{R);}によって，ヘッドがテープにか
+かれている記号列の一つ左を指している状態を表している．
+\begin{figure}[t]
+\begin{subfigure}[t]{0.25\textwidth}
+\begin{alltt}
+read R;
+  Q \string^= \(\overline{q\sb{s}}\);
+  T <= (nil \(\overline{b}\) R);
+  from (=? Q \(\overline{q\sb{s}}\)) loop
+    STEP(Q,T)
+  until (=? Q \(\overline{q\sb{f}}\));
+  (nil \(\overline{b}\) R') <= T;
+  Q \string^= \(\overline{q\sb{f}}\);
+write R'
+\end{alltt}
+\subcaption{mainプログラム}
+\label{fig:rtmprog:main}
+\end{subfigure}%
+%
+\begin{subfigure}[t]{0.22\textwidth}
+\begin{alltt}
+macro STEP(Q,T) \(\equiv\)
+rewrite [Q,T] by
+ \(\mathcal{T}\jump{t}\sp{*}\)
+\end{alltt}
+\subcaption{マクロ\texttt{STEP}}
+\label{fig:rtmprog:STEP}
+\end{subfigure}%
+\vspace{2ex}
+\begin{subfigure}[t]{0.2\textwidth}
+\begin{alltt}
+macro MOVEL(T) \(\equiv\)
+(L S R) <= T;
+PUSH(S,R);
+POP(S,L);
+T <= (L S R)
+\end{alltt}
+\caption{マクロ\texttt{MOVEL}}
+\label{fig:rtmprog:MOVEL}
+\end{subfigure}%
+%
+\begin{subfigure}[t]{0.29\textwidth}
+\begin{alltt}
+macro PUSH(S,STK) \(\equiv\)
+rewrite [S,STK] by
+ [\(\overline{b}\),nil]\,=>\,[nil,nil]
+ [S,STK]\,=>\,[nil,(S.STK)]
+\end{alltt}
+\caption{マクロ\texttt{PUSH}}
+\label{fig:rtmprog:PUSH}
+\end{subfigure}
+\caption{RTMを模倣する\texttt{R-WHILE}プログラム}\label{fig:def_T}
+\end{figure}
+
+\begin{figure}[t]
+\[
+\begin{array}{lcl}
+\mathcal{T} \jump{\langle q_1,\langle s_1,s_2 \rangle,q_2 \rangle} =\\
+\qquad \texttt{[}\overline{q_1}\texttt{,(L}~\overline{s_1}~\texttt{R)] => [}\overline{q_2}\texttt{,(L}~\overline{s_2}~\texttt{R)]}\\
+\mathcal{T} \jump{\langle q_1,\leftarrow,q_2 \rangle} =\\
+\qquad \texttt{[}\overline{q_1}\texttt{,T] => \char`\{MOVEL(T); Q \string^=}\, \overline{q_1}\texttt{; } \texttt{Q \string^=}\, \overline{q_2}\texttt{\char`\}}\\
+\mathcal{T} \jump{\langle q_1,\rightarrow,q_2 \rangle} =\\
+\qquad \texttt{[}\overline{q_1}\texttt{,T] => \char`\{MOVER(T); Q \string^=}\, \overline{q_1}\texttt{; } \texttt{Q \string^=}\, \overline{q_2}\texttt{\char`\}}\\
+\mathcal{T} \jump{\langle q_1,\downarrow,q_2 \rangle} = \texttt{[}\overline{q_1},\texttt{T] => [}\overline{q_2},\texttt{T]}
+\end{array}
+\]
+\caption{遷移規則から\texttt{R-WHILE}の書き換え規則への変換}\label{fig:trans}
+\end{figure}
+そして，組\texttt{(Q,T)}はチューリング機械の様相を表している．プロ
+グラム内のループでは，チューリング機械の内部状態が初期状態から最終状態に
+遷移するまでマクロ\texttt{STEP}が繰り返し実行される．繰り返しを終了した
+後，命令によって\texttt{T}と\texttt{Q}の値は\texttt{nil}となる．\\
+　図\ref{fig:rtmprog:STEP}で定義されるマクロ\texttt{STEP(Q,T)}では，様相
+\texttt{(Q,T)}を書き換え規則により書き換える．$\mathcal{T}\jump{t}^*$は
+遷移規則から\texttt{R-WHILE}の書き換え規則への変換器$\mathcal{T}$[図
+\ref{fig:regR}]によって生成された書き換え規則の列である．変換器
+$\mathcal{T}$によって\\
+　それぞれの書き換え規則は[図\ref{fig:trans}]の変換器$\mathcal{T}$によって
+遷移規則$t(\in \delta)$から生成される．$\overline{q}$は，状態$q$に対応す
+る\texttt{R-WHILE}のアトムである．可逆チューリング機械の遷移規則列を変換
+した場合，異なる書き換え規則は矢印\texttt{=>}の左側のパターンと右側で返
+却される値がそれぞれ重なることはない．\\ 
+　マクロ\texttt{MOVEL}[図\ref{fig:rtmprog:MOVEL}]はヘッドを一つ左に動かすための
+マクロである．チューリング機械のテープ$(l,s,r)$はスタック\texttt{L}と\texttt{R}
+を用いて\texttt{(L S R)}として表す．マクロ\texttt{MOVEL}はマクロ
+\texttt{PUSH}と\texttt{POP}を実行し変化したテープの状態を\texttt{T}に置
+き換える．ヘッドを一つ右に動かす為のマクロ\texttt{MOVER}はマクロ
+\texttt{MOVEL}を逆変換することで得ることができる．
+　マクロ\texttt{PUSH}は，アトム\texttt{S}をスタック\texttt{STK}にプッシュ
+するためのマクロである．\texttt{S}が空白記号の場合，\texttt{S}，
+\texttt{STK}ともに\texttt{nil}をかえす．マクロ\texttt{POP}はマクロ
+\texttt{PUSH}を逆変換することで得ることができる．ただし，スタック
+\texttt{STK}が\texttt{nil}だった場合，マクロ\texttt{POP}は空白記号をポッ
+プする．
+\texttt{POP(S,STK)}ではスタックが空の場合，空白記号がポップされる．
+この操作によってスタックのボトムが非空白記号である状態（無限のテー
+プの中で有限の記号列を表す）を保つことができる為，任意の回数行うことができる．
+%
+プッシュの逆操作であるポップ\texttt{POP(S,STK)}は$\mathcal{I}\jump{\texttt{PUSH(S,STK)}}$とする．
+
+\section{おわりに}
+本稿の3章において任意のRTMから\texttt{R-WHILE}プログラムへの変換
+$\mathcal{T}$を\texttt{R-WHILE}の書き換え規則によって定義した．従って言語\texttt{R-WHILE}によっ
+て任意のRTMプログラムを書けるということである．
+以上より\texttt{R-WHILE}の計算モデルは可逆的にチューリング完全であると言うことを示
+した．すなわち可逆プログラミング言語\texttt{R-WHILE}によって万能可逆チューリング機
+械が作れることが示された．\\
+今後は\texttt{R-WHILE}がRTMを模倣できていることを証明し，RTMから
+\texttt{R-WHILE}の変換を示したい．
+
+\begin{thebibliography}{9}
+\bibitem{1}
+Stephen C. Kleene:The Church-Turing Thesis, Stanford Encyclopedia of
+Philosophy(online), available from $<$https://plato.stanford.edu/entries/church-turing/$>$
+(accessed2017-09-27).
+
+\bibitem{2}
+Axelsen, H. B. and Gl{\"u}ck, R.: 
+What Do Reversible Programs Compute?,
+{\it Foundations of Software Science and Computational
+	Structures. Proceedings}(Hofmann, M. , ed. ),
+LNCS, Vol6604, Springer-Verlag, pp. 42-56(2011)
+
+\bibitem{4}
+Yokoyama, T. , Axelsen, H. B. and Gl{\"u}ck, R.: 
+Towards a Reversible Functional Language,
+{\it Reversible Computation.Proceedings}(De Vos, A. and Wille, R . ,
+	eds. ),
+LNCS, Vol. 7165, SpringerVerlag, pp. 14-29(2012)
+
+\bibitem{3}
+Jones, N. D.: Computability and Complexity: 
+{\it From a Programming Perspective}, MIT Press (1997).
+Revised version, available from 
+{\tt http://www.diku.dk/~neil/Comp2book.html}.
+
+\end{thebibliography}
+
+
+\end{document}
