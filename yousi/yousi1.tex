@@ -247,7 +247,7 @@ TM $T=(Q,\Sigma,b,\delta,q_s,q_f)$は，局所的に前方決定的かつ後方決定的であり，最
 これは，既存の可逆命令言語\texttt{Janus}では難しいことである.\\
 　与えられたリストを逆転させて表示するプログラム例\texttt{reverse}を用い
 ていくつかの言語の機能について説明する．
-\vspace{-2mm}
+\vspace{-1mm}
 \begin{alltt}
    read X; (リストを反転させるプログラム)
      from (=? Y nil)
@@ -256,7 +256,7 @@ TM $T=(Q,\Sigma,b,\delta,q_s,q_f)$は，局所的に前方決定的かつ後方決定的であり，最
      until(=? X nil);
    write Y    
 \end{alltt}
-\vspace{-2mm}
+\vspace{-1mm}
 　プログラムの入力は変数\texttt{X}を読み込む．そして，出力は変数
 \texttt{Y}を書き出す．すべての変数の初期値は\texttt{nil}である．可逆的繰
 り返しを行う命令，\texttt{loop...until}は\texttt{Y}が\texttt{nil}であると主張
@@ -319,7 +319,7 @@ until F}である．繰り返し文はテスト\texttt{E}をもち，条件
 $\mathcal(I)$が定義されている．それにより反転されたプログラムを再帰
 的降下によって得ることができる．以下のプログラムはプログラム
 \texttt{reverse}を逆変換器$\mathcal(I)$によって得た逆プログラム$\mathcal{I}$\jump{\texttt{reverse}}である．
-\vspace{-2mm}
+\vspace{-1mm}
 \begin{alltt}
   read Y;（リストを反転するプログラム）
     from (=? X nil)
@@ -328,7 +328,7 @@ $\mathcal(I)$が定義されている．それにより反転されたプログラムを再帰
     until(=? Y nil);
   write X
 \end{alltt}
-\vspace{-2mm}
+\vspace{-1mm}
 　このプログラムは元のプログラム\texttt{reverse}と同じ働きをする．またプ
 ログラムは\texttt{X}と\texttt{Y}の位置が入れ替わっていることを除き，同じ
 である．
