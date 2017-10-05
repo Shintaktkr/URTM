@@ -14,7 +14,7 @@
 \subsection{プログラム例：リスト逆転}
 　与えられたリストを逆転させて表示するプログラム例\texttt{reverse}を用い
 ていくつかの言語の機能について説明する．
-\vspace{-3mm}
+\vspace{-2mm}
 \begin{alltt}
    read X; (*リスト Xを逆転させるプログラムreverse*)
      from (=? Y nil)
@@ -23,15 +23,14 @@
      until(=? X nil);
    write Y    
 \end{alltt}
-\vspace{-3mm}
+\vspace{-2mm}
 　プログラムの入力は変数\texttt{X}を読み込む．そして，出力は変数
 \texttt{Y}を書き出す．すべての変数の初期値は\texttt{nil}である．可逆的繰
 り返しを行う命令，\texttt{loop...until}は\texttt{Y}が\texttt{nil}であると主張
 されたとき，繰り返しが行われ，\texttt{X}が\texttt{nil}のときに繰り返しが
-終了する．\texttt{loop}内の命令はエントリーアサーションと終了テストが偽である
+終了する．\texttt{loop}内の命令はテストとアサーションが偽である
 限り繰り返す．\texttt{loop}内の最初の命令(\texttt{(Z.X) <= X})では\texttt{X}の値を先頭とそれ以降の部分に分解をしている．
-２番目の命令（\texttt{Y <= (Z.X)}）では，\texttt{Z}と\texttt{Y}をペアにした値を構成している．可
-逆的置き換えは右辺の元の値を左辺の変数にバインドする前に，右辺の値を
+２番目の命令（\texttt{Y <= (Z.X)}）では，\texttt{Z}と\texttt{Y}をペアにした値を構成している．可逆的置き換えは右辺の元の値を左辺の変数にバインドする前に，右辺の値を
 \texttt{nil}にセットする（たとえば\texttt{Y <= (Z.Y)}が実行された後
 \texttt{Z}は\texttt{nil}である）．出力の変数である\texttt{Y}を除くすべて
 の変数は最終的に\texttt{nil}でなくてはならない．プログラム
