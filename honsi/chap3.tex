@@ -19,6 +19,14 @@
  るということはチューリング機械の枠組みの中で定式化できるという提唱(チャー
  チ・チューリングのテーゼ)がなされた\cite{1}.\\
 
+ \begin{figure}[b]
+  \begin{center}
+  \includegraphics[width=8.0cm ,bb=0 0 320 140]{TM.png}
+　　　\caption{チューリング機械の模式図}\label{fig:TM}
+
+  \end{center}
+ \end{figure}
+
  \subsection{チューリング機械の動作}
  チューリング機械はマス目に分割された左右に無限長のテープをもち，有限制御
  部，及びテープ上の記号を読み書きするためのヘッドから構成されている[図
@@ -29,13 +37,7 @@
  にし，内部状態を遷移させる．チューリング機械は，この一連の動作を
  繰り返すことで計算を行う．\\
 
- \begin{figure}[h]
-  \begin{center}
-  \includegraphics[width=8.0cm ,bb=0 0 320 140]{TM.png}
-　　　\caption{チューリング機械の模式図}\label{fig:TM}
 
-  \end{center}
- \end{figure}
 
  \subsection{定義}
  本稿では，1テープチューリング機械を$T=(Q,\Sigma,b,\delta,q_s,Q_f)$とし
