@@ -495,13 +495,218 @@ $\mathcal{T}$によって\\
 \section{模倣できていることの証明}
 この章では，4.2章で与えた規則が実際に可逆チューリング機械を模倣すること
 ができているかを示す．\\
-
+\\
 可逆チューリング機械，可逆チューリング機械の計算ステップ，様相，意
-味，または\texttt{R-WHILE}の書き換えの規則の定義はすでに本稿のなかで定義されたもの
+味，プログラミング言語\texttt{R-WHILE}または\texttt{R-WHILE}の書き換えの規則の定義はすでに本稿のなかで定義されたもの
 を用いる．\\
-
-　
-
+\texttt{R-WHILE}の$\mathbb{D}$を可逆チューリング機械の$\Sigma^*$へと変換す
+る変換器を\texttt{R2T}とし，以下の様に定義する．\\
+\texttt{R2T} : $\mathbb{D}$ → $\Sigma^*$ \\
+\texttt{R2T}\jump{\texttt{nil}} = 0\\
+\texttt{R2T}\jump{(\mathtt{d_1,d_2})} = 1
+\texttt{R2T}\jump{\mathtt{d_1}}・\texttt{R2T}\jump{\mathtt{d_2}}\\
+また，\texttt{R2T}の逆である$\Sigma^*$を$\mathbb{D}$へ変換する変換機を
+\texttt{T2R}とする．\\
+\textbf{定理 1}
+任意の可逆チューリング機械T，任意の$x$に対して
+\vspace{-2mm}
+\begin{center}
+   \jump{T}$x$ =
+ \texttt{R2T}\jump{\jump{\mathcal{T}\jump{T}}(T2R\jump{x})}
+\end{center}
+\vspace{-2mm}
+である．
+\textbf{定理 1}を証明するにあたって\textbf{補題 1}と\textbf{補題
+ 2}を与える．ここでは変換器$\mathcal{T}$によって変換されたものを
+ $\overline{・}$をつかって記述する．\\
+\textbf{補題 １}任意の様相$\sigma$ = $(q,(l.s.r))$，$\sigma'$ =
+$(q'(l',s',r'))$に対して，
+\vspace{-2mm}
+\begin{center}
+$\sigma$ $\xRightarrow[T]{}$ $\sigma'$
+\end{center}
+\vspace{-2mm}
+のとき，
+\vspace{-2mm}
+\begin{center}
+$\overline{\sigma}$ = $(\overline{q,(l,s,r)})$ = \{\texttt{Q} $\mapsto$
+ ({$\overline{q}$}), \texttt{T} $\mapsto$ ($\overline{l}$,$\overline{s}$,$\overline{r}$)\}
+\end{center}
+\vspace{-2mm}
+として，
+\vspace{-2mm}
+\begin{center}
+$\mathcal{C}$\jump{\texttt{STEP(Q,T)}}\{\texttt{Q} $\mapsto$
+ ({$\overline{q}$}), \texttt{T} $\mapsto$
+ ($\overline{l}$,$\overline{s}$,$\overline{r}$)\} =\\
+$\overline{\sigma'}$ = $(\overline{q',(l',s',r')})$ = \{\texttt{Q} $\mapsto$
+ ({$\overline{q'}$}), \texttt{T} $\mapsto$ ($\overline{l'}$,$\overline{s'}$,$\overline{r'}$)\}
+\end{center}
+\vspace{-2mm}
+が成り立つ．このとき，$\mathcal{C}$\jump{}は対象がプログラムであることを示して
+いる．\\
+$[$証明$]$\textbf{補題 1}を証明する為に，可逆チューリング機械における４パター
+ンの遷移規則において，\textbf{補題 1}が成り立つことを示す．
+\texttt{R-WHILE}で表記するにあたって，$\overline{l}$ = L，$\overline{s}$ =
+Sまたは$\overline{r}$ = Rとする．\\
+\\
+(i)遷移規則が$(q,\langle s,s' \rangle ,q')$の場合\\
+可逆チューリング機械の様相は\\
+\vspace{-2mm}
+\begin{center}
+$(q,(l,s,r))$ $\xRightarrow[T]{}$ $(q',(l,s',r))$
+\end{center}
+\vspace{-2mm}
+の様になる．一方\texttt{R-WHILE}では，
+\vspace{-2mm}
+\begin{center}
+$\mathcal{T}$ $\jump{[q,\langle s,s'\rangle ,q']}$ =
+ $[\overline{q},$(\texttt{L,S,R})$]$ \texttt{=>} $[\overline{q'},$(\texttt{L,S',R})$]$
+\end{center}
+\vspace{-2mm}
+によって
+\vspace{-2mm}
+\begin{center}
+$[\overline{q'},$(\texttt{L,S',R})$]$
+\end{center}
+\vspace{-2mm}
+となり，
+\vspace{-2mm}
+\begin{center}
+ $[\overline{q'},$(\texttt{L,S,R})$]$ = $(q',(l,s',r))$
+\end{center}
+\vspace{-2mm}
+である．\\
+\\
+(ii)遷移規則が$(q,\leftarrow,q')$の場合\\
+可逆チューリング機械の様相は\\
+\vspace{-2mm}
+\begin{center}
+$(q,(ls',s,r))$ $\xRightarrow[T]{}$ $(q',(l,s',sr))$
+\end{center}
+\vspace{-2mm}
+の様になる．一方\texttt{R-WHILE}では，
+\vspace{-2mm}
+\begin{center}
+$\mathcal{T}$ $\jump{[q,\leftarrow,q']}$ =
+ \texttt{[}$\overline{q}$\texttt{,T] => \{MOVEL(T); Q
+ \textasciicircum=}$\overline{q}$\texttt{; Q \textasciicircum=}$\overline{q'}$\}
+\end{center}
+\vspace{-2mm}
+によって
+\vspace{-2mm}
+\begin{center}
+$[\overline{q'},$(\texttt{L,S',SR})$]$
+\end{center}
+\vspace{-2mm}
+となり，
+\vspace{-2mm}
+\begin{center}
+ $[\overline{q'},$(\texttt{L,S',SR})$]$ = $(q',(l,s',sr))$
+\end{center}
+\vspace{-2mm}
+である．\\
+\\
+(iii)遷移規則が$(q,\rightarrow,q')$の場合\\
+可逆チューリング機械の様相は\\
+\vspace{-2mm}
+\begin{center}
+$(q,(l,s,s'r))$ $\xRightarrow[T]{}$ $(q',(ls,s',r))$
+\end{center}
+\vspace{-2mm}
+の様になる．一方\texttt{R-WHILE}では，
+\vspace{-2mm}
+\begin{center}
+$\mathcal{T}$ $\jump{[q,\rightarrow,q']}$ =
+ \texttt{[}$\overline{q}$\texttt{,T] => \{MOVER(T); Q
+ \textasciicircum=}$\overline{q}$\texttt{; Q \textasciicircum=}$\overline{q'}$\}
+\end{center}
+\vspace{-2mm}
+によって
+\vspace{-2mm}
+\begin{center}
+$[\overline{q'},$(\texttt{LS,S',R})$]$
+\end{center}
+\vspace{-2mm}
+となり，
+\vspace{-2mm}
+\begin{center}
+ $[\overline{q'},$(\texttt{LS,S',R})$]$ = $(q',(ls,s',r))$
+\end{center}
+\vspace{-2mm}
+である．\\
+\\
+(iv)遷移規則が$(q,\downarrow,q')$の場合\\
+可逆チューリング機械の様相は\\
+\vspace{-2mm}
+\begin{center}
+$(q,(l,s,r))$ $\xRightarrow[T]{}$ $(q',(l,s,r))$
+\end{center}
+\vspace{-2mm}
+の様になる．一方\texttt{R-WHILE}では，
+\vspace{-2mm}
+\begin{center}
+$\mathcal{T}$ $\jump{[q,\downarrow,q']}$ =
+ \texttt{[}$\overline{q}$\texttt{,T] => } \texttt{[}$\overline{q'}$\texttt{,T]}
+\end{center}
+\vspace{-2mm}
+によって
+\vspace{-2mm}
+\begin{center}
+$[\overline{q'},$(\texttt{L,S,R})$]$
+\end{center}
+\vspace{-2mm}
+となり，
+\vspace{-2mm}
+\begin{center}
+ $[\overline{q'},$(\texttt{L,S,R})$]$ = $(q',(l,s,r))$
+\end{center}
+\vspace{-2mm}
+である．\\
+　(i)，(ii)，(iii)または(iv)により，\textbf{補題 1}が成り立つのは明らかで
+ある．\\
+\textbf{補題 2} 任意の様相$\sigma$ = $(q,(l.s.r))$，$\sigma'$
+=$(q'(l',s',r'))$または自然数$n$に対して，
+\vspace{-2mm}
+\begin{center}
+$\sigma$ $\xRightarrow[T]{}^n$ $\sigma'$
+\end{center}
+\vspace{-2mm}
+であるならば，
+\vspace{-2mm}
+\begin{center}
+($\mathcal{C}\jump{\texttt{STEP(Q.T)}})^n$
+\end{center}
+\vspace{-2mm}
+が成り立つ．\\
+$[$証明$]$可逆チューリング機械の計算ステップが$n$回実行される場合，
+\texttt{R-WHILE}では可逆ループによる繰り返しによって，マクロ
+\texttt{STEP(Q,T)}を$n$回実行する．\\
+(i)$n = 1$の場合\\
+　\textbf{補題 1}より\textbf{補題 2}が成り立つのは明らかである．\\
+(ii)$n = k$の場合\\
+　\textbf{補題 2}が成り立つとすると
+\vspace{-2mm}
+\begin{center}
+$\sigma$ $\xRightarrow[T]{}^k$ $\sigma'$ $\Longleftrightarrow$ ($\mathcal{C}\jump{\texttt{STEP(Q.T)}})^k$
+\end{center}
+\vspace{-2mm}
+である．$n = k + 1$のとき
+\vspace{-2mm}
+\begin{center}
+($\mathcal{C}\jump{\texttt{STEP(Q.T)}})^{k+1}$
+\end{center}
+\vspace{-2mm}
+であり，
+\vspace{-2mm}
+\begin{center}
+($\mathcal{C}\jump{\texttt{STEP(Q.T)}})^{k+1}$　=
+ ($\mathcal{C}\jump{\texttt{STEP(Q.T)}})^1$($\mathcal{C}\jump{\texttt{STEP(Q.T)}})^{k}$
+\end{center}
+\vspace{-2mm}
+であるため，$n = k + 1$のときも\textbf{補題 2}は成立する．\\
+　(i)，(ii)よりすべての自然数$n$について\textbf{補題 2}は成立する．\\
+\textbf{補題 1}，\textbf{補題 2}より\textbf{定理 1}は成り立つ．
 \begin{figure}[t]
 \begin{subfigure}[t]{0.25\textwidth}
 \begin{alltt}
@@ -556,13 +761,13 @@ rewrite [S,STK] by
 \begin{figure}[t]
 \[
 \begin{array}{lcl}
-\mathcal{T} \jump{\langle q_1,\langle s_1,s_2 \rangle,q_2 \rangle} =\\
+\mathcal{T} \jump{[ q_1,\langle s_1,s_2 \rangle,q_2 ]} =\\
 \qquad \texttt{[}\overline{q_1}\texttt{,(L}~\overline{s_1}~\texttt{R)] => [}\overline{q_2}\texttt{,(L}~\overline{s_2}~\texttt{R)]}\\
-\mathcal{T} \jump{\langle q_1,\leftarrow,q_2 \rangle} =\\
+\mathcal{T} \jump{[ q_1,\leftarrow,q_2 ]} =\\
 \qquad \texttt{[}\overline{q_1}\texttt{,T] => \char`\{MOVEL(T); Q \string^=}\, \overline{q_1}\texttt{; } \texttt{Q \string^=}\, \overline{q_2}\texttt{\char`\}}\\
-\mathcal{T} \jump{\langle q_1,\rightarrow,q_2 \rangle} =\\
+\mathcal{T} \jump{[ q_1,\rightarrow,q_2 ]} =\\
 \qquad \texttt{[}\overline{q_1}\texttt{,T] => \char`\{MOVER(T); Q \string^=}\, \overline{q_1}\texttt{; } \texttt{Q \string^=}\, \overline{q_2}\texttt{\char`\}}\\
-\mathcal{T} \jump{\langle q_1,\downarrow,q_2 \rangle} = \texttt{[}\overline{q_1},\texttt{T] => [}\overline{q_2},\texttt{T]}
+\mathcal{T} \jump{[ q_1,\downarrow,q_2 ]} = \texttt{[}\overline{q_1},\texttt{T] => [}\overline{q_2},\texttt{T]}
 \end{array}
 \]
 \caption{遷移規則から\texttt{R-WHILE}の書き換え規則への変換器$\mathcal{T}$}\label{fig:reg_R}
