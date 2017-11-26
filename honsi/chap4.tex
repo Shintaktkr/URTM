@@ -1,4 +1,4 @@
-\chapter{\texttt{R-WHILE}でも実装}
+\chapter{可逆チューリング機械から\texttt{R-WHILE}への変換}
 この章では命令型可逆プログラミング言語\texttt{R-WHILE}（以下，単に
 \texttt{R-WHILE}と呼ぶことにする)を万能可逆チューリング機械に変換する規則を
 与えることで，\texttt{R-WHILE}が万能可逆チューリング機械を実装可能で
@@ -10,7 +10,7 @@
 \texttt{R-WHILE}は非可逆なプログラムを記述することがでない．そのため単射
 関数しか表すことはできない．この言語の特徴は木構造のデータを表現できるこ
 とである．それにより単純な方法で身近なデータ構造をモデリングが可能である，
-既存の可逆命令言語\texttt{Janus}では難しいことである．
+このことは，既存の可逆命令言語\texttt{Janus}では難しいことである．
 \subsection{プログラム例：リスト逆転}
 　与えられたリストを逆転させて表示するプログラム例\texttt{reverse}を用い
 ていくつかの言語の機能について説明する．
@@ -25,20 +25,21 @@
 \end{alltt}
 \vspace{-2mm}
 　プログラムの入力は変数\texttt{X}を読み込む．そして，出力は変数
-\texttt{Y}を書き出す．すべての変数の初期値は\texttt{nil}である．可逆的繰
-り返しを行う命令，\texttt{loop...until}は\texttt{Y}が\texttt{nil}であると主張
+\texttt{Y}を書き出す．すべての変数の初期値は\texttt{nil}である．可逆ルー
+プを行う命令，\texttt{loop...until}は\texttt{Y}が\texttt{nil}であると主張
 されたとき，繰り返しが行われ，\texttt{X}が\texttt{nil}のときに繰り返しが
 終了する．\texttt{loop}内の命令はテストとアサーションが偽である
 限り繰り返す．\texttt{loop}内の最初の命令(\texttt{(Z.X) <= X})では\texttt{X}の値を先頭とそれ以降の部分に分解をしている．
-２番目の命令（\texttt{Y <= (Z.X)}）では，\texttt{Z}と\texttt{Y}をペアにした値を構成している．可逆的置き換えは右辺の元の値を左辺の変数にバインドする前に，右辺の値を
+２番目の命令（\texttt{Y <= (Z.X)}）では，\texttt{Z}と\texttt{Y}をペアに
+した値を構成している．可逆置換は右辺の元の値を左辺の変数に束縛する前に，右辺の値を
 \texttt{nil}にセットする（たとえば\texttt{Y <= (Z.Y)}が実行された後
 \texttt{Z}は\texttt{nil}である）．出力の変数である\texttt{Y}を除くすべて
 の変数は最終的に\texttt{nil}でなくてはならない．プログラム
 \texttt{reverse}の適用は\jump{\texttt{reverse}}$^{\texttt{R-WHILE}}$
 \texttt{('a.('b.('c.nil)))}=\texttt{('c.('b('a.nil)))}の様に示す．ここで，
 リストの要素\texttt{'a,'bまたは'c}はアトムである．エントリーアサーション
-と可逆的置き換えにより，プログラムは可逆である．
-\section{構文}
+と可逆置換により，プログラムは可逆である．
+\subsection{構文}
 \texttt{R-WHILE}の構文規則は単純である（図\ref{fig:regR}）．プログラム\texttt{P}はただ一つの入口と出口の点(\texttt{read,write})をもち，命令\texttt{C}がプログラムの本体である．\\
 　プログラムのデータ領域$\mathbb{D}$はアトム\texttt{nil}とすべての組($\mathtt{d_1,d_2}$)を含
 む（$\mathtt{d_1,d_2} \in \mathbb{D}$）最小の集合である．$Var$は変数名の無限集合で
@@ -54,14 +55,14 @@ $Vars$とする．\\
 　%次に命令\texttt{C}について説明する．非可逆なプログラミング言語における
   % 代入は左辺の変数の値を上書きする．そして，代入後に再び値を取り戻すこと
   %はできない．そのため，可逆プログラミング言語に用いることは出来ない．
-可逆的代入\texttt{X \textasciicircum= E}において，左辺の変数
+可逆代入\texttt{X \textasciicircum= E}において，左辺の変数
 \texttt{X}に右辺の式\texttt{E}があらわれてはならない．
 %\texttt{X}の値が\texttt{nil}のとき\texttt{X}の値を\texttt{E}の値にする．
 %また，\texttt{X}の値が\texttt{E}の値と等しいとき，\texttt{X}の値を
 %\texttt{nil}にする．\texttt{X \textasciicircum= E}でなぜなら，\texttt{X
 %\textasciicircum= X}のとき，\texttt{X}がどのような値であっても\texttt{X}
 %が\texttt{nil}の値になるため，単射ではなくなってしまうからである．%
-可逆的置換\texttt{Q <= R}は\texttt{Q}の変数を\texttt{R}の変数を使って更新する．
+可逆置換\texttt{Q <= R}は\texttt{Q}の変数を\texttt{R}の変数を使って更新する．
 %例えば
 %\begin{center}
 %\texttt{
@@ -70,18 +71,18 @@ $Vars$とする．\\
 %\ \{Q = a,R = nil\} }
 %\end{center}
 %となる．
-可逆的代入と比べ両辺に表されるのはパターンの\texttt{Q}と\texttt{R}である．
+可逆代入と比べ両辺に表されるのはパターンの\texttt{Q}と\texttt{R}である．
 \\
 　\texttt{R-WHILE}の２つの構造化された制御フロー演算子は条件文の
 \texttt{if E then C else D fi}と繰り返し文の\texttt{from E do C loop D
-until F}である．繰り返し文はエントリーアサーション\texttt{E}をもち，条件
-文は出口アサーション\texttt{F}をもつ．\\　
-可逆的条件文\texttt{if E then C else D fi F}の制御フローの分岐はテスト
+until F}である．繰り返し文はテスト\texttt{E}をもち，条件
+文はアサーション\texttt{F}をもつ．\\　
+可逆条件文\texttt{if E then C else D fi F}の制御フローの分岐はテスト
 \texttt{E}に依存する．もし真であれば命令\texttt{C}が実行され，アサーショ
 ン\texttt{E}は真でなくてはならない．また，もし偽であった場合命令
 \texttt{D}が実行され，アサーション\texttt{E}は偽でなくてはならない．
 \texttt{E}と\texttt{F}の返す値が対応していない場合，条件文は定義されない．
-可逆的ループ\texttt{from E do C loop D until F }は図\ref{fig:if}の様に描くこと
+可逆ループ\texttt{from E do C loop D until F }は図\ref{fig:if}の様に描くこと
 ができる．ループを行うとき，アサーション\texttt{E}は真でなくてはならな
 い（図\ref{fig:if}の\texttt{t}）．そして，命令\texttt{C}が実行される．実
 行後のテスト\texttt{F}が真であれば繰り返しは続行される．もし\texttt{F}
@@ -116,7 +117,7 @@ $\mathtt{E_{n-1}E_n}$)・・・)}として用いられる．\\
 \end{alltt}
 \caption{言語\texttt{R-WHILE}の構文規則}\label{fig:regR}
 \end{figure}
-\section{意味論}
+\subsection{意味論}
 
 %意味論
 \begin{figure}
@@ -219,7 +220,7 @@ $\sigma'$ \ \ \ {\rm if} $\mathcal{E}\jump{\texttt{E}}\sigma$ =
 
 \end{figure}
 　ここでは\texttt{R-WHILE}のための表示的意味論を定義する．まず，いくつかの表記
-法から始め，図\ref{fig:sem}の４つの意味関数について説明する．\\
+法を始め，図\ref{fig:sem}の４つの意味関数について説明する．\\
 　プログラム\texttt{P}の中にある変数の組と式\texttt{E}はそれぞれ
 $Var$(\texttt{P})，$Var$(\texttt{E})と示される．ブール値は明確な二つの
 要素（\texttt{false,true} $\in \mathbb{D}$)によって示される．未定義の値は$\bot$
@@ -229,12 +230,12 @@ $Var$(\texttt{P})，$Var$(\texttt{E})と示される．ブール値は明確な二つの
 $\mathbb{D}_{\bot}$への関数である．\texttt{P}のためのすべての状態の組は
 $\mathtt{Stores^P}$によって示される．状態$\sigma\backslash$\texttt{X}は変
 数\texttt{X}を$\bot$に写すことを除けば$\sigma$と同一である．状態
-$\sigma\uplus\sigma'$は状態$\sigma$と$\sigma'$の縛るものの非交和であり，
+$\sigma\uplus\sigma'$は状態$\sigma$と$\sigma'$の束縛するものの非交和であり，
 それらは共通の変数をもたない．未定義の状態すなわち，どのような変数の対し
 ても$\bot$をかえすものは$\bot$とも書かれる．\\
-　状態$\mathtt{\sigma^P_X}$は変数\texttt{X}を$D$に縛る．また，
+　状態$\mathtt{\sigma^P_X}$は変数\texttt{X}を$D$に束縛する．また，
 $Var$(\texttt{P})=\{\texttt{X,$\mathtt{Y_1}$,...,$\mathtt{Y_n}$}\}内の
-の他すべての変数を\texttt{nil}に縛る．すなわち，\\
+の他すべての変数を\texttt{nil}に束縛する．すなわち，\\
 　$\mathtt{\sigma^P_X}$($D$) = [\texttt{X} $\mapsto D$,$\mathtt{Y_1}
 			    \mapsto \mathtt{nil}$,...,$\mathtt{Y_n}
 			    \mapsto \mathtt{nil}$]\\
@@ -278,12 +279,13 @@ $\mathcal{Q}\jump{\texttt{Q}}^{-1}$(\texttt{d},$\sigma$')は値と状態の組
 $\sigma$において\texttt{nil}に縛られる．もし$\mathcal{Q}$が\texttt{Q}と
 $\sigma$について定義されている場合，
 $\mathcal{Q}\jump{\texttt{Q}}^{-1}$($\mathcal{Q}\jump{\texttt{Q}}\sigma$) = $\sigma$が成り
-立つ．パターン評価とその逆は可逆的置き換えの意味を定義するために用いられ
+立つ．パターン評価とその逆は可逆置換の意味を定義するために用いられ
 る．\\
 　 ここからは命令評価$\mathcal{C}$について述べる．非可逆な言語における代
  入は破壊的である．それらは左辺の変数の値を上書きする．そして，代入を
- 行った後，元の値を再び構築することはできない．そのため，可逆言語で基本
- 的に用いることができない．そのかわりに，可逆的代入\texttt{X \textasciicircum= E}を用い
+ 行った後，元の値を再び構築することはできない．そのため，可逆プログラミ
+ ング言語では言語では基本
+ 的に用いることができない．そのかわりに，可逆代入\texttt{X \textasciicircum= E}を用い
  る．これは, もし\texttt{X}の値が\texttt{nil}であるとき，\texttt{X}に
  \texttt{E}の値にし，\texttt{X}の値が\texttt{E}の値と等しいとき，
  \texttt{X}の値を\texttt{nil}にするというものである．前者の場合
@@ -304,7 +306,7 @@ $
 \end{array}$\\
 \end{center}
 \vspace{-2mm}
-と定義する．こうすることで，可逆的代入を以下の様に定義することができ, 
+と定義する．こうすることで，可逆代入を以下の様に定義することができ, 
 \vspace{-2mm}
 \begin{center}
 $\mathcal{C}\jump{\texttt{X \textasciicircum=
@@ -321,7 +323,7 @@ $\mathcal{C}\jump{\texttt{X \textasciicircum=
 な値であっても\texttt{X}に\texttt{nil}をセットする．そして，
 $\mathcal{C}$\jump{\texttt{X \textasciicircum= X}}は単射ではなくなってし
 まう．\\
-　可逆的置き換え\texttt{Q <= R}は\texttt{Q}と\texttt{R}の両辺を置き換える
+　可逆置換\texttt{Q <= R}は\texttt{Q}と\texttt{R}の両辺を置き換える
 ことによって変数を更新する．$\mathcal{C}$\jump{\texttt{Q <= R}}$\sigma$
 は最初の評価$\mathcal{Q}$\jump{\texttt{R}}$\sigma$によって定義される．
 このとき，$\mathcal{Q}$\jump{\texttt{R}}$\sigma$は
@@ -329,17 +331,17 @@ $\mathcal{C}$\jump{\texttt{X \textasciicircum= X}}は単射ではなくなってし
 \texttt{nil}である場合を除き，\texttt{d}は
 $\mathcal{E}$\jump{\texttt{R}}$\sigma$であり，状態$\sigma'$は$\sigma$であ
 る．そしてこれに逆評価の$\mathcal{Q}\jump{\texttt{Q}}^{-1}$(\texttt{d},$\sigma'$)が実行され，
-可逆的置き換えの最終状態である$\sigma''$を得る．このとき
+可逆置換の最終状態である$\sigma''$を得る．このとき
 $Var$(\texttt{Q})のすべての変数は状態$\sigma$において\texttt{nil}になら
 なくてはならない．逆評価の
 $\mathcal{Q}\jump{\texttt{Q}}^{-1}$(\texttt{d},$\sigma'$)はd =
-$\mathcal{E}\jump{Q}\sigma''$のような\texttt{d}の一部に縛られる．\\
-　可逆条件分岐\texttt{if E then C else D fi F}において，制御フローの分岐
+$\mathcal{E}\jump{Q}\sigma''$のような\texttt{d}の一部に束縛される．\\
+　可逆条件文\texttt{if E then C else D fi F}において，制御フローの分岐
 はテスト\texttt{E}に依存する．テスト\texttt{E}が\texttt{true}であった場合，
 命令\texttt{C}が実行される．そして，アサーション\texttt{F}は必ず
 \texttt{true}でなくてはならない．テスト\texttt{E}が\texttt{false}であっ
 た場合，命令\texttt{D}が実行される．そして，アサーション\texttt{F}は
-\texttt{false}でなくてはならない．もし出口の\texttt{F}の値と入口の
+\texttt{false}でなくてはならない．もしアサーション\texttt{F}の値とテストの
 \texttt{E}の値が対応していない場合，条件分岐は定義されない．アサーション
 \texttt{F}は条件分岐の実行が後方決定的であることを主張する．\\
 　可逆的繰り返し\texttt{from E do C loop D until F}はフローチャートの様
@@ -360,7 +362,7 @@ $\mathcal{E}\jump{Q}\sigma''$のような\texttt{d}の一部に縛られる．\\
 \end{center}
 \end{figure}
 
-\section{プログラム逆変換器}
+\subsection{プログラム逆変換器}
 プログラミング逆変換器は従来の言語では一般的に利用することができない．
 しかし可逆プログラミング言語である\texttt{R-WHILE}にはプログラム逆変換器
 $\mathcal{I}$が定義されている(図\ref{fig:i})．それによって反転されたプロ
@@ -379,7 +381,7 @@ $\mathcal{I}$ \jump{\texttt{reverse}}は\texttt{X}と\texttt{Y}の位置が入
 ることがわかる．\\
 　プログラム\texttt{P}は二回逆変換を行うことで元のプログラムが求められる
 （\texttt{P} = $\mathcal{I}\jump{\mathcal{I\jump{\texttt{P}}}}$）．
-\section{糖類構文としての書き換え規則}
+\subsection{糖類構文としての書き換え規則}
 プログラムは糖類構文としての可逆版の書き換え規則をもちいることで読みやす
 くなる．糖類構文によって，複数の変数
 \texttt{[$\mathtt{X_1}$,...,$\mathtt{X_n}$]}は複数の規則
@@ -450,8 +452,8 @@ $\mathtt{X_1}$,...,$\mathtt{X_n}$が$\mathtt{E_1}$,...,$\mathtt{E_n}$に縛
 \end{figure}
 
 \section{可逆チューリング機械から\texttt{R-WHILE}への変換}
-ここでは実際に可逆チューリング機械を\texttt{R-WHILE}のプログラムで模倣
-する．\\
+ここでは，可逆チューリング機械を\texttt{R-WHILE}のプログラムで模倣
+するための，変換の規則を与える．\\
 \subsection{可逆チューリング機械を模倣する\texttt{R-WHILE}プログラム}
 図\ref{fig:rtmprog:main}にチューリング機械プログラムからの変換で得られた
 \texttt{R-WHILE}プログラムを示す．なお記述には変換規則を用いた．\\
@@ -491,6 +493,12 @@ $\mathcal{T}$によって\\
 \texttt{STK}が\texttt{nil}だった場合，マクロ\texttt{POP}は空白記号をポッ
 プする．
 \section{模倣できていることの証明}
+この章では，4.2章で与えた規則が実際に可逆チューリング機械を模倣すること
+ができているかを示す．\\
+
+可逆チューリング機械，可逆チューリング機械の計算ステップ，様相，意
+味，または\texttt{R-WHILE}の書き換えの規則の定義はすでに本稿のなかで定義されたもの
+を用いる．\\
 
 　
 
