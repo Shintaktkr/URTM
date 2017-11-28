@@ -27,7 +27,7 @@
 　プログラムの入力は変数\texttt{X}を読み込む．そして，出力は変数
 \texttt{Y}を書き出す．すべての変数の初期値は\texttt{nil}である．可逆ルー
 プを行う命令，\texttt{loop...until}は\texttt{Y}が\texttt{nil}であると主張
-されたとき，繰り返しが行われ，\texttt{X}が\texttt{nil}のときに繰り返しが
+された場合，繰り返しが行われ，\texttt{X}が\texttt{nil}の場合に繰り返しが
 終了する．\texttt{loop}内の命令はテストとアサーションが偽である
 限り繰り返す．\texttt{loop}内の最初の命令(\texttt{(Z.X) <= X})では\texttt{X}の値を先頭とそれ以降の部分に分解をしている．
 ２番目の命令（\texttt{Y <= (Z.X)}）では，\texttt{Z}と\texttt{Y}をペアに
@@ -56,11 +56,11 @@ $Vars$とする．\\
   % 代入は左辺の変数の値を上書きする．そして，代入後に再び値を取り戻すこと
   %はできない．そのため，可逆プログラミング言語に用いることは出来ない．
 可逆代入\texttt{X \textasciicircum= E}において，左辺の変数
-\texttt{X}に右辺の式\texttt{E}があらわれてはならない．
-%\texttt{X}の値が\texttt{nil}のとき\texttt{X}の値を\texttt{E}の値にする．
-%また，\texttt{X}の値が\texttt{E}の値と等しいとき，\texttt{X}の値を
+\texttt{X}が右辺の式\texttt{E}に利用されてはならない．
+%\texttt{X}の値が\texttt{nil}の場合\texttt{X}の値を\texttt{E}の値にする．
+%また，\texttt{X}の値が\texttt{E}の値と等しい場合，\texttt{X}の値を
 %\texttt{nil}にする．\texttt{X \textasciicircum= E}でなぜなら，\texttt{X
-%\textasciicircum= X}のとき，\texttt{X}がどのような値であっても\texttt{X}
+%\textasciicircum= X}の場合，\texttt{X}がどのような値であっても\texttt{X}
 %が\texttt{nil}の値になるため，単射ではなくなってしまうからである．%
 可逆置換\texttt{Q <= R}は\texttt{Q}の変数を\texttt{R}の変数を使って更新する．
 %例えば
@@ -83,7 +83,7 @@ until F}である．繰り返し文はテスト\texttt{E}をもち，条件
 \texttt{D}が実行され，アサーション\texttt{E}は偽でなくてはならない．
 \texttt{E}と\texttt{F}の返す値が対応していない場合，条件文は定義されない．
 可逆ループ\texttt{from E do C loop D until F }は図\ref{fig:if}の様に描くこと
-ができる．ループを行うとき，アサーション\texttt{E}は真でなくてはならな
+ができる．ループを行う場合，アサーション\texttt{E}は真でなくてはならな
 い（図\ref{fig:if}の\texttt{t}）．そして，命令\texttt{C}が実行される．実
 行後のテスト\texttt{F}が真であれば繰り返しは続行される．もし\texttt{F}
 が偽であった場合, 命令\texttt{D}が実行される．また，アサーション
@@ -231,17 +231,17 @@ $\mathbb{D}_{\bot}$への関数である．\texttt{P}のためのすべての状態の組は
 $\mathtt{Stores^P}$によって示される．状態$\sigma\backslash$\texttt{X}は変
 数\texttt{X}を$\bot$に写すことを除けば$\sigma$と同一である．状態
 $\sigma\uplus\sigma'$は状態$\sigma$と$\sigma'$の束縛するものの非交和であり，
-それらは共通の変数をもたない．未定義の状態すなわち，どのような変数に対し
+それらは共通の変数をもたない．%なにが？
+未定義の状態であり，どのような変数に対し
 ても$\bot$を返すものは$\bot$とも書くことができる．\\
 　状態$\mathtt{\sigma^P_X}$は変数\texttt{X}を$D$に束縛する．また，
 $Var$(\texttt{P})=\{\texttt{X,$\mathtt{Y_1}$,...,$\mathtt{Y_n}$}\}内のそ
 の他すべての変数を\texttt{nil}に束縛する．すなわち，\\
-　$\mathtt{\sigma^P_X}$($D$) = [\texttt{X} $\mapsto D$,$\mathtt{Y_1}
-			    \mapsto \mathtt{nil}$,...,$\mathtt{Y_n}
+　$\mathtt{\sigma^P_X}$($D$) = [\texttt{X} $\mapsto D$,$\mathtt{Y_1} 			    \mapsto \mathtt{nil}$,...,$\mathtt{Y_n}
 			    \mapsto \mathtt{nil}$]\\
 となる．\\
 　意味関数は以下の様に式(\texttt{Expressions})，パターン(\texttt{Patterns})，命令(\texttt{Commands})またはプログラム(\texttt{Programs})の四種類によって定義される(図
-\ref{fig:sem})．このとき，AからBへの単射の写像をA $\hookrightarrow$ Bに
+\ref{fig:sem})．この場合，AからBへの単射の写像をA $\hookrightarrow$ Bに
 よって示す．\\
 \vspace{-6mm}
 \begin{flushleft}
@@ -258,7 +258,7 @@ $\mathcal{P}$ : \texttt{Programs} $\to$ ($\mathbb{D}
 \vspace{-2mm}
 　プログラム\texttt{p}は部分関数$\mathcal{P}$\jump{\texttt{p}}を示す．本
 稿では\texttt{p}が\texttt{R-WHILE}のプログラムであることを明示するために
-$\jump{\texttt{p}}^\texttt{R-WHILE}$\\
+$\jump{\texttt{p}}^\texttt{R-WHILE}$の様に示す．\\
 　式評価$\mathcal{E}$は状態$\sigma$の式\texttt{E}を$\mathbb{D}$の値へ評
 価する．変数\texttt{X}，定数\texttt{d}，または複数の演算子からなる(先
 頭とそれ以降を表す\texttt{hd}と\texttt{tail}，組を表す\texttt{cons}また
@@ -286,8 +286,8 @@ $\mathcal{Q}\jump{\texttt{Q}}^{-1}$($\mathcal{Q}\jump{\texttt{Q}}\sigma$) = $\si
  行った後，元の値を再び構築することはできない．そのため，可逆プログラミ
  ング言語では基本
  的に用いることができない．そのため，可逆代入\texttt{X \textasciicircum= E}を用い
- る．これは, もし\texttt{X}の値が\texttt{nil}であるとき，\texttt{X}に
- \texttt{E}の値を更新し，\texttt{X}の値が\texttt{E}の値と等しいとき，
+ る．これは, もし\texttt{X}の値が\texttt{nil}である場合，\texttt{X}に
+ \texttt{E}の値を更新し，\texttt{X}の値が\texttt{E}の値と等しい場合，
  \texttt{X}の値を\texttt{nil}に更新するというものである．前者の場合
  \texttt{E}は複製される．また，後者の場合\texttt{X}と\texttt{E}の等しさ
  が主張される．
@@ -402,7 +402,6 @@ $\mathtt{X_1}$,...,$\mathtt{X_n}$が$\mathtt{E_1}$,...,$\mathtt{E_n}$に束
 に一致した場合，$\mathtt{Q_i}$は縛られる．次に$\mathtt{Rule_j}$の形式に応じて，
 $\mathtt{X_1}$,...,$\mathtt{X_n}$が$\mathtt{E_1}$,...,$\mathtt{E_n}$に縛
 られ，その後，命令\texttt{C}が実行され，$\mathtt{X_i}$も更新される．変数が同
->>>>>>> 75e4a7a2a908201f3efb4fe34e365edc1f5df8ca
 じ値と一致する場合，繰り返し変数を含むパターンが一致する．
 
 
@@ -475,7 +474,6 @@ $\mathtt{X_1}$,...,$\mathtt{X_n}$が$\mathtt{E_1}$,...,$\mathtt{E_n}$に縛
 =======
 内部状態を表す\texttt{Q}は初期状態になる．また可逆的置換\texttt{T <=}
 \texttt{(nil }\(\overline{b}\) \texttt{R);}によって，ヘッドがテープに書
->>>>>>> 75e4a7a2a908201f3efb4fe34e365edc1f5df8ca
 かれている記号列の一つ左を指している状態を表している．
 そして，組\texttt{(Q,T)}はチューリング機械の様相を表している．プロ
 グラム内のループでは，チューリング機械の内部状態が初期状態から最終状態に
