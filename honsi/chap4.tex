@@ -468,10 +468,6 @@ $\mathtt{X_1}$,...,$\mathtt{X_n}$が$\mathtt{E_1}$,...,$\mathtt{E_n}$に縛
 ム本体の\texttt{Q}はチューリング機械の内部状態を表している．また，
 \texttt{T}はチューリング機械のテープの状態を表している．そのため，可逆的
 代入\texttt{Q} \texttt{\string^=} \(\overline{q\sb{s}}\);によって，
-<<<<<<< HEAD
-内部状態を表す\texttt{Q}は初期状態になる．また可逆置換\texttt{T <=}
-\texttt{(nil }\(\overline{b}\) \texttt{R);}によって，ヘッドがテープにか
-=======
 内部状態を表す\texttt{Q}は初期状態になる．また可逆的置換\texttt{T <=}
 \texttt{(nil }\(\overline{b}\) \texttt{R);}によって，ヘッドがテープに書
 かれている記号列の一つ左を指している状態を表している．
@@ -505,9 +501,9 @@ $\mathtt{X_1}$,...,$\mathtt{X_n}$が$\mathtt{E_1}$,...,$\mathtt{E_n}$に縛
 ができているかを示す．\\
 \\
 可逆チューリング機械，可逆チューリング機械の計算ステップ，様相，意
-味，プログラミング言語\texttt{R-WHILE}または\texttt{R-WHILE}の書き換えの規則の定義はすでに本稿のなかで定義されたもの
-<<<<<<< HEAD
-を用いる．また，任意の様相$\sigma$ = $(q,(l,s,r))$，$\sigma'$ =
+味，プログラミング言語\texttt{R-WHILE}または\texttt{R-WHILE}の書き換えの
+規則の定義はすでに本稿のなかで定義されたものを用いる．
+また，任意の様相$\sigma$ = $(q,(l,s,r))$，$\sigma'$ =
 $(q'(l',s',r'))$をそれぞれ，$\overline{(q,(l,s,r))}$ = \{\texttt{Q} $\mapsto$
 {$\overline{q}$}, \texttt{T} $\mapsto$ ($\overline{l}$ $\overline{s}$
 $\overline{r}$)\}， $\overline{(q',(l',s',r')a)}$ = \{\texttt{Q}
@@ -517,31 +513,6 @@ $\mapsto$ {$\overline{q'}$}, \texttt{T} $\mapsto$
 \begin{lemma}
 \label{lemma:1}
 任意の様相$\sigma$，$\sigma'$に対して，
-=======
-を用いる．\\
-\texttt{R-WHILE}の$\mathbb{D}$を可逆チューリング機械の$\Sigma^*$へと変換す
-る変換器を\texttt{R2T}とし，以下の様に定義する．\\
-\texttt{R2T} : $\mathbb{D}$ → $\Sigma^*$ \\
-\texttt{R2T}\jump{\texttt{nil}} = 0\\
-\texttt{R2T}\jump{(\mathtt{d_1,d_2})} = 1
-\texttt{R2T}\jump{\mathtt{d_1}}・\texttt{R2T}\jump{\mathtt{d_2}}\\
-また，\texttt{R2T}の逆である$\Sigma^*$を$\mathbb{D}$へ変換する変換機を
-\texttt{T2R}とする．\\
-\textbf{定理 1}
-任意の可逆チューリング機械T，任意の$x$に対して
-\vspace{-2mm}
-\begin{center}
-   \jump{T}$x$ =
- \texttt{R2T}\jump{\jump{\mathcal{T}\jump{T}}(T2R\jump{x})}
-\end{center}
-\vspace{-2mm}
-である．
-\textbf{定理 1}を証明するにあたって\textbf{補題 1}と\textbf{補題
- 2}を与える．ここでは変換器$\mathcal{T}$によって変換されたものを
- $\overline{・}$を利用して記述する．\\
-\textbf{補題 １}任意の様相$\sigma$ = $(q,(l.s.r))$，$\sigma'$ =
-$(q'(l',s',r'))$に対して，
->>>>>>> 75e4a7a2a908201f3efb4fe34e365edc1f5df8ca
 \vspace{-2mm}
 \begin{center}
 $\sigma$ $\xRightarrow[T]{}$ $\sigma'$
