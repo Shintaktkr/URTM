@@ -7,7 +7,7 @@
 \section{\texttt{R-WHILE}について}
 ここでは\texttt{R-WHILE}\cite{7}について説明する．\\
 　\texttt{R-WHILE}は，Jonesの言語\texttt{WHILE}を可逆化したものである．
-\texttt{R-WHILE}は非可逆なプログラムを記述することがでない．そのため単射
+\texttt{R-WHILE}は非可逆なプログラムを記述することができない．そのため単射
 関数しか表すことはできない．この言語の特徴は木構造のデータを表現できるこ
 とである．それにより単純な方法で身近なデータ構造をモデリングが可能である，
 このことは，既存の可逆命令言語\texttt{Janus}では難しいことである．
@@ -88,13 +88,13 @@ until F}である．繰り返し文はテスト\texttt{E}をもち，条件
 行後のテスト\texttt{F}が真であれば繰り返しは続行される．もし\texttt{F}
 が偽であった場合, 命令\texttt{D}が実行される．また，アサーション
 \texttt{E}は偽でなくてはならない（図\ref{fig:if}の\texttt{f}）．\\
-　私たちは
+　我々は
 \texttt{($\mathtt{d_1}$.($\mathtt{d_2}$.(・・・.($\mathtt{d_n}$.nil)・・
 ・)))}を
 リスト\texttt{($\mathtt{d_1d_2}$・・・$\mathtt{d_n}$)}と書き，
 \texttt{($\mathtt{d_1}$.($\mathtt{d_2}$.(・・・.($\mathtt{d_{n-1}}$.$\mathtt{d_n}$)・・・)))}を
 不適切なリスト\texttt{($\mathtt{d_1}$・・・$\mathtt{d_{n-1}d_n}$)}と書く．\\
-　リストと似た表記として，私たちは\texttt{($\mathtt{Q_1}$.($\mathtt{Q_2}$.(・・・.($\mathtt{Q_n}$.nil)・・・)))}を
+　リストと似た表記として，我々は\texttt{($\mathtt{Q_1}$.($\mathtt{Q_2}$.(・・・.($\mathtt{Q_n}$.nil)・・・)))}を
 リスト\texttt{($\mathtt{Q_1Q_2}$・・・$\mathtt{Q_n}$)}と書き，
 \texttt{($\mathtt{Q_1}$.($\mathtt{Q_2}$.(・・・.($\mathtt{Q_{n-1}}$.$\mathtt{Q_n}$)・・・)))}を
 不適切なリスト\texttt{($\mathtt{Q_1}$・・・$\mathtt{Q_{n-1}Q_n}$)}と書く．\\
@@ -225,16 +225,16 @@ $\sigma'$ \ \ \ {\rm if} $\mathcal{E}\jump{\texttt{E}}\sigma$ =
 $Var$(\texttt{P})，$Var$(\texttt{E})と示される．ブール値は明確な二つの
 要素（\texttt{false,true} $\in \mathbb{D}$)によって示される．未定義の値は$\bot$
 によって示される．そして，組$X$または$\{\bot\}$は$X_{\bot}$によって示さ
-れる．私たちは値の範囲として$\mathbb{D}_{\bot}$を用いる．\\
+れる．我々は値の範囲として$\mathbb{D}_{\bot}$を用いる．\\
 　プログラム\texttt{P}のための状態$\sigma$は$Var$(\texttt{P})から
 $\mathbb{D}_{\bot}$への関数である．\texttt{P}のためのすべての状態の組は
 $\mathtt{Stores^P}$によって示される．状態$\sigma\backslash$\texttt{X}は変
 数\texttt{X}を$\bot$に写すことを除けば$\sigma$と同一である．状態
 $\sigma\uplus\sigma'$は状態$\sigma$と$\sigma'$の束縛するものの非交和であり，
-それらは共通の変数をもたない．未定義の状態すなわち，どのような変数の対し
-ても$\bot$をかえすものは$\bot$とも書かれる．\\
+それらは共通の変数をもたない．未定義の状態すなわち，どのような変数に対し
+ても$\bot$を返すものは$\bot$とも書くことができる．\\
 　状態$\mathtt{\sigma^P_X}$は変数\texttt{X}を$D$に束縛する．また，
-$Var$(\texttt{P})=\{\texttt{X,$\mathtt{Y_1}$,...,$\mathtt{Y_n}$}\}内の
+$Var$(\texttt{P})=\{\texttt{X,$\mathtt{Y_1}$,...,$\mathtt{Y_n}$}\}内のそ
 の他すべての変数を\texttt{nil}に束縛する．すなわち，\\
 　$\mathtt{\sigma^P_X}$($D$) = [\texttt{X} $\mapsto D$,$\mathtt{Y_1}
 			    \mapsto \mathtt{nil}$,...,$\mathtt{Y_n}
@@ -246,7 +246,7 @@ $Var$(\texttt{P})=\{\texttt{X,$\mathtt{Y_1}$,...,$\mathtt{Y_n}$}\}内の
 \vspace{-6mm}
 \begin{flushleft}
 $\mathcal{E}$ : \texttt{Expressions} $\to$ ($\mathtt{Stores^P}
- \hookrightarrow \mathbb{D}_{\bot}$) \\
+ \hookrightarrow \mathbb{D}_{\bot}$) \\ 
 $\mathcal{Q}$ : \texttt{Patterns} $\to$ ($\mathtt{Stores^P}
  \hookrightarrow \mathbb{D}_{\bot} \times \mathtt{Stores^P_{\bot}}$) \\
 $\mathcal{C}$ : \texttt{commands} $\to$ ($\mathtt{Stores^P}
@@ -275,7 +275,7 @@ $\mathcal{Q}$\jump{\texttt{Q}}$\sigma$ =
 $\mathcal{Q}\jump{\texttt{Q}}^{-1}$はただ一つである．逆パターン評価
 $\mathcal{Q}\jump{\texttt{Q}}^{-1}$(\texttt{d},$\sigma$')は値と状態の組
 から\texttt{Q}のすべての変数の新しい状態をとる．またこれは，定数
-\texttt{d}の対応する部分に縛られおり，与えられるそれらの変数は状態
+\texttt{d}の対応する部分に縛られており，与えられるそれらの変数は状態
 $\sigma$において\texttt{nil}に縛られる．もし$\mathcal{Q}$が\texttt{Q}と
 $\sigma$について定義されている場合，
 $\mathcal{Q}\jump{\texttt{Q}}^{-1}$($\mathcal{Q}\jump{\texttt{Q}}\sigma$) = $\sigma$が成り
@@ -284,11 +284,11 @@ $\mathcal{Q}\jump{\texttt{Q}}^{-1}$($\mathcal{Q}\jump{\texttt{Q}}\sigma$) = $\si
 　 ここからは命令評価$\mathcal{C}$について述べる．非可逆な言語における代
  入は破壊的である．それらは左辺の変数の値を上書きする．そして，代入を
  行った後，元の値を再び構築することはできない．そのため，可逆プログラミ
- ング言語では言語では基本
- 的に用いることができない．そのかわりに，可逆代入\texttt{X \textasciicircum= E}を用い
+ ング言語では基本
+ 的に用いることができない．そのため，可逆代入\texttt{X \textasciicircum= E}を用い
  る．これは, もし\texttt{X}の値が\texttt{nil}であるとき，\texttt{X}に
- \texttt{E}の値にし，\texttt{X}の値が\texttt{E}の値と等しいとき，
- \texttt{X}の値を\texttt{nil}にするというものである．前者の場合
+ \texttt{E}の値を更新し，\texttt{X}の値が\texttt{E}の値と等しいとき，
+ \texttt{X}の値を\texttt{nil}に更新するというものである．前者の場合
  \texttt{E}は複製される．また，後者の場合\texttt{X}と\texttt{E}の等しさ
  が主張される．
  以下で，更新演算子$\odot$を定義することによって意味論を正式なものにする．
@@ -320,7 +320,7 @@ $\mathcal{C}\jump{\texttt{X \textasciicircum=
 は直和$\sigma\uplus$[\texttt{X $\mapsto$ d}]であることから導かれる．それ
 ゆえ，もし\texttt{E}に\texttt{X}が現れた場合，代入は定義されない．そうで
 ない場合，無効な代入\texttt{X \textasciicircum= X}は\texttt{X}がどのよう
-な値であっても\texttt{X}に\texttt{nil}をセットする．そして，
+な値であっても\texttt{X}が\texttt{nil}に更新される．そのため，
 $\mathcal{C}$\jump{\texttt{X \textasciicircum= X}}は単射ではなくなってし
 まう．\\
 　可逆置換\texttt{Q <= R}は\texttt{Q}と\texttt{R}の両辺を置き換える
@@ -352,7 +352,7 @@ $\mathcal{E}\jump{Q}\sigma''$のような\texttt{d}の一部に束縛される．\\
 場合，繰り返しは終了する．もし\texttt{F}が\texttt{false}であった場合，命
 令\texttt{D}が実行される．そして，アサーション\texttt{E}は\texttt{false}
 でなくてはならない（図\ref{fig:loop}の\texttt{f}の部分）．もし\texttt{E}
-の値が要求される値とことなる場合，繰り返しは定義されない．
+の値が要求される値と異なる場合，繰り返しは定義されない．
 \begin{figure}[h]
 \begin{center}
 
@@ -368,7 +368,7 @@ $\mathcal{E}\jump{Q}\sigma''$のような\texttt{d}の一部に束縛される．\\
 $\mathcal{I}$が定義されている(図\ref{fig:i})．それによって反転されたプロ
 グラムを再帰的降下によって得ることができる．可逆的代入は自己逆の為変化は
 ない．可逆的置き換えは両辺を入れ替えるだけである．連続して命令を実行する
-命令の逆はそれぞれの逆命令の順序を逆にされたものである．テストとア
+命令の逆はそれぞれの逆命令の順序を逆にしたものである．テストとア
 サーションは制御フロー演算子ではそれぞれの役割を交代する．そして，プログ
 ラムは入力と出力の変数と入れ替え，プログラムの本体を逆変換することで逆変
 換されたプログラムを求めることができる．\\
@@ -382,7 +382,7 @@ $\mathcal{I}$ \jump{\texttt{reverse}}は\texttt{X}と\texttt{Y}の位置が入
 　プログラム\texttt{P}は二回逆変換を行うことで元のプログラムが求められる
 （\texttt{P} = $\mathcal{I}\jump{\mathcal{I\jump{\texttt{P}}}}$）．
 \subsection{糖類構文としての書き換え規則}
-プログラムは糖類構文としての可逆版の書き換え規則をもちいることで読みやす
+プログラムは糖類構文としての可逆版の書き換え規則を用いることで読みやす
 くなる．糖類構文によって，複数の変数
 \texttt{[$\mathtt{X_1}$,...,$\mathtt{X_n}$]}は複数の規則
 \texttt{$\mathtt{Rule_1}$...$\mathtt{Rule_n}$}によって書き換えられる．
@@ -391,12 +391,18 @@ $\mathcal{I}$ \jump{\texttt{reverse}}は\texttt{X}と\texttt{Y}の位置が入
  \texttt{[$\mathtt{E_1}$,...,$\mathtt{E_n}$]}または，\\
  \ \ 2.\ \texttt{[$\mathtt{Q_1}$,...,$\mathtt{Q_n}$]} $\Rightarrow$
  \texttt{C;}\\
-のいずれかである．それぞれの意味は次のようである．もし
+のいずれかである．それぞれの意味は次のようになっている．もし
 $\mathtt{X_1}$,...,$\mathtt{X_n}$の値が連続して試される規則
 $\mathtt{Rule_j}$のパターン$\mathtt{Q_1}$,...,$\mathtt{Q_n}$
+<<<<<<< HEAD
 に一致した場合，$\mathtt{Q_i}$は束縛される．次に$\mathtt{Rule_j}$の形式に応じて，
 $\mathtt{X_1}$,...,$\mathtt{X_n}$が$\mathtt{E_1}$,...,$\mathtt{E_n}$に束
 縛されるか，命令\texttt{C}が実行され，$\mathtt{X_i}$も更新される．変数が同
+=======
+に一致した場合，$\mathtt{Q_i}$は縛られる．次に$\mathtt{Rule_j}$の形式に応じて，
+$\mathtt{X_1}$,...,$\mathtt{X_n}$が$\mathtt{E_1}$,...,$\mathtt{E_n}$に縛
+られ，その後，命令\texttt{C}が実行され，$\mathtt{X_i}$も更新される．変数が同
+>>>>>>> 75e4a7a2a908201f3efb4fe34e365edc1f5df8ca
 じ値と一致する場合，繰り返し変数を含むパターンが一致する．
 
 
@@ -463,8 +469,13 @@ $\mathtt{X_1}$,...,$\mathtt{X_n}$が$\mathtt{E_1}$,...,$\mathtt{E_n}$に束
 ム本体の\texttt{Q}はチューリング機械の内部状態を表している．また，
 \texttt{T}はチューリング機械のテープの状態を表している．そのため，可逆的
 代入\texttt{Q} \texttt{\string^=} \(\overline{q\sb{s}}\);によって，
+<<<<<<< HEAD
 内部状態を表す\texttt{Q}は初期状態になる．また可逆置換\texttt{T <=}
 \texttt{(nil }\(\overline{b}\) \texttt{R);}によって，ヘッドがテープにか
+=======
+内部状態を表す\texttt{Q}は初期状態になる．また可逆的置換\texttt{T <=}
+\texttt{(nil }\(\overline{b}\) \texttt{R);}によって，ヘッドがテープに書
+>>>>>>> 75e4a7a2a908201f3efb4fe34e365edc1f5df8ca
 かれている記号列の一つ左を指している状態を表している．
 そして，組\texttt{(Q,T)}はチューリング機械の様相を表している．プロ
 グラム内のループでは，チューリング機械の内部状態が初期状態から最終状態に
@@ -473,13 +484,12 @@ $\mathtt{X_1}$,...,$\mathtt{X_n}$が$\mathtt{E_1}$,...,$\mathtt{E_n}$に束
 　図\ref{fig:rtmprog:STEP}で定義されるマクロ\texttt{STEP(Q,T)}では，様相
 \texttt{(Q,T)}を書き換え規則により書き換える．$\mathcal{T}\jump{t}^*$は
 遷移規則から\texttt{R-WHILE}の書き換え規則への変換器$\mathcal{T}$（図
-\ref{fig:reg_R}）によって生成された書き換え規則の列である．変換器
-$\mathcal{T}$によって\\
+\ref{fig:reg_R}）によって生成された書き換え規則の列である．%変換器$\mathcal{T}$によって\\%
 　それぞれの書き換え規則は図\ref{fig:reg_R}の変換器$\mathcal{T}$によって
 遷移規則$t(\in \delta)$から生成される．$\overline{q}$は，状態$q$に対応す
 る\texttt{R-WHILE}のアトムである．可逆チューリング機械の遷移規則列を変換
-した場合，異なる書き換え規則は矢印\texttt{=>}の左側のパターンと右側で返
-却される値がそれぞれ重なることはない．\\ 
+した場合，%異なる書き換え規則は
+矢印\texttt{=>}の左側のパターンと右側で返却される値がそれぞれ重なることはない．\\ 
 　マクロ\texttt{MOVEL}（図\ref{fig:rtmprog:MOVEL}）はヘッドを一つ左に動かすための
 マクロである．チューリング機械のテープ$(l,s,r)$はスタック\texttt{L}と\texttt{R}
 を用いて\texttt{(L S R)}として表す．マクロ\texttt{MOVEL}はマクロ
@@ -488,7 +498,7 @@ $\mathcal{T}$によって\\
 \texttt{MOVEL}を逆変換することで得ることができる．
 　マクロ\texttt{PUSH}は，アトム\texttt{S}をスタック\texttt{STK}にプッシュ
 するためのマクロである．\texttt{S}が空白記号の場合，\texttt{S}，
-\texttt{STK}ともに\texttt{nil}をかえす．マクロ\texttt{POP}はマクロ
+\texttt{STK}ともに\texttt{nil}を返す．マクロ\texttt{POP}はマクロ
 \texttt{PUSH}を逆変換することで得ることができる．ただし，スタック
 \texttt{STK}が\texttt{nil}だった場合，マクロ\texttt{POP}は空白記号をポッ
 プする．
@@ -498,6 +508,7 @@ $\mathcal{T}$によって\\
 \\
 可逆チューリング機械，可逆チューリング機械の計算ステップ，様相，意
 味，プログラミング言語\texttt{R-WHILE}または\texttt{R-WHILE}の書き換えの規則の定義はすでに本稿のなかで定義されたもの
+<<<<<<< HEAD
 を用いる．また，任意の様相$\sigma$ = $(q,(l,s,r))$，$\sigma'$ =
 $(q'(l',s',r'))$をそれぞれ，$\overline{(q,(l,s,r))}$ = \{\texttt{Q} $\mapsto$
 {$\overline{q}$}, \texttt{T} $\mapsto$ ($\overline{l}$ $\overline{s}$
@@ -508,6 +519,31 @@ $\mapsto$ {$\overline{q'}$}, \texttt{T} $\mapsto$
 \begin{lemma}
 \label{lemma:1}
 任意の様相$\sigma$，$\sigma'$に対して，
+=======
+を用いる．\\
+\texttt{R-WHILE}の$\mathbb{D}$を可逆チューリング機械の$\Sigma^*$へと変換す
+る変換器を\texttt{R2T}とし，以下の様に定義する．\\
+\texttt{R2T} : $\mathbb{D}$ → $\Sigma^*$ \\
+\texttt{R2T}\jump{\texttt{nil}} = 0\\
+\texttt{R2T}\jump{(\mathtt{d_1,d_2})} = 1
+\texttt{R2T}\jump{\mathtt{d_1}}・\texttt{R2T}\jump{\mathtt{d_2}}\\
+また，\texttt{R2T}の逆である$\Sigma^*$を$\mathbb{D}$へ変換する変換機を
+\texttt{T2R}とする．\\
+\textbf{定理 1}
+任意の可逆チューリング機械T，任意の$x$に対して
+\vspace{-2mm}
+\begin{center}
+   \jump{T}$x$ =
+ \texttt{R2T}\jump{\jump{\mathcal{T}\jump{T}}(T2R\jump{x})}
+\end{center}
+\vspace{-2mm}
+である．
+\textbf{定理 1}を証明するにあたって\textbf{補題 1}と\textbf{補題
+ 2}を与える．ここでは変換器$\mathcal{T}$によって変換されたものを
+ $\overline{・}$を利用して記述する．\\
+\textbf{補題 １}任意の様相$\sigma$ = $(q,(l.s.r))$，$\sigma'$ =
+$(q'(l',s',r'))$に対して，
+>>>>>>> 75e4a7a2a908201f3efb4fe34e365edc1f5df8ca
 \vspace{-2mm}
 \begin{center}
 $\sigma$ $\xRightarrow[T]{}$ $\sigma'$
