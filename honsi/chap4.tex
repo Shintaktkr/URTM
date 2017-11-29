@@ -394,15 +394,9 @@ $\mathcal{I}$ \jump{\texttt{reverse}}は\texttt{X}と\texttt{Y}の位置が入
 のいずれかである．それぞれの意味は次のようになっている．もし
 $\mathtt{X_1}$,...,$\mathtt{X_n}$の値が連続して試される規則
 $\mathtt{Rule_j}$のパターン$\mathtt{Q_1}$,...,$\mathtt{Q_n}$
-<<<<<<< HEAD
 に一致した場合，$\mathtt{Q_i}$は束縛される．次に$\mathtt{Rule_j}$の形式に応じて，
 $\mathtt{X_1}$,...,$\mathtt{X_n}$が$\mathtt{E_1}$,...,$\mathtt{E_n}$に束
 縛されるか，命令\texttt{C}が実行され，$\mathtt{X_i}$も更新される．変数が同
-=======
-に一致した場合，$\mathtt{Q_i}$は縛られる．次に$\mathtt{Rule_j}$の形式に応じて，
-$\mathtt{X_1}$,...,$\mathtt{X_n}$が$\mathtt{E_1}$,...,$\mathtt{E_n}$に縛
-られ，その後，命令\texttt{C}が実行され，$\mathtt{X_i}$も更新される．変数が同
->>>>>>> 75e4a7a2a908201f3efb4fe34e365edc1f5df8ca
 じ値と一致する場合，繰り返し変数を含むパターンが一致する．
 
 
@@ -497,8 +491,9 @@ $\mathtt{X_1}$,...,$\mathtt{X_n}$が$\mathtt{E_1}$,...,$\mathtt{E_n}$に縛
 \texttt{PUSH}を逆変換することで得ることができる．ただし，スタック
 \texttt{STK}が\texttt{nil}だった場合，マクロ\texttt{POP}は空白記号をポッ
 プする．
-\section{模倣できていることの証明}
-この章では，4.2章で与えた規則が実際に可逆チューリング機械を模倣すること
+\newpage
+\section{証明}
+この節では，4.2節で与えた規則が実際に可逆チューリング機械を模倣すること
 ができているかを示す．\\
 \\
 可逆チューリング機械，可逆チューリング機械の計算ステップ，様相，意
@@ -727,8 +722,8 @@ $R2T$\jump{\mathtt{d_1}}$\cdot$ $R2T$\jump{\mathtt{d_2}}\\
 このとき，$\cdot$は連接を表す．また，$R2T$の逆である$\Sigma^*$を
 $\mathbb{D}$へ変換する変換器を$T2R$としている．\\
 
-
-\begin{figure}[t]
+\newpage
+\begin{figure}[b]
 \begin{subfigure}[t]{0.25\textwidth}
 \begin{alltt}
 read R;
@@ -779,7 +774,7 @@ rewrite [S,STK] by
 \end{subfigure}
 \caption{RTMを模倣する\texttt{R-WHILE}プログラム}\label{fig:def_T}
 \end{figure}
-\begin{figure}[t]
+\begin{figure}[b]
 \[
 \begin{array}{lcl}
 \mathcal{T} \jump{[ q_1,\langle s_1,s_2 \rangle,q_2 ]} =\\
