@@ -394,14 +394,9 @@ $\mathcal{I}$ \jump{\texttt{reverse}}は\texttt{X}と\texttt{Y}の位置が入
 のいずれかである．それぞれの意味は次のようになっている．もし
 $\mathtt{X_1}$,...,$\mathtt{X_n}$の値が連続して試される規則
 $\mathtt{Rule_j}$のパターン$\mathtt{Q_1}$,...,$\mathtt{Q_n}$
-<<<<<<< HEAD
 に一致した場合，$\mathtt{Q_i}$は束縛される．次に$\mathtt{Rule_j}$の形式に応じて，
 $\mathtt{X_1}$,...,$\mathtt{X_n}$が$\mathtt{E_1}$,...,$\mathtt{E_n}$に束
 縛されるか，命令\texttt{C}が実行され，$\mathtt{X_i}$も更新される．変数が同
-=======
-に一致した場合，$\mathtt{Q_i}$は縛られる．次に$\mathtt{Rule_j}$の形式に応じて，
-$\mathtt{X_1}$,...,$\mathtt{X_n}$が$\mathtt{E_1}$,...,$\mathtt{E_n}$に縛
-られ，その後，命令\texttt{C}が実行され，$\mathtt{X_i}$も更新される．変数が同
 じ値と一致する場合，繰り返し変数を含むパターンが一致する．
 
 
@@ -496,20 +491,82 @@ $\mathtt{X_1}$,...,$\mathtt{X_n}$が$\mathtt{E_1}$,...,$\mathtt{E_n}$に縛
 \texttt{PUSH}を逆変換することで得ることができる．ただし，スタック
 \texttt{STK}が\texttt{nil}だった場合，マクロ\texttt{POP}は空白記号をポッ
 プする．
-\section{模倣できていることの証明}
-この章では，4.2章で与えた規則が実際に可逆チューリング機械を模倣すること
-ができているかを示す．\\
-\\
-可逆チューリング機械，可逆チューリング機械の計算ステップ，様相，意
-味，プログラミング言語\texttt{R-WHILE}または\texttt{R-WHILE}の書き換えの
-規則の定義はすでに本稿のなかで定義されたものを用いる．
-また，任意の様相$\sigma$ = $(q,(l,s,r))$，$\sigma'$ =
-$(q'(l',s',r'))$をそれぞれ，$\overline{(q,(l,s,r))}$ = \{\texttt{Q} $\mapsto$
-{$\overline{q}$}, \texttt{T} $\mapsto$ ($\overline{l}$ $\overline{s}$
-$\overline{r}$)\}， $\overline{(q',(l',s',r')a)}$ = \{\texttt{Q}
-$\mapsto$ {$\overline{q'}$}, \texttt{T} $\mapsto$
-($\overline{l'}$ $\overline{s'}$ $\overline{r'}$)\}とする．変換器$\mathcal{T}$による変換$\mathcal{T}\jump{x}$を
- $\overline{x}$の様に記述している．\\
+\begin{figure}[t]
+\begin{subfigure}[t]{0.25\textwidth}
+\begin{alltt}
+read R;
+  Q \string^= \(\overline{q\sb{s}}\);
+  T <= (nil \(\overline{b}\) R);
+  from (=? Q \(\overline{q\sb{s}}\)) loop
+    STEP(Q,T)
+  until (=? Q \(\overline{q\sb{f}}\));
+  (nil \(\overline{b}\) R') <= T;
+  Q \string^= \(\overline{q\sb{f}}\);
+write R'
+\end{alltt}
+\subcaption{mainプログラム}
+\label{fig:rtmprog:main}
+\end{subfigure}%
+%
+\begin{subfigure}[t]{0.25\textwidth}
+\begin{alltt}
+macro STEP(Q,T) \(\equiv\)
+rewrite [Q,T] by
+ \(\mathcal{T}\jump{t}\sp{*}\)
+\end{alltt}
+\subcaption{マクロ\texttt{STEP}}
+\label{fig:rtmprog:STEP}
+\end{subfigure}%
+\vspace{2ex}
+\begin{subfigure}[t]{0.25\textwidth}
+\begin{alltt}
+  macro MOVEL(T) \(\equiv\)
+  (L S R) <= T;
+  PUSH(S,R);
+  POP(S,L);
+  T <= (L S R)
+\end{alltt}
+\caption{マクロ\texttt{MOVEL}}
+\label{fig:rtmprog:MOVEL}
+\end{subfigure}%
+%
+\begin{subfigure}[t]{0.29\textwidth}
+\begin{alltt}
+macro PUSH(S,STK) \(\equiv\)
+rewrite [S,STK] by
+ [\(\overline{b}\),nil]\,=>\,[nil,nil]
+ [S,STK]\,=>\,[nil,(S.STK)]
+\end{alltt}
+\caption{マクロ\texttt{PUSH}}
+\label{fig:rtmprog:PUSH}
+\end{subfigure}
+\caption{RTMを模倣する\texttt{R-WHILE}プログラム}\label{fig:def_T}
+\end{figure}
+\begin{figure}[t]
+\[
+\begin{array}{lcl}
+\mathcal{T} \jump{[ q_1,\langle s_1,s_2 \rangle,q_2 ]} =\\
+\qquad \texttt{[}\overline{q_1}\texttt{,(L}~\overline{s_1}~\texttt{R)] => [}\overline{q_2}\texttt{,(L}~\overline{s_2}~\texttt{R)]}\\
+\mathcal{T} \jump{[ q_1,\leftarrow,q_2 ]} =\\
+\qquad \texttt{[}\overline{q_1}\texttt{,T] => \char`\{MOVEL(T); Q \string^=}\, \overline{q_1}\texttt{; } \texttt{Q \string^=}\, \overline{q_2}\texttt{\char`\}}\\
+\mathcal{T} \jump{[ q_1,\rightarrow,q_2 ]} =\\
+\qquad \texttt{[}\overline{q_1}\texttt{,T] => \char`\{MOVER(T); Q \string^=}\, \overline{q_1}\texttt{; } \texttt{Q \string^=}\, \overline{q_2}\texttt{\char`\}}\\
+\mathcal{T} \jump{[ q_1,\downarrow,q_2 ]} = \texttt{[}\overline{q_1},\texttt{T] => [}\overline{q_2},\texttt{T]}
+\end{array}
+\]
+\caption{遷移規則から\texttt{R-WHILE}の書き換え規則への変換器$\mathcal{T}$}\label{fig:reg_R}
+\end{figure}
+\newpage
+\section{証明}
+
+この節では，4.2節で与えた遷移規則から\texttt{R-WHILE}の書き変え規則への
+変換が正しいことを示す．\\
+ここでは，$\mathcal{T}\jump{(q,(l,s,r))}$ = \{\texttt{Q} $\mapsto${$\overline{q}$},
+\texttt{T} $\mapsto$ \texttt{(}$\overline{l}$ $\overline{s}$ $\overline{r}$\texttt{)}\}と
+する．また，$\mathcal{T}\jump{x}$を$\overline{x}$の様に記述している．\\
+　まず\textbf{補題 1}では，可逆チューリング機械の様相の遷移に命令マクロ
+\texttt{STEP(Q.T)}を実行することによる状態の変化が対応していることを示す．
+任意の変数$y$を書き換えたものを$y'$と記す．
 \begin{lemma}
 \label{lemma:1}
 任意の様相$\sigma$，$\sigma'$に対して，
@@ -521,7 +578,7 @@ $\sigma$ $\xRightarrow[T]{}$ $\sigma'$
 のとき，
 \vspace{-2mm}
 \begin{center}
-$\mathcal{C}$\jump{\texttt{STEP(Q,T)}}$(\overline{\sigma})$ = $\overline{\sigma'}$
+$\mathcal{C}$\jump{\texttt{STEP(Q.T)}}$(\overline{\sigma})$ = $\overline{\sigma'}$
 \end{center}
 \vspace{-2mm}
 が成り立つ．\
@@ -560,10 +617,13 @@ $\mathcal{C}$\jump{\texttt{STEP(Q,T)}}$(\overline{\sigma})$ = $\overline{\sigma'
 %いる．\\
 \begin{proof}
 可逆チューリング機械における4パター
-ンの遷移規則において，\textbf{補題 1}が成り立つことを示す．
-\texttt{R-WHILE}で表記するにあたって，$\overline{l}$を\texttt{L}，$\overline{s}$
-を\texttt{S}または$\overline{r}$を\texttt{R}とする．\\
-\\
+ンの遷移規則において，\textbf{補題 1}が成り立つことを示す．\\
+　マクロ\texttt{STEP(Q.T)}は図\ref{fig:rtmprog:STEP}で定義し
+ たように，可逆チューリング機械の遷移規則に応じて\texttt{[Q.T]}が書き換
+ える．なお，可逆チューリング機械は局所的に前方決定的かつ局所的に後
+ 方決定的であるという性質をもつため，どの状態においても遷移規則はただ一
+ つに定まる．そのため，マクロ\texttt{STEP(Q.T)}の書き変え規則もただ一つ
+ に定まる．\\
 (i)遷移規則が$[q,\langle s,s' \rangle ,q']$の場合\\
 可逆チューリング機械の様相の遷移は\\
 \vspace{-2mm}
@@ -574,19 +634,28 @@ $(q,(l,s,r))$ $\xRightarrow[T]{}$ $(q',(l,s',r))$
 の様になる．一方\texttt{R-WHILE}では，
 \vspace{-2mm}
 \begin{center}
-$\overline{[q,\langle s,s'\rangle ,q']}$ =
- \texttt{[}$\overline{q}$\texttt{,(L S R)]} \texttt{=>}
- \texttt{[}$\overline{q'}$\texttt{,(L S' R)]}
+ $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(l,s,r))}$)
 \end{center}
 \vspace{-2mm}
-によって
+が実行される．適用される規則は
 \vspace{-2mm}
 \begin{center}
-\texttt{[}$\overline{q}$\texttt{,(L S R)]} \texttt{=>} \texttt{[}$\overline{q'}$\texttt{,(L S' R)]}
+ \texttt{[}$\overline{q}$\texttt{,(L $\overline{s}$  R)]} \texttt{=>}
+ \texttt{[}$\overline{q'}$\texttt{,(L $\overline{s'}$ R)]}
 \end{center}
 \vspace{-2mm}
-となり，$\overline{q'}$と$q'$，\texttt{L}と$l$，\texttt{S'}と$s'$そして
- \texttt{R}と$r$のそれぞれの意味が組ごとで対応している．\\
+である（このとき\texttt{L}と\texttt{R}は\texttt{Q}と\texttt{T}とは異
+ なる全称記号であり，任意の記号列を表している）．この書き換え規則により，
+ $\overline{q}$は$\overline{q'}$へ束縛する．また$\overline{s}$を
+ $\overline{s'}$へ束縛する． 状態
+ $\overline{(q,(l,s,r))}$は状態$\overline{(q',(l,s',r))}$となり，
+\vspace{-2mm}
+\begin{center}
+ $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(l,s,r))}$) = $\overline{(q',(l,s',r))}$
+\end{center}
+\vspace{-2mm}
+である．よって遷移規則が$[q,\langle s,s' \rangle ,q']$の場合，\textbf{補
+ 題 1}は成り立つ．\\
 (ii)遷移規則が$[q,\leftarrow,q']$の場合\\
 可逆チューリング機械の様相の遷移は\\
 \vspace{-2mm}
@@ -594,15 +663,20 @@ $\overline{[q,\langle s,s'\rangle ,q']}$ =
 $(q,(ls',s,r))$ $\xRightarrow[T]{}$ $(q',(l,s',sr))$
 \end{center}
 \vspace{-2mm}
-の様になる．一方\texttt{R-WHILE}では，
+の様になる．一方\texttt{R-WHILE}では(i)と同様に，
 \vspace{-2mm}
 \begin{center}
-$\overline{[q,\leftarrow,q']}$ =
+ $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(l,s,r))}$)
+\end{center}
+\vspace{-2mm}
+が実行される．適用される規則は
+\vspace{-2mm}
+\begin{center}
  \texttt{[}$\overline{q}$\texttt{,T] => \{MOVEL(T); Q
  \textasciicircum=}$\overline{q}$\texttt{; Q \textasciicircum=}$\overline{q'}$\}
 \end{center}
 \vspace{-2mm}
-によって
+である．
 \vspace{-2mm}
 \begin{center}
 \texttt{[}$\overline{q}$\texttt{,(LS' S R)]} \texttt{=>} \texttt{[}$\overline{q'}$\texttt{,(L S' SR)]}
@@ -726,69 +800,5 @@ $R2T$\jump{\mathtt{d_1}}$\cdot$ $R2T$\jump{\mathtt{d_2}}\\
 このとき，$\cdot$は連接を表す．また，$R2T$の逆である$\Sigma^*$を
 $\mathbb{D}$へ変換する変換器を$T2R$としている．\\
 
+\newpage
 
-\begin{figure}[t]
-\begin{subfigure}[t]{0.25\textwidth}
-\begin{alltt}
-read R;
-  Q \string^= \(\overline{q\sb{s}}\);
-  T <= (nil \(\overline{b}\) R);
-  from (=? Q \(\overline{q\sb{s}}\)) loop
-    STEP(Q,T)
-  until (=? Q \(\overline{q\sb{f}}\));
-  (nil \(\overline{b}\) R') <= T;
-  Q \string^= \(\overline{q\sb{f}}\);
-write R'
-\end{alltt}
-\subcaption{mainプログラム}
-\label{fig:rtmprog:main}
-\end{subfigure}%
-%
-\begin{subfigure}[t]{0.25\textwidth}
-\begin{alltt}
-macro STEP(Q,T) \(\equiv\)
-rewrite [Q,T] by
- \(\mathcal{T}\jump{t}\sp{*}\)
-\end{alltt}
-\subcaption{マクロ\texttt{STEP}}
-\label{fig:rtmprog:STEP}
-\end{subfigure}%
-\vspace{2ex}
-\begin{subfigure}[t]{0.25\textwidth}
-\begin{alltt}
-  macro MOVEL(T) \(\equiv\)
-  (L S R) <= T;
-  PUSH(S,R);
-  POP(S,L);
-  T <= (L S R)
-\end{alltt}
-\caption{マクロ\texttt{MOVEL}}
-\label{fig:rtmprog:MOVEL}
-\end{subfigure}%
-%
-\begin{subfigure}[t]{0.29\textwidth}
-\begin{alltt}
-macro PUSH(S,STK) \(\equiv\)
-rewrite [S,STK] by
- [\(\overline{b}\),nil]\,=>\,[nil,nil]
- [S,STK]\,=>\,[nil,(S.STK)]
-\end{alltt}
-\caption{マクロ\texttt{PUSH}}
-\label{fig:rtmprog:PUSH}
-\end{subfigure}
-\caption{RTMを模倣する\texttt{R-WHILE}プログラム}\label{fig:def_T}
-\end{figure}
-\begin{figure}[t]
-\[
-\begin{array}{lcl}
-\mathcal{T} \jump{[ q_1,\langle s_1,s_2 \rangle,q_2 ]} =\\
-\qquad \texttt{[}\overline{q_1}\texttt{,(L}~\overline{s_1}~\texttt{R)] => [}\overline{q_2}\texttt{,(L}~\overline{s_2}~\texttt{R)]}\\
-\mathcal{T} \jump{[ q_1,\leftarrow,q_2 ]} =\\
-\qquad \texttt{[}\overline{q_1}\texttt{,T] => \char`\{MOVEL(T); Q \string^=}\, \overline{q_1}\texttt{; } \texttt{Q \string^=}\, \overline{q_2}\texttt{\char`\}}\\
-\mathcal{T} \jump{[ q_1,\rightarrow,q_2 ]} =\\
-\qquad \texttt{[}\overline{q_1}\texttt{,T] => \char`\{MOVER(T); Q \string^=}\, \overline{q_1}\texttt{; } \texttt{Q \string^=}\, \overline{q_2}\texttt{\char`\}}\\
-\mathcal{T} \jump{[ q_1,\downarrow,q_2 ]} = \texttt{[}\overline{q_1},\texttt{T] => [}\overline{q_2},\texttt{T]}
-\end{array}
-\]
-\caption{遷移規則から\texttt{R-WHILE}の書き換え規則への変換器$\mathcal{T}$}\label{fig:reg_R}
-\end{figure}
