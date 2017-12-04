@@ -491,8 +491,74 @@ $\mathtt{X_1}$,...,$\mathtt{X_n}$が$\mathtt{E_1}$,...,$\mathtt{E_n}$に束
 \texttt{PUSH}を逆変換することで得ることができる．ただし，スタック
 \texttt{STK}が\texttt{nil}だった場合，マクロ\texttt{POP}は空白記号をポッ
 プする．
+\begin{figure}[t]
+\begin{subfigure}[t]{0.25\textwidth}
+\begin{alltt}
+read R;
+  Q \string^= \(\overline{q\sb{s}}\);
+  T <= (nil \(\overline{b}\) R);
+  from (=? Q \(\overline{q\sb{s}}\)) loop
+    STEP(Q,T)
+  until (=? Q \(\overline{q\sb{f}}\));
+  (nil \(\overline{b}\) R') <= T;
+  Q \string^= \(\overline{q\sb{f}}\);
+write R'
+\end{alltt}
+\subcaption{mainプログラム}
+\label{fig:rtmprog:main}
+\end{subfigure}%
+%
+\begin{subfigure}[t]{0.25\textwidth}
+\begin{alltt}
+macro STEP(Q,T) \(\equiv\)
+rewrite [Q,T] by
+ \(\mathcal{T}\jump{t}\sp{*}\)
+\end{alltt}
+\subcaption{マクロ\texttt{STEP}}
+\label{fig:rtmprog:STEP}
+\end{subfigure}%
+\vspace{2ex}
+\begin{subfigure}[t]{0.25\textwidth}
+\begin{alltt}
+  macro MOVEL(T) \(\equiv\)
+  (L S R) <= T;
+  PUSH(S,R);
+  POP(S,L);
+  T <= (L S R)
+\end{alltt}
+\caption{マクロ\texttt{MOVEL}}
+\label{fig:rtmprog:MOVEL}
+\end{subfigure}%
+%
+\begin{subfigure}[t]{0.29\textwidth}
+\begin{alltt}
+macro PUSH(S,STK) \(\equiv\)
+rewrite [S,STK] by
+ [\(\overline{b}\),nil]\,=>\,[nil,nil]
+ [S,STK]\,=>\,[nil,(S.STK)]
+\end{alltt}
+\caption{マクロ\texttt{PUSH}}
+\label{fig:rtmprog:PUSH}
+\end{subfigure}
+\caption{RTMを模倣する\texttt{R-WHILE}プログラム}\label{fig:def_T}
+\end{figure}
+\begin{figure}[t]
+\[
+\begin{array}{lcl}
+\mathcal{T} \jump{[ q_1,\langle s_1,s_2 \rangle,q_2 ]} =\\
+\qquad \texttt{[}\overline{q_1}\texttt{,(L}~\overline{s_1}~\texttt{R)] => [}\overline{q_2}\texttt{,(L}~\overline{s_2}~\texttt{R)]}\\
+\mathcal{T} \jump{[ q_1,\leftarrow,q_2 ]} =\\
+\qquad \texttt{[}\overline{q_1}\texttt{,T] => \char`\{MOVEL(T); Q \string^=}\, \overline{q_1}\texttt{; } \texttt{Q \string^=}\, \overline{q_2}\texttt{\char`\}}\\
+\mathcal{T} \jump{[ q_1,\rightarrow,q_2 ]} =\\
+\qquad \texttt{[}\overline{q_1}\texttt{,T] => \char`\{MOVER(T); Q \string^=}\, \overline{q_1}\texttt{; } \texttt{Q \string^=}\, \overline{q_2}\texttt{\char`\}}\\
+\mathcal{T} \jump{[ q_1,\downarrow,q_2 ]} = \texttt{[}\overline{q_1},\texttt{T] => [}\overline{q_2},\texttt{T]}
+\end{array}
+\]
+\caption{遷移規則から\texttt{R-WHILE}の書き換え規則への変換器$\mathcal{T}$}\label{fig:reg_R}
+\end{figure}
 \newpage
 \section{証明}
+
 この節では，4.2節で与えた遷移規則から\texttt{R-WHILE}の書き変え規則への
 変換が正しいことを示す．\\
 ここでは，$\mathcal{T}\jump{(q,(l,s,r))}$ = \{\texttt{Q} $\mapsto${$\overline{q}$},
@@ -597,15 +663,20 @@ $(q,(l,s,r))$ $\xRightarrow[T]{}$ $(q',(l,s',r))$
 $(q,(ls',s,r))$ $\xRightarrow[T]{}$ $(q',(l,s',sr))$
 \end{center}
 \vspace{-2mm}
-の様になる．一方\texttt{R-WHILE}では，
+の様になる．一方\texttt{R-WHILE}では(i)と同様に，
 \vspace{-2mm}
 \begin{center}
-$\overline{[q,\leftarrow,q']}$ =
+ $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(l,s,r))}$)
+\end{center}
+\vspace{-2mm}
+が実行される．適用される規則は
+\vspace{-2mm}
+\begin{center}
  \texttt{[}$\overline{q}$\texttt{,T] => \{MOVEL(T); Q
  \textasciicircum=}$\overline{q}$\texttt{; Q \textasciicircum=}$\overline{q'}$\}
 \end{center}
 \vspace{-2mm}
-によって
+である．
 \vspace{-2mm}
 \begin{center}
 \texttt{[}$\overline{q}$\texttt{,(LS' S R)]} \texttt{=>} \texttt{[}$\overline{q'}$\texttt{,(L S' SR)]}
@@ -730,68 +801,4 @@ $R2T$\jump{\mathtt{d_1}}$\cdot$ $R2T$\jump{\mathtt{d_2}}\\
 $\mathbb{D}$へ変換する変換器を$T2R$としている．\\
 
 \newpage
-\begin{figure}[b]
-\begin{subfigure}[t]{0.25\textwidth}
-\begin{alltt}
-read R;
-  Q \string^= \(\overline{q\sb{s}}\);
-  T <= (nil \(\overline{b}\) R);
-  from (=? Q \(\overline{q\sb{s}}\)) loop
-    STEP(Q,T)
-  until (=? Q \(\overline{q\sb{f}}\));
-  (nil \(\overline{b}\) R') <= T;
-  Q \string^= \(\overline{q\sb{f}}\);
-write R'
-\end{alltt}
-\subcaption{mainプログラム}
-\label{fig:rtmprog:main}
-\end{subfigure}%
-%
-\begin{subfigure}[t]{0.25\textwidth}
-\begin{alltt}
-macro STEP(Q,T) \(\equiv\)
-rewrite [Q,T] by
- \(\mathcal{T}\jump{t}\sp{*}\)
-\end{alltt}
-\subcaption{マクロ\texttt{STEP}}
-\label{fig:rtmprog:STEP}
-\end{subfigure}%
-\vspace{2ex}
-\begin{subfigure}[t]{0.25\textwidth}
-\begin{alltt}
-  macro MOVEL(T) \(\equiv\)
-  (L S R) <= T;
-  PUSH(S,R);
-  POP(S,L);
-  T <= (L S R)
-\end{alltt}
-\caption{マクロ\texttt{MOVEL}}
-\label{fig:rtmprog:MOVEL}
-\end{subfigure}%
-%
-\begin{subfigure}[t]{0.29\textwidth}
-\begin{alltt}
-macro PUSH(S,STK) \(\equiv\)
-rewrite [S,STK] by
- [\(\overline{b}\),nil]\,=>\,[nil,nil]
- [S,STK]\,=>\,[nil,(S.STK)]
-\end{alltt}
-\caption{マクロ\texttt{PUSH}}
-\label{fig:rtmprog:PUSH}
-\end{subfigure}
-\caption{RTMを模倣する\texttt{R-WHILE}プログラム}\label{fig:def_T}
-\end{figure}
-\begin{figure}[b]
-\[
-\begin{array}{lcl}
-\mathcal{T} \jump{[ q_1,\langle s_1,s_2 \rangle,q_2 ]} =\\
-\qquad \texttt{[}\overline{q_1}\texttt{,(L}~\overline{s_1}~\texttt{R)] => [}\overline{q_2}\texttt{,(L}~\overline{s_2}~\texttt{R)]}\\
-\mathcal{T} \jump{[ q_1,\leftarrow,q_2 ]} =\\
-\qquad \texttt{[}\overline{q_1}\texttt{,T] => \char`\{MOVEL(T); Q \string^=}\, \overline{q_1}\texttt{; } \texttt{Q \string^=}\, \overline{q_2}\texttt{\char`\}}\\
-\mathcal{T} \jump{[ q_1,\rightarrow,q_2 ]} =\\
-\qquad \texttt{[}\overline{q_1}\texttt{,T] => \char`\{MOVER(T); Q \string^=}\, \overline{q_1}\texttt{; } \texttt{Q \string^=}\, \overline{q_2}\texttt{\char`\}}\\
-\mathcal{T} \jump{[ q_1,\downarrow,q_2 ]} = \texttt{[}\overline{q_1},\texttt{T] => [}\overline{q_2},\texttt{T]}
-\end{array}
-\]
-\caption{遷移規則から\texttt{R-WHILE}の書き換え規則への変換器$\mathcal{T}$}\label{fig:reg_R}
-\end{figure}
+
