@@ -45,7 +45,7 @@
 む（$\mathtt{d_1,d_2} \in \mathbb{D}$）最小の集合である．$Var$は変数名の無限集合で
 ある．本稿では$\mathtt{d,e,f,...} \in \mathbb{D}$とする．また，\texttt{X,Y,Z,}$... \in$
 $Vars$とする．\\
-　式は変数\texttt{X}，定数\texttt{d}，または複数の演算子からなる(先頭と
+　式は変数\texttt{X}，定数\texttt{d}，または複数の演算子(先頭と
 それ以降を表す\texttt{hd}と\texttt{tail}，組を表す\texttt{cons}また等
 号を表す\texttt{=?}）からなる．パターンは式の部分集合であり，変数
 \texttt{X}，定数\texttt{d}またはパターンのペアを表す\texttt{cons Q R}からなる．
@@ -231,8 +231,8 @@ $\mathbb{D}_{\bot}$への関数である．\texttt{P}のためのすべての状態の組は
 $\mathtt{Stores^P}$によって示される．状態$\sigma\backslash$\texttt{X}は変
 数\texttt{X}を$\bot$に写すことを除けば$\sigma$と同一である．状態
 $\sigma\uplus\sigma'$は状態$\sigma$と$\sigma'$の束縛するものの非交和であり，
-それらは共通の変数をもたない．%なにが？
-未定義の状態であり，どのような変数に対し
+それらは共通の変数をもたない．
+未定義の状態である，どのような変数に対し
 ても$\bot$を返すものは$\bot$とも書くことができる．\\
 　状態$\mathtt{\sigma^P_X}$は変数\texttt{X}を$D$に束縛する．また，
 $Var$(\texttt{P})=\{\texttt{X,$\mathtt{Y_1}$,...,$\mathtt{Y_n}$}\}内のそ
@@ -477,7 +477,7 @@ $\mathtt{X_1}$,...,$\mathtt{X_n}$が$\mathtt{E_1}$,...,$\mathtt{E_n}$に束
 　それぞれの書き換え規則は図\ref{fig:reg_R}の変換器$\mathcal{T}$によって
 遷移規則$t(\in \delta)$から生成される．$\overline{q}$は，状態$q$に対応す
 る\texttt{R-WHILE}のアトムである．可逆チューリング機械の遷移規則列を変換
-した場合，%異なる書き換え規則は
+した場合，異なる書き換え規則である
 矢印\texttt{=>}の左側のパターンと右側で返却される値がそれぞれ重なることはない．\\ 
 　マクロ\texttt{MOVEL}（図\ref{fig:rtmprog:MOVEL}）はヘッドを一つ左に動かすための
 マクロである．チューリング機械のテープ$(l,s,r)$はスタック\texttt{L}と\texttt{R}
