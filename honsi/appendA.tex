@@ -1,28 +1,128 @@
-\documentclass[12pt,twoside]{jreport}
-% 卒業論文の付録に付けるプログラムリスト用LaTeXファイルの見本
-%
-% 設定したいページ番号を記入し、卒論本体とは別にコンパイルし、
-% 2ページ/枚の形式で印刷する
-\usepackage{nitSot}          % 情報通信学科 卒業論文用のスタイル
 
-\setlength{\oddsidemargin} {  0mm}	% 偶数ページから始まる場合、
-\setlength{\evensidemargin}{-10mm}	% 0と-10を交換する
-
-\begin{document}
 \setcounter{page}{9}			%この部分の最初のページ番号
 
 \appendix
 
 \setcounter{chapter}{0}                 %最初の付録→0、2番目→1、...
 \chapter{プログラムリスト}
-
-　筆者の作った唯一のプログラムを下に示す。
+\texttt{R-WHILE}によって与えられた変換規則を用いて，実際に書き換えたプ
+ログラムを以下に記す．今回模倣した可逆チューリング機械は，3.2.2小節の例で
+用いた与えられた2進数の0と1を反転させるチューリング機械である．
 
 \begin{verbatim}
-main()
-{
-  printf("Hello, world.\n");
-}
-\end{verbatim}
+macro MOVER(T)      
+   cons (cons L S) R <= T;
+    PUSH(S,L);
+    POP(S,R);
+    T <= cons (cons L S) R
 
-\end{document}
+
+macro MOVEL(T)      
+    cons (cons L S) R <= T;
+    PUSH(S,R);
+    POP(S,L);
+    T <= cons (cons L S) R
+
+
+macro PUSH(S,STK)                                              
+ if(=? S 'b) then  
+    S   ^= 'b
+  else
+    STK <= cons S STK; 
+    S  <= S
+ fi(=? STK nil)
+
+
+macro POP(S,STK)                                         
+ if(=? STK nil) then
+   S   ^= 'b
+  else
+   cons S STK <= STK; 
+   S   <= S
+ fi(=? S 'b)
+
+
+macro STEP1(Q,T) 
+ if =? Q ('q1) then
+     MOVER(T);
+     Q ^= ('q1);
+     Q ^= ('q2)
+ else
+ cons (cons L S) R <= T;
+ if =? S ('b) then
+  if =? Q ('qs) then
+    Q ^= ('qs);
+    Q ^= ('q1)
+  else 
+    Q ^= ('q2);
+    Q ^= ('q3)
+  fi =? Q ('q1)
+ else
+    if =? S ('1) then
+         Q ^= ('q2);
+         Q ^= ('q1)
+   else
+     if =? S ('0) then
+           Q ^= ('q2);
+           Q ^= ('q1)
+     fi =? S ('0)
+    fi =? S ('1)
+  fi =? S ('b);
+  T <= cons (cons L S) R
+fi =? Q ('q2)
+
+
+macro STEP2(Q,T)
+ if =? Q ('q4) then
+     MOVEL(T);
+     Q ^= ('q4);
+     Q ^= ('q5)
+ else
+ cons (cons L S) R <= T;
+ if =? S ('b) then
+  if =? Q ('q3) then
+    Q ^= ('q3);
+    Q ^= ('q4)
+  else 
+    Q ^= ('q5);
+    Q ^= ('qf)
+  fi =? Q ('q4)
+ else
+   if =? S ('1) then
+         Q ^= ('q5);
+         Q ^= ('q4);
+         S ^= ('1);
+         S ^= ('0)
+   else
+     if =? S ('0) then
+           Q ^= ('q5);
+           Q ^= ('q4);
+           S ^= ('0);
+           S ^= ('1)
+     fi =? S ('1)
+    fi =? S ('0)
+  fi =? S ('b);
+  T <= cons (cons L S) R
+fi =? Q ('q5)
+
+
+read R;
+
+ Q ^= ('qs);
+  T <= cons (cons nil 'b) R;
+
+  from(=? Q ('qs)) loop
+   STEP1(Q,T)
+  until(=? Q ('q3));
+ 
+  from(=? Q ('q3)) loop
+   STEP2(Q,T)
+  until(=? Q ('qf)); 
+
+ cons (cons nil 'b) R'<= T;
+ Q ^= ('qf);
+
+write R'
+
+
+\end{verbatim}
