@@ -29,8 +29,8 @@
 プを行う命令，\texttt{loop...until}は\texttt{Y}が\texttt{nil}であると主張
 された場合，繰り返しが行われ，\texttt{X}が\texttt{nil}の場合に繰り返しが
 終了する．\texttt{loop}内の命令はテストとアサーションが偽である
-限り繰り返す．\texttt{loop}内の最初の命令(\texttt{(Z.X) <= X})では\texttt{X}の値を先頭とそれ以降の部分に分解をしている．
-２番目の命令（\texttt{Y <= (Z.X)}）では，\texttt{Z}と\texttt{Y}をペアに
+限り繰り返す．\texttt{loop}内の最初の命令(\texttt{(Z.X) <= X})では\texttt{X}の値を先頭とそれ以降の部分に分解している．
+2番目の命令（\texttt{Y <= (Z.X)}）では，\texttt{Z}と\texttt{Y}をペアに
 した値を構成している．可逆置換は右辺の元の値を左辺の変数に束縛する前に，右辺の値を
 \texttt{nil}にセットする（たとえば\texttt{Y <= (Z.Y)}が実行された後
 \texttt{Z}は\texttt{nil}である）．出力の変数である\texttt{Y}を除くすべて
@@ -83,7 +83,7 @@ until F}である．繰り返し文はテスト\texttt{E}をもち，条件
 \texttt{D}が実行され，アサーション\texttt{E}は偽でなくてはならない．
 \texttt{E}と\texttt{F}の返す値が対応していない場合，条件文は定義されない．
 可逆ループ\texttt{from E do C loop D until F }は図\ref{fig:if}の様に描くこと
-ができる．ループを行う場合，アサーション\texttt{E}は真でなくてはならな
+ができる．繰り返しを行う場合，アサーション\texttt{E}は真でなくてはならな
 い（図\ref{fig:if}の\texttt{t}）．そして，命令\texttt{C}が実行される．実
 行後のテスト\texttt{F}が真であれば繰り返しは続行される．もし\texttt{F}
 が偽であった場合, 命令\texttt{D}が実行される．また，アサーション
@@ -119,6 +119,81 @@ $\mathtt{E_{n-1}E_n}$)・・・)}として用いられる．\\
 \end{figure}
 \subsection{意味論}
 
+
+　ここでは\texttt{R-WHILE}のための表示的意味論を定義する．まず，いくつかの表記
+法を始め，図\ref{fig:sem}の４つの意味関数について説明する．\\
+　プログラム\texttt{P}の中にある変数の組と式\texttt{E}はそれぞれ
+$Var$(\texttt{P})，$Var$(\texttt{E})と示される．ブール値は明確な二つの
+要素（\texttt{false,true} $\in \mathbb{D}$)によって示される．未定義の値は$\bot$
+によって示される．そして，組$X$または$\{\bot\}$は$X_{\bot}$によって示さ
+れる．我々は値の範囲として$\mathbb{D}_{\bot}$を用いる．\\
+　プログラム\texttt{P}のための状態$\sigma$は$Var$(\texttt{P})から
+$\mathbb{D}_{\bot}$への関数である．\texttt{P}のためのすべての状態の組は
+$\mathtt{Stores^P}$によって示される．状態$\sigma\backslash$\texttt{X}は変
+数\texttt{X}を$\bot$に写すことを除けば$\sigma$と同一である．状態
+$\sigma\uplus\sigma'$は状態$\sigma$と$\sigma'$の束縛するものの非交和であり，
+それらは共通の変数をもたない．
+未定義の状態であり，どのような変数に対し
+ても$\bot$を返すものは$\bot$とも書くことができる．\\
+　状態$\mathtt{\sigma^P_X}$は変数\texttt{X}を$D$に束縛する．また，
+$Var$(\texttt{P})=\{\texttt{X,$\mathtt{Y_1}$,...,$\mathtt{Y_n}$}\}内のそ
+の他すべての変数を\texttt{nil}に束縛する．すなわち，\\
+　$\mathtt{\sigma^P_X}$($D$) = [\texttt{X} $\mapsto D$,$\mathtt{Y_1} 			    \mapsto \mathtt{nil}$,...,$\mathtt{Y_n}
+			    \mapsto \mathtt{nil}$]\\
+となる．\\
+　意味関数は以下の様に式(\texttt{Expressions})，パターン(\texttt{Patterns})，命令(\texttt{Commands})またはプログラム(\texttt{Programs})の四種類によって定義される(図
+\ref{fig:sem})．この場合，AからBへの単射の写像をA $\hookrightarrow$ Bに
+よって示す．\\
+\vspace{-6mm}
+\begin{flushleft}
+$\mathcal{E}$ : \texttt{Expressions} $\to$ ($\mathtt{Stores^P}
+ \hookrightarrow \mathbb{D}_{\bot}$) \\ 
+$\mathcal{Q}$ : \texttt{Patterns} $\to$ ($\mathtt{Stores^P}
+ \hookrightarrow \mathbb{D}_{\bot} \times \mathtt{Stores^P_{\bot}}$) \\
+$\mathcal{C}$ : \texttt{commands} $\to$ ($\mathtt{Stores^P}
+ \hookrightarrow \mathtt{Stores^P_{\bot}}$) \\
+$\mathcal{P}$ : \texttt{Programs} $\to$ ($\mathbb{D}
+ \hookrightarrow \mathbb{D}_{\bot}$) \\
+\end{flushleft}
+
+\vspace{-2mm}
+　プログラム\texttt{p}は部分関数$\mathcal{P}$\jump{\texttt{p}}を示す．本
+稿では\texttt{p}が\texttt{R-WHILE}のプログラムであることを明示するために
+$\jump{\texttt{p}}^\texttt{R-WHILE}$の様に示す．\\
+　式評価$\mathcal{E}$は状態$\sigma$の式\texttt{E}を$\mathbb{D}$の値へ評
+価する．変数\texttt{X}，定数\texttt{d}，または複数の演算子からなる(先
+頭とそれ以降を表す\texttt{hd}と\texttt{tail}，組を表す\texttt{cons}また
+等号を表す\texttt{=?})の評価は予想されるとおりである．また$\mathcal{E}$
+は$\bot$へ評価することができる．もし\texttt{E}の値が\texttt{nil}だった場
+合\texttt{hd E}と\texttt{tl E}の値は定義されないからである．\\
+　パターン評価$\mathcal{Q}$は状態$\sigma$のパターン\texttt{Q}を値と状態
+の組へ評価する．\texttt{Q}において使われるすべての変数は結果の状態で
+\texttt{nil}に束縛される．これは，結果の状態を構築するすべての値を状態から
+移動する．いくつかの$\sigma$のために
+$\mathcal{Q}$\jump{\texttt{Q}}$\sigma$ =
+($\mathcal{E}\jump{\mathtt{Q}}$,$\sigma'$)とする．任意の\texttt{Q}におい
+て，表示$\mathcal{Q}\jump{\mathtt{Q}}$は単射関数である．そのため，逆関数
+$\mathcal{Q}\jump{\texttt{Q}}^{-1}$はただ一つである．逆パターン評価
+$\mathcal{Q}\jump{\texttt{Q}}^{-1}$(\texttt{d},$\sigma$')は値と状態の組
+から\texttt{Q}のすべての変数の新しい状態をとる．またこれは，定数
+\texttt{d}の対応する部分に縛られており，与えられるそれらの変数は状態
+$\sigma$において\texttt{nil}に縛られる．もし$\mathcal{Q}$が\texttt{Q}と
+$\sigma$について定義されている場合，
+$\mathcal{Q}\jump{\texttt{Q}}^{-1}$($\mathcal{Q}\jump{\texttt{Q}}\sigma$) = $\sigma$が成り
+立つ．パターン評価とその逆は可逆置換の意味を定義するために用いられ
+る．\\
+　 ここからは命令評価$\mathcal{C}$について述べる．非可逆な言語における代
+ 入は破壊的である．それらは左辺の変数の値を上書きする．そして，代入を
+ 行った後，元の値を再び構築することはできない．そのため，可逆プログラミ
+ ング言語では基本
+ 的に用いることができない．そのため，可逆代入\texttt{X \textasciicircum= E}を用い
+ る．これは, もし\texttt{X}の値が\texttt{nil}である場合，\texttt{X}に
+ \texttt{E}の値を更新し，\texttt{X}の値が\texttt{E}の値と等しい場合，
+ \texttt{X}の値を\texttt{nil}に更新するというものである．前者の場合
+ \texttt{E}は複製される．また，後者の場合\texttt{X}と\texttt{E}の等しさ
+ が主張される．
+ 以下で，更新演算子$\odot$を定義することによって意味論を正式なものにする．
+ $\odot$は\\
 %意味論
 \begin{figure}
 \begin{subfigure}[t]{0.3\textwidth}
@@ -219,80 +294,7 @@ $\sigma'$ \ \ \ {\rm if} $\mathcal{E}\jump{\texttt{E}}\sigma$ =
 　\caption{\texttt{R-WHILE}の表示的意味}\label{fig:sem}
 
 \end{figure}
-　ここでは\texttt{R-WHILE}のための表示的意味論を定義する．まず，いくつかの表記
-法を始め，図\ref{fig:sem}の４つの意味関数について説明する．\\
-　プログラム\texttt{P}の中にある変数の組と式\texttt{E}はそれぞれ
-$Var$(\texttt{P})，$Var$(\texttt{E})と示される．ブール値は明確な二つの
-要素（\texttt{false,true} $\in \mathbb{D}$)によって示される．未定義の値は$\bot$
-によって示される．そして，組$X$または$\{\bot\}$は$X_{\bot}$によって示さ
-れる．我々は値の範囲として$\mathbb{D}_{\bot}$を用いる．\\
-　プログラム\texttt{P}のための状態$\sigma$は$Var$(\texttt{P})から
-$\mathbb{D}_{\bot}$への関数である．\texttt{P}のためのすべての状態の組は
-$\mathtt{Stores^P}$によって示される．状態$\sigma\backslash$\texttt{X}は変
-数\texttt{X}を$\bot$に写すことを除けば$\sigma$と同一である．状態
-$\sigma\uplus\sigma'$は状態$\sigma$と$\sigma'$の束縛するものの非交和であり，
-それらは共通の変数をもたない．
-未定義の状態である，どのような変数に対し
-ても$\bot$を返すものは$\bot$とも書くことができる．\\
-　状態$\mathtt{\sigma^P_X}$は変数\texttt{X}を$D$に束縛する．また，
-$Var$(\texttt{P})=\{\texttt{X,$\mathtt{Y_1}$,...,$\mathtt{Y_n}$}\}内のそ
-の他すべての変数を\texttt{nil}に束縛する．すなわち，\\
-　$\mathtt{\sigma^P_X}$($D$) = [\texttt{X} $\mapsto D$,$\mathtt{Y_1} 			    \mapsto \mathtt{nil}$,...,$\mathtt{Y_n}
-			    \mapsto \mathtt{nil}$]\\
-となる．\\
-　意味関数は以下の様に式(\texttt{Expressions})，パターン(\texttt{Patterns})，命令(\texttt{Commands})またはプログラム(\texttt{Programs})の四種類によって定義される(図
-\ref{fig:sem})．この場合，AからBへの単射の写像をA $\hookrightarrow$ Bに
-よって示す．\\
-\vspace{-6mm}
-\begin{flushleft}
-$\mathcal{E}$ : \texttt{Expressions} $\to$ ($\mathtt{Stores^P}
- \hookrightarrow \mathbb{D}_{\bot}$) \\ 
-$\mathcal{Q}$ : \texttt{Patterns} $\to$ ($\mathtt{Stores^P}
- \hookrightarrow \mathbb{D}_{\bot} \times \mathtt{Stores^P_{\bot}}$) \\
-$\mathcal{C}$ : \texttt{commands} $\to$ ($\mathtt{Stores^P}
- \hookrightarrow \mathtt{Stores^P_{\bot}}$) \\
-$\mathcal{P}$ : \texttt{Programs} $\to$ ($\mathbb{D}
- \hookrightarrow \mathbb{D}_{\bot}$) \\
-\end{flushleft}
 
-\vspace{-2mm}
-　プログラム\texttt{p}は部分関数$\mathcal{P}$\jump{\texttt{p}}を示す．本
-稿では\texttt{p}が\texttt{R-WHILE}のプログラムであることを明示するために
-$\jump{\texttt{p}}^\texttt{R-WHILE}$の様に示す．\\
-　式評価$\mathcal{E}$は状態$\sigma$の式\texttt{E}を$\mathbb{D}$の値へ評
-価する．変数\texttt{X}，定数\texttt{d}，または複数の演算子からなる(先
-頭とそれ以降を表す\texttt{hd}と\texttt{tail}，組を表す\texttt{cons}また
-等号を表す\texttt{=?})の評価は予想されるとおりである．また$\mathcal{E}$
-は$\bot$へ評価することができる．もし\texttt{E}の値が\texttt{nil}だった場
-合\texttt{hd E}と\texttt{tl E}の値は定義されないからである．\\
-　パターン評価$\mathcal{Q}$は状態$\sigma$のパターン\texttt{Q}を値と状態
-の組へ評価する．\texttt{Q}において使われるすべての変数は結果の状態で
-\texttt{nil}に縛られる．これは，結果の状態を構築するすべての値を状態から
-移動する．いくつかの$\sigma$のために
-$\mathcal{Q}$\jump{\texttt{Q}}$\sigma$ =
-($\mathcal{E}\jump{\mathtt{Q}}$,$\sigma'$)とする．任意の\texttt{Q}におい
-て，表示$\mathcal{Q}\jump{\mathtt{Q}}$は単射関数である．そのため，逆関数
-$\mathcal{Q}\jump{\texttt{Q}}^{-1}$はただ一つである．逆パターン評価
-$\mathcal{Q}\jump{\texttt{Q}}^{-1}$(\texttt{d},$\sigma$')は値と状態の組
-から\texttt{Q}のすべての変数の新しい状態をとる．またこれは，定数
-\texttt{d}の対応する部分に縛られており，与えられるそれらの変数は状態
-$\sigma$において\texttt{nil}に縛られる．もし$\mathcal{Q}$が\texttt{Q}と
-$\sigma$について定義されている場合，
-$\mathcal{Q}\jump{\texttt{Q}}^{-1}$($\mathcal{Q}\jump{\texttt{Q}}\sigma$) = $\sigma$が成り
-立つ．パターン評価とその逆は可逆置換の意味を定義するために用いられ
-る．\\
-　 ここからは命令評価$\mathcal{C}$について述べる．非可逆な言語における代
- 入は破壊的である．それらは左辺の変数の値を上書きする．そして，代入を
- 行った後，元の値を再び構築することはできない．そのため，可逆プログラミ
- ング言語では基本
- 的に用いることができない．そのため，可逆代入\texttt{X \textasciicircum= E}を用い
- る．これは, もし\texttt{X}の値が\texttt{nil}である場合，\texttt{X}に
- \texttt{E}の値を更新し，\texttt{X}の値が\texttt{E}の値と等しい場合，
- \texttt{X}の値を\texttt{nil}に更新するというものである．前者の場合
- \texttt{E}は複製される．また，後者の場合\texttt{X}と\texttt{E}の等しさ
- が主張される．
- 以下で，更新演算子$\odot$を定義することによって意味論を正式なものにする．
- $\odot$は\\
 \begin{center}
 $
 \begin{array}{lcl}
@@ -357,7 +359,7 @@ $\mathcal{E}\jump{Q}\sigma''$のような\texttt{d}の一部に束縛される．\\
 \begin{center}
 
   \includegraphics[width=10cm]{if.png}
-　　　\caption{\texttt{while loop}のフローチャート}\label{fig:if}
+　　　\caption{\texttt{while loop}のフローチャート}\label{fig:loop}
 
 \end{center}
 \end{figure}
@@ -366,8 +368,8 @@ $\mathcal{E}\jump{Q}\sigma''$のような\texttt{d}の一部に束縛される．\\
 プログラミング逆変換器は従来の言語では一般的に利用することができない．
 しかし可逆プログラミング言語である\texttt{R-WHILE}にはプログラム逆変換器
 $\mathcal{I}$が定義されている(図\ref{fig:i})．それによって反転されたプロ
-グラムを再帰的降下によって得ることができる．可逆的代入は自己逆の為変化は
-ない．可逆的置き換えは両辺を入れ替えるだけである．連続して命令を実行する
+グラムを再帰的降下によって得ることができる．可逆代入は自己逆の為変化は
+ない．可逆置換は両辺を入れ替えるだけである．連続して命令を実行する
 命令の逆はそれぞれの逆命令の順序を逆にしたものである．テストとア
 サーションは制御フロー演算子ではそれぞれの役割を交代する．そして，プログ
 ラムは入力と出力の変数と入れ替え，プログラムの本体を逆変換することで逆変
@@ -474,7 +476,7 @@ $\mathtt{X_1}$,...,$\mathtt{X_n}$が$\mathtt{E_1}$,...,$\mathtt{E_n}$に束
 \texttt{(Q,T)}を書き換え規則により書き換える．$\mathcal{T}\jump{t}^*$は
 遷移規則から\texttt{R-WHILE}の書き換え規則への変換器$\mathcal{T}$（図
 \ref{fig:reg_R}）によって生成された書き換え規則の列である．%変換器$\mathcal{T}$によって\\%
-　それぞれの書き換え規則は図\ref{fig:reg_R}の変換器$\mathcal{T}$によって
+それぞれの書き換え規則は図\ref{fig:reg_R}の変換器$\mathcal{T}$によって
 遷移規則$t(\in \delta)$から生成される．$\overline{q}$は，状態$q$に対応す
 る\texttt{R-WHILE}のアトムである．可逆チューリング機械の遷移規則列を変換
 した場合，異なる書き換え規則である
@@ -484,7 +486,7 @@ $\mathtt{X_1}$,...,$\mathtt{X_n}$が$\mathtt{E_1}$,...,$\mathtt{E_n}$に束
 を用いて\texttt{(L S R)}として表す．マクロ\texttt{MOVEL}はマクロ
 \texttt{PUSH}と\texttt{POP}を実行し変化したテープの状態を\texttt{T}に置
 き換える．ヘッドを一つ右に動かす為のマクロ\texttt{MOVER}はマクロ
-\texttt{MOVEL}を逆変換することで得ることができる．
+\texttt{MOVEL}を逆変換することで得ることができる．\\
 　マクロ\texttt{PUSH}は，アトム\texttt{S}をスタック\texttt{STK}にプッシュ
 するためのマクロである．\texttt{S}が空白記号の場合，\texttt{S}，
 \texttt{STK}ともに\texttt{nil}を返す．マクロ\texttt{POP}はマクロ
@@ -570,13 +572,10 @@ rewrite [S,STK] by
 \begin{lemma}
 \label{lemma:1}
 任意の様相$\sigma$，$\sigma'$に対して，
-\vspace{-2mm}
 \begin{center}
 $\sigma$ $\xRightarrow[T]{}$ $\sigma'$
 \end{center}
-\vspace{-2mm}
 のとき，
-\vspace{-2mm}
 \begin{center}
 $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}$(\overline{\sigma})$ = $\overline{\sigma'}$
 \end{center}
@@ -627,162 +626,120 @@ $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}$(\overline{\sigma})$ = $\overline{\sigma'
  に定まる．\\
 (i)遷移規則が$[q,\langle s,s' \rangle ,q']$の場合\\
 可逆チューリング機械の様相の遷移は\\
-\vspace{-2mm}
+
 \begin{center}
 $(q,(l,s,r))$ $\xRightarrow[T]{}$ $(q',(l,s',r))$
 \end{center}
-\vspace{-2mm}
 の様になる．一方\texttt{R-WHILE}では，
-\vspace{-2mm}
 \begin{center}
  $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(l,s,r))}$)
 \end{center}
-\vspace{-2mm}
 が実行される．適用される規則は
-\vspace{-2mm}
 \begin{center}
  \texttt{[}$\overline{q}$\texttt{,(L $\overline{s}$  R)]} \texttt{=>}
  \texttt{[}$\overline{q'}$\texttt{,(L $\overline{s'}$ R)]}
 \end{center}
-\vspace{-2mm}
 である（このとき\texttt{L}，\texttt{R}，\texttt{Q}そして\texttt{T}は互い
  に異なる変数を表す）．この書き換え規則により，
  $\overline{q}$は$\overline{q'}$へ束縛する．また$\overline{s}$を
  $\overline{s'}$へ束縛する． 状態
  $\overline{(q,(l,s,r))}$は状態$\overline{(q',(l,s',r))}$となり，
-\vspace{-2mm}
 \begin{center}
  $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(l,s,r))}$) = $\overline{(q',(l,s',r))}$
 \end{center}
-\vspace{-2mm}
 である．よって遷移規則が$[q,\langle s,s' \rangle ,q']$の場合，\textbf{補
  題 1}は成り立つ．\\
 (ii)遷移規則が$[q,\leftarrow,q']$の場合\\
 可逆チューリング機械の様相の遷移は\\
-\vspace{-2mm}
 \begin{center}
 $(q,(ls',s,r))$ $\xRightarrow[T]{}$ $(q',(l,s',sr))$
 \end{center}
-\vspace{-2mm}
 の様になる．一方\texttt{R-WHILE}では(i)と同様に，
-\vspace{-2mm}
 \begin{center}
  $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(l,s,r))}$)
 \end{center}
-\vspace{-2mm}
 が実行される．適用される規則は
-\vspace{-2mm}
 \begin{center}
  \texttt{[}$\overline{q}$\texttt{,T] => \{MOVEL(T); Q
  \textasciicircum=}$\overline{q}$\texttt{; Q \textasciicircum=}$\overline{q'}$\}
 \end{center}
-\vspace{-2mm}
 である．まずマクロ\texttt{MOVEL(T)}が実行され，\texttt{T}に束縛される値は
-\vspace{-2mm}
 \begin{center}
 \texttt{(L.}$\overline{s'} \ \overline{s}$ \ \texttt{R)} \texttt{=>}
  \texttt{(L} \ $\overline{s'} \ \overline{s}$ \texttt{.R)}
 \end{center}
-\vspace{-2mm}
 となる．次に1回目の可逆代入を行い\texttt{Q}に束縛される値は\texttt{nil}
 となる．そして，２回目の可逆を行うことで\texttt{Q}に束縛される値は
 $\overline{q'}$となる．そのため\texttt{[Q.T]}が束縛する値は
-\vspace{-2mm}
 \begin{center}
 \texttt{[}$\overline{q}$\texttt{,(L.}$\overline{s'} \ \overline{s}$ \ \texttt{R)]} \texttt{=>} \texttt{[}$\overline{q'}$\texttt{,(L} \ $\overline{s'} \ \overline{s}$ \texttt{.R)]}
 \end{center}
-\vspace{-2mm}
 の様に書き換えられ，状態$\overline{(q,(ls',s,r))}$は状態
 $\overline{(q',(l,s',sr))}$となり，
-\vspace{-2mm}
 \begin{center}
  $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(ls',s,r))}$) = $\overline{(q',(l,s',sr))}$
 \end{center}
-\vspace{-2mm}
 である．よって遷移規則が$[q,\leftarrow ,q']$の場合，\textbf{補
  題 1}は成り立つ．\\
 \\
 (iii)遷移規則が$[q,\rightarrow,q']$の場合\\
 可逆チューリング機械の様相の遷移は\\
-\vspace{-2mm}
 \begin{center}
 $(q,(l,s,s'r))$ $\xRightarrow[T]{}$ $(q',(ls,s',r))$
 \end{center}
-\vspace{-2mm}
 の様になる．一方\texttt{R-WHILE}では(i)と同様に，
-\vspace{-2mm}
 \begin{center}
  $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(l,s,r))}$)
 \end{center}
-\vspace{-2mm}
 が実行される．適用される規則は
-\vspace{-2mm}
 \begin{center}
  \texttt{[}$\overline{q}$\texttt{,T] => \{MOVER(T); Q
  \textasciicircum=}$\overline{q}$\texttt{; Q \textasciicircum=}$\overline{q'}$\}
 \end{center}
-\vspace{-2mm}
 である．まずマクロ\texttt{MOVER(T)}が実行され，\texttt{T}に束縛される値は
-\vspace{-2mm}
 \begin{center}
 \texttt{(L} \ $\overline{s}$ \ $\overline{s'}$\texttt{.R)} \texttt{=>}
  \texttt{(L.}$\overline{s} \ \overline{s'}$ \ \texttt{R)}
 \end{center}
-\vspace{-2mm}
 となる．次に1回目の可逆代入を行い\texttt{Q}に束縛される値は\texttt{nil}
 となる．そして，２回目の可逆を行うことで\texttt{Q}に束縛される値は
 $\overline{q'}$となる．そのため\texttt{[Q.T]}が束縛する値は
-\vspace{-2mm}
 \begin{center}
 \texttt{[}$\overline{q}$\texttt{,(L} \ $\overline{s}$ \ $\overline{s'}$\texttt{.R)]} \texttt{=>} \texttt{[}$\overline{q'}$\texttt{,(L.}$\overline{s} \ \overline{s'}$ \ \texttt{R)]}
 \end{center}
-\vspace{-2mm}
 の様に書き換えられ，状態$\overline{(q,(l,s,s'r))}$は状態
 $\overline{(q',(ls,s',r))}$となり，
-\vspace{-2mm}
 \begin{center}
  $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(l,s,s'r))}$) = $\overline{(q',(ls,s',r))}$
 \end{center}
-\vspace{-2mm}
 である．よって遷移規則が$[q,\rightarrow ,q']$の場合，\textbf{補
  題 1}は成り立つ．\\
 (iv)遷移規則が$[q,\downarrow,q']$の場合\\
 可逆チューリング機械の様相は\\
-\vspace{-2mm}
 \begin{center}
 $(q,(l,s,r))$ $\xRightarrow[T]{}$ $(q',(l,s,r))$
 \end{center}
-\vspace{-2mm}
 の様になる．一方\texttt{R-WHILE}では(i)と同様に，
-\vspace{-2mm}
 \begin{center}
  $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(l,s,r))}$)
 \end{center}
-\vspace{-2mm}
 が実行される．適用される規則は
-\vspace{-2mm}
 \begin{center}
 $\overline{[q,\downarrow,q']}$ =
  \texttt{[}$\overline{q}$\texttt{,T] => } \texttt{[}$\overline{q'}$\texttt{,T]}
 \end{center}
-\vspace{-2mm}
 であり，この書き換え規則により，
  $\overline{q}$は$\overline{q'}$へ束縛し，
-\vspace{-2mm}
 \begin{center}
 \texttt{[}$\overline{q}$\texttt{,(L} $\overline{s}$ \texttt{R)]} \texttt{=>} \texttt{[}$\overline{q'}$\texttt{,(L} $\overline{s}$ \texttt{R)]}
 \end{center}
  となる．状態
  $\overline{(q,(l,s,r))}$は状態$\overline{(q',(l,s',r))}$となり，
-\vspace{-2mm}
 \begin{center}
  $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(l,s,r))}$) = $\overline{(q',(l,s',r))}$
 \end{center}
-\vspace{-2mm}
 である．よって遷移規則が$[q,\downarrow ,q']$の場合，\textbf{補
  題 1}は成り立つ．\\
-
-\vspace{-2mm}
 
 　(i)，(ii)，(iii)または(iv)により，\textbf{補題 1}が成り立つのは明らかで
 ある．\\

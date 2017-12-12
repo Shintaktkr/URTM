@@ -1,7 +1,7 @@
 \chapter{関連研究}
 本章では，可逆性やプログラム言語において本稿に関連する研究，用語について説明する．
 \section{可逆計算}
-可逆計算とは，計算過程において，初期状態と最終状態を除いたすべての状態が，
+可逆計算とは，計算過程において，初期状態と最終状態を除いたすべての状態が
 直前と直後にとり得る状態を高々一つもつものである．Landauerは，計算機にお
 いて非可逆な演算はエネルギーの散逸を伴うことを指摘した．可逆的な演算はこ
 のような不可避なエネルギーの散逸を減らす1つの解決策として用いられる．可逆計算では，入力から出力までの過程を出力から逆算
@@ -40,7 +40,7 @@
 分岐，繰り返しを表現することができ，分岐の場合\texttt{if-else}文，繰り返しの場
 合\texttt{while}文がある．その他には，変数に整数式を代入する割り当て，ユーザー
 からの入力を読み取って画面に出力する文の読み書き文，効果のないスキップ文
-がある\cite{9}．プログラミング言語\texttt{R-WHILE}は，\texttt{WHILE}の構
+がある\cite{9}．可逆プログラミング言語\texttt{R-WHILE}は，\texttt{WHILE}の構
 文や意味規則を可逆化したものを利用している．
 
 
@@ -68,7 +68,7 @@
 	%
 	\begin{eqnarray}
  	\forall \alpha \in \mathrm{Conf}_k(Q),\forall x \in \mathbb{Z}^k: \hspace{60pt} \nonumber \\
-	~~F(\alpha)(x) = f(\alpha(x+n_1),\ldots,\alpha(x+n_m))
+	~~F(\alpha)(x) = f(\alpha(x+n_1),\ldots,\alpha(x+n_m)) \nonumber
 	\end{eqnarray}
 	%
 	と定める\cite{5}．
