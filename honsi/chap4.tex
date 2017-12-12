@@ -615,13 +615,14 @@ $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}$(\overline{\sigma})$ = $\overline{\sigma'
 %\end{lemma}
 %このとき，$\mathcal{C}$\jump{}は対象がプログラムであることを示して
 %いる．\\
-\begin{proof}
-可逆チューリング機械における4パター
+\textbf{証明} 可逆チューリング機械における4パター
 ンの遷移規則において，\textbf{補題 1}が成り立つことを示す．\\
 　マクロ\texttt{STEP(Q.T)}は図\ref{fig:rtmprog:STEP}で定義し
- たように，可逆チューリング機械の遷移規則に応じて\texttt{[Q.T]}が書き換
+ たように，可逆チューリング機械の遷移規則に応じて\texttt{[Q.T]}の
+ \texttt{Q}と\texttt{T}に束縛されている値を書き換
  える．なお，可逆チューリング機械は局所的に前方決定的かつ局所的に後
- 方決定的であるという性質をもつため，どの状態においても遷移規則はただ一
+ 方決定的であるという性質をもつため，どの状態においても適応される遷移規
+ 則は高々一
  つに定まる．そのため，マクロ\texttt{STEP(Q.T)}の書き変え規則もただ一つ
  に定まる．\\
 (i)遷移規則が$[q,\langle s,s' \rangle ,q']$の場合\\
@@ -644,8 +645,8 @@ $(q,(l,s,r))$ $\xRightarrow[T]{}$ $(q',(l,s',r))$
  \texttt{[}$\overline{q'}$\texttt{,(L $\overline{s'}$ R)]}
 \end{center}
 \vspace{-2mm}
-である（このとき\texttt{L}と\texttt{R}は\texttt{Q}と\texttt{T}とは異
- なる全称記号であり，任意の記号列を表している）．この書き換え規則により，
+である（このとき\texttt{L}，\texttt{R}，\texttt{Q}そして\texttt{T}は互い
+ に異なる変数を表す）．この書き換え規則により，
  $\overline{q}$は$\overline{q'}$へ束縛する．また$\overline{s}$を
  $\overline{s'}$へ束縛する． 状態
  $\overline{(q,(l,s,r))}$は状態$\overline{(q',(l,s',r))}$となり，
@@ -676,39 +677,75 @@ $(q,(ls',s,r))$ $\xRightarrow[T]{}$ $(q',(l,s',sr))$
  \textasciicircum=}$\overline{q}$\texttt{; Q \textasciicircum=}$\overline{q'}$\}
 \end{center}
 \vspace{-2mm}
-である．
+である．まずマクロ\texttt{MOVEL(T)}が実行され，\texttt{T}に束縛される値は
 \vspace{-2mm}
 \begin{center}
-\texttt{[}$\overline{q}$\texttt{,(LS' S R)]} \texttt{=>} \texttt{[}$\overline{q'}$\texttt{,(L S' SR)]}
+\texttt{(L.}$\overline{s'} \ \overline{s}$ \ \texttt{R)} \texttt{=>}
+ \texttt{(L} \ $\overline{s'} \ \overline{s}$ \texttt{.R)}
 \end{center}
 \vspace{-2mm}
-となり，$\overline{q'}$と$q'$，\texttt{L}と$l$，\texttt{S'}と$s'$そして
- \texttt{SR}と$sr$のそれぞれの意味が組ごとで対応している．\\
+となる．次に1回目の可逆代入を行い\texttt{Q}に束縛される値は\texttt{nil}
+となる．そして，２回目の可逆を行うことで\texttt{Q}に束縛される値は
+$\overline{q'}$となる．そのため\texttt{[Q.T]}が束縛する値は
+\vspace{-2mm}
+\begin{center}
+\texttt{[}$\overline{q}$\texttt{,(L.}$\overline{s'} \ \overline{s}$ \ \texttt{R)]} \texttt{=>} \texttt{[}$\overline{q'}$\texttt{,(L} \ $\overline{s'} \ \overline{s}$ \texttt{.R)]}
+\end{center}
+\vspace{-2mm}
+の様に書き換えられ，状態$\overline{(q,(ls',s,r))}$は状態
+$\overline{(q',(l,s',sr))}$となり，
+\vspace{-2mm}
+\begin{center}
+ $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(ls',s,r))}$) = $\overline{(q',(l,s',sr))}$
+\end{center}
+\vspace{-2mm}
+である．よって遷移規則が$[q,\leftarrow ,q']$の場合，\textbf{補
+ 題 1}は成り立つ．\\
 \\
 (iii)遷移規則が$[q,\rightarrow,q']$の場合\\
-可逆チューリング機械の様相は\\
+可逆チューリング機械の様相の遷移は\\
 \vspace{-2mm}
 \begin{center}
 $(q,(l,s,s'r))$ $\xRightarrow[T]{}$ $(q',(ls,s',r))$
 \end{center}
 \vspace{-2mm}
-の様になる．一方\texttt{R-WHILE}では，
+の様になる．一方\texttt{R-WHILE}では(i)と同様に，
 \vspace{-2mm}
 \begin{center}
-$\overline{[q,\rightarrow,q']}$ =
+ $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(l,s,r))}$)
+\end{center}
+\vspace{-2mm}
+が実行される．適用される規則は
+\vspace{-2mm}
+\begin{center}
  \texttt{[}$\overline{q}$\texttt{,T] => \{MOVER(T); Q
  \textasciicircum=}$\overline{q}$\texttt{; Q \textasciicircum=}$\overline{q'}$\}
 \end{center}
 \vspace{-2mm}
-によって
+である．まずマクロ\texttt{MOVER(T)}が実行され，\texttt{T}に束縛される値は
 \vspace{-2mm}
 \begin{center}
-\texttt{[}$\overline{q}$\texttt{,(L S S'R)]} \texttt{=>} \texttt{[}$\overline{q'}$\texttt{,(LS S' R)]}
+\texttt{(L} \ $\overline{s}$ \ $\overline{s'}$\texttt{.R)} \texttt{=>}
+ \texttt{(L.}$\overline{s} \ \overline{s'}$ \ \texttt{R)}
 \end{center}
 \vspace{-2mm}
-となり，$\overline{q'}$と$q$，\texttt{LS}と$ls$，\texttt{S'}と$s'$そして
- \texttt{R}と$r$のそれぞれの意味が組ごとで対応している．\\
-\\
+となる．次に1回目の可逆代入を行い\texttt{Q}に束縛される値は\texttt{nil}
+となる．そして，２回目の可逆を行うことで\texttt{Q}に束縛される値は
+$\overline{q'}$となる．そのため\texttt{[Q.T]}が束縛する値は
+\vspace{-2mm}
+\begin{center}
+\texttt{[}$\overline{q}$\texttt{,(L} \ $\overline{s}$ \ $\overline{s'}$\texttt{.R)]} \texttt{=>} \texttt{[}$\overline{q'}$\texttt{,(L.}$\overline{s} \ \overline{s'}$ \ \texttt{R)]}
+\end{center}
+\vspace{-2mm}
+の様に書き換えられ，状態$\overline{(q,(l,s,s'r))}$は状態
+$\overline{(q',(ls,s',r))}$となり，
+\vspace{-2mm}
+\begin{center}
+ $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(l,s,s'r))}$) = $\overline{(q',(ls,s',r))}$
+\end{center}
+\vspace{-2mm}
+である．よって遷移規則が$[q,\rightarrow ,q']$の場合，\textbf{補
+ 題 1}は成り立つ．\\
 (iv)遷移規則が$[q,\downarrow,q']$の場合\\
 可逆チューリング機械の様相は\\
 \vspace{-2mm}
@@ -716,24 +753,40 @@ $\overline{[q,\rightarrow,q']}$ =
 $(q,(l,s,r))$ $\xRightarrow[T]{}$ $(q',(l,s,r))$
 \end{center}
 \vspace{-2mm}
-の様になる．一方\texttt{R-WHILE}では，
+の様になる．一方\texttt{R-WHILE}では(i)と同様に，
+\vspace{-2mm}
+\begin{center}
+ $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(l,s,r))}$)
+\end{center}
+\vspace{-2mm}
+が実行される．適用される規則は
 \vspace{-2mm}
 \begin{center}
 $\overline{[q,\downarrow,q']}$ =
  \texttt{[}$\overline{q}$\texttt{,T] => } \texttt{[}$\overline{q'}$\texttt{,T]}
 \end{center}
 \vspace{-2mm}
-によって
+であり，この書き換え規則により，
+ $\overline{q}$は$\overline{q'}$へ束縛し，
 \vspace{-2mm}
 \begin{center}
-\texttt{[}$\overline{q}$\texttt{,(L S R)]} \texttt{=>} \texttt{[}$\overline{q'}$\texttt{,(L S R)]}
+\texttt{[}$\overline{q}$\texttt{,(L} $\overline{s}$ \texttt{R)]} \texttt{=>} \texttt{[}$\overline{q'}$\texttt{,(L} $\overline{s}$ \texttt{R)]}
+\end{center}
+ となる．状態
+ $\overline{(q,(l,s,r))}$は状態$\overline{(q',(l,s',r))}$となり，
+\vspace{-2mm}
+\begin{center}
+ $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(l,s,r))}$) = $\overline{(q',(l,s',r))}$
 \end{center}
 \vspace{-2mm}
-となり，$\overline{q'}$と$q'$，\texttt{L}と$l$，\texttt{S}と$s$そして
- \texttt{R}と$r$のそれぞれの意味が組ごとで対応している．\\
+である．よって遷移規則が$[q,\downarrow ,q']$の場合，\textbf{補
+ 題 1}は成り立つ．\\
+
+\vspace{-2mm}
+
 　(i)，(ii)，(iii)または(iv)により，\textbf{補題 1}が成り立つのは明らかで
 ある．\\
-\end{proof}
+
 
 \begin{lemma}
 \label{lemma:2}
@@ -751,7 +804,7 @@ $(\mathcal{C}\jump{\texttt{STEP(Q.T)}}(\overline{\sigma}))^n$ = $\overline{\sigm
 \vspace{-2mm}
 が成り立つ．
 \end{lemma}
-\begin{proof}可逆チューリング機械の計算ステップが$n$回実行される場合，
+\textbf{証明} 可逆チューリング機械の計算ステップが$n$回実行される場合，
 \texttt{R-WHILE}では可逆ループによる繰り返しによって，マクロ
 \texttt{STEP(Q,T)}を$n$回実行する．\\
 (i)$n = 1$の場合\\
@@ -778,7 +831,7 @@ $(\mathcal{C}\jump{\texttt{STEP(Q.T)}}(\overline{\sigma}))^{k+1}$　=
 \vspace{-2mm}
 である．よって，$n = k + 1$のときも\textbf{補題 2}は成立する．\\
 　(i)，(ii)よりすべての自然数$n$について\textbf{補題 2}は成立する．\\
-\end{proof}
+
 \textbf{補題 1}，\textbf{補題 2}より\textbf{定理 1}が成り立つ．
 \begin{theorem}
 任意の可逆チューリング機械$T$，任意の$x$に対して
