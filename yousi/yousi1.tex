@@ -407,7 +407,7 @@ rewrite [S,STK] by
 \caption{遷移規則から\texttt{R-WHILE}の書き換え規則への変換}\label{fig:trans}
 \vspace{-3mm}
 \end{figure}
-そして，組\texttt{(Q,T)}はTMの様相を表している．プロ
+組\texttt{(Q,T)}はTMの様相を表している．プロ
 グラム内のループでは，TMの内部状態が初期状態から最終状態に
 遷移するまでマクロ\texttt{STEP}が繰り返し実行される．繰り返しを終了した
 後，命令によって\texttt{T}と\texttt{Q}の値は\texttt{nil}となる．\\
@@ -438,7 +438,8 @@ $\mathcal{T}$によって\\
 プの中で有限の記号列を表す）を保つことができる為，任意の回数行うことができる．
 %
 プッシュの逆操作であるポップ\texttt{POP(S,STK)}は$\mathcal{I}\jump{\texttt{PUSH(S,STK)}}$とする．
-
+\section{証明}
+RTMから\texttt{R-WHILE}プログラムへの変換の正しさを本稿にて示した．
 \section{おわりに}
 本稿の5章において任意のRTMから\texttt{R-WHILE}プログラムへの変換
 $\mathcal{T}$を\texttt{R-WHILE}の書き換え規則によって定義した．従って言語\texttt{R-WHILE}によっ
@@ -446,9 +447,6 @@ $\mathcal{T}$を\texttt{R-WHILE}の書き換え規則によって定義した．従って言語\texttt
 以上より\texttt{R-WHILE}の計算モデルは可逆的にチューリング完全であると言うことを示
 した．すなわち，今回は可逆プログラミング言語\texttt{R-WHILE}によって万能
 可逆チューリング機械が作れることを示すことができた．
-
-今後は\texttt{R-WHILE}がRTMを模倣できていることを証明し，RTMから
-\texttt{R-WHILE}の変換を示したい．
 
 \begin{thebibliography}{9}
 \bibitem{1}
