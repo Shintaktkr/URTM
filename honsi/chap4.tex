@@ -30,26 +30,25 @@
 された場合，繰り返しが行われ，\texttt{X}が\texttt{nil}の場合に繰り返しが
 終了する．\texttt{loop}内の命令はテストとアサーションが偽である
 限り繰り返す．\texttt{loop}内の最初の命令(\texttt{(Z.X) <= X})では\texttt{X}の値を先頭とそれ以降の部分に分解している．
-2番目の命令（\texttt{Y <= (Z.X)}）では，\texttt{Z}と\texttt{Y}をペアに
+2番目の命令（\texttt{Y <= (Z.X)}）では，\texttt{Z}と\texttt{Y}を組に
 した値を構成している．可逆置換は右辺の元の値を左辺の変数に束縛する前に，右辺の値を
 \texttt{nil}にセットする（たとえば\texttt{Y <= (Z.Y)}が実行された後
 \texttt{Z}は\texttt{nil}である）．出力の変数である\texttt{Y}を除くすべて
 の変数は最終的に\texttt{nil}でなくてはならない．プログラム
 \texttt{reverse}の適用は\jump{\texttt{reverse}}$^{\texttt{R-WHILE}}$
 \texttt{('a.('b.('c.nil)))}=\texttt{('c.('b('a.nil)))}の様に示す．ここで，
-リストの要素\texttt{'a,'bまたは'c}はアトムである．エントリーアサーション
-と可逆置換により，プログラムは可逆である．
+リストの要素\texttt{'a,'b}および\texttt{'c}はアトムである．テストと可逆置換により，プログラムは可逆である．
 \subsection{構文}
 \texttt{R-WHILE}の構文規則は単純である（図\ref{fig:regR}）．プログラム\texttt{P}はただ一つの入口と出口の点(\texttt{read,write})をもち，命令\texttt{C}がプログラムの本体である．\\
 　プログラムのデータ領域$\mathbb{D}$はアトム\texttt{nil}とすべての組($\mathtt{d_1,d_2}$)を含
-む（$\mathtt{d_1,d_2} \in \mathbb{D}$）最小の集合である．$Var$は変数名の無限集合で
+む（$\mathtt{d_1,d_2} \in \mathbb{D}$）最小の集合である．$Vars$は変数名の無限集合で
 ある．本稿では$\mathtt{d,e,f,...} \in \mathbb{D}$とする．また，\texttt{X,Y,Z,}$... \in$
 $Vars$とする．\\
 　式は変数\texttt{X}，定数\texttt{d}，または複数の演算子(先頭と
 それ以降を表す\texttt{hd}と\texttt{tail}，組を表す\texttt{cons}また等
 号を表す\texttt{=?}）からなる．パターンは式の部分集合であり，変数
-\texttt{X}，定数\texttt{d}またはパターンのペアを表す\texttt{cons Q R}からなる．
-本稿では以後ペアを表す\texttt{cons E F}または\texttt{cons Q R}をそれぞれ
+\texttt{X}，定数\texttt{d}またはパターンの組を表す\texttt{cons Q R}からなる．
+本稿では以後組を表す\texttt{cons E F}または\texttt{cons Q R}をそれぞれ
 \texttt{(E.F)}または\texttt{(Q.R)}と表記する．パターンは線形的でなくては
 ならない．すなわち，反復変数は含まれない．また，この言語は局所変数をもたない．\\
 　%次に命令\texttt{C}について説明する．非可逆なプログラミング言語における
@@ -82,27 +81,26 @@ until F}である．繰り返し文はテスト\texttt{E}をもち，条件
 ン\texttt{E}は真でなくてはならない．また，もし偽であった場合命令
 \texttt{D}が実行され，アサーション\texttt{E}は偽でなくてはならない．
 \texttt{E}と\texttt{F}の返す値が対応していない場合，条件文は定義されない．
-可逆ループ\texttt{from E do C loop D until F }は図\ref{fig:if}の様に描くこと
+可逆ループ\texttt{from E do C loop D until F }は図\ref{fig:loop}の様に描くこと
 ができる．繰り返しを行う場合，アサーション\texttt{E}は真でなくてはならな
-い（図\ref{fig:if}の\texttt{t}）．そして，命令\texttt{C}が実行される．実
+い（図\ref{fig:loop}の\texttt{t}）．そして，命令\texttt{C}が実行される．実
 行後のテスト\texttt{F}が真であれば繰り返しは続行される．もし\texttt{F}
 が偽であった場合, 命令\texttt{D}が実行される．また，アサーション
 \texttt{E}は偽でなくてはならない（図\ref{fig:if}の\texttt{f}）．\\
 　我々は
-\texttt{($\mathtt{d_1}$.($\mathtt{d_2}$.(・・・.($\mathtt{d_n}$.nil)・・
-・)))}を
-リスト\texttt{($\mathtt{d_1d_2}$・・・$\mathtt{d_n}$)}と書き，
-\texttt{($\mathtt{d_1}$.($\mathtt{d_2}$.(・・・.($\mathtt{d_{n-1}}$.$\mathtt{d_n}$)・・・)))}を
-不適切なリスト\texttt{($\mathtt{d_1}$・・・$\mathtt{d_{n-1}d_n}$)}と書く．\\
-　リストと似た表記として，我々は\texttt{($\mathtt{Q_1}$.($\mathtt{Q_2}$.(・・・.($\mathtt{Q_n}$.nil)・・・)))}を
-リスト\texttt{($\mathtt{Q_1Q_2}$・・・$\mathtt{Q_n}$)}と書き，
-\texttt{($\mathtt{Q_1}$.($\mathtt{Q_2}$.(・・・.($\mathtt{Q_{n-1}}$.$\mathtt{Q_n}$)・・・)))}を
-不適切なリスト\texttt{($\mathtt{Q_1}$・・・$\mathtt{Q_{n-1}Q_n}$)}と書く．\\
-　式\texttt{(list $\mathtt{E_1}$・・・$\mathtt{E_n}$)}は式\texttt{(cons
-$\mathtt{E_1}$・・・(cons $\mathtt{E_n}$nil)・・・)}の省略法として用いら
-れる．また，式\texttt{(cons*$\mathtt{E_1}$・・・$\mathtt{E_{n-1}E_n}$)}
-は式\texttt{(cons $\mathtt{E_1}$・・・(cons
-$\mathtt{E_{n-1}E_n}$)・・・)}として用いられる．\\
+\texttt{($\mathtt{d_1}\cdot$($\mathtt{d_2}$.($\cdot\cdot\cdot$.($\mathtt{d_n}$.nil)$\cdot\cdot\cdot$)))}を
+リスト\texttt{($\mathtt{d_1d_2}\cdot\cdot\cdot\mathtt{d_n}$)}と書き，
+\texttt{($\mathtt{d_1}$.($\mathtt{d_2}$.($\cdot\cdot\cdot$.($\mathtt{d_{n-1}}$.$\mathtt{d_n}$)$\cdot\cdot\cdot$)))}を
+不適切なリスト\texttt{($\mathtt{d_1}\cdot\mathtt{d_{n-1}d_n}$)}と書く．\\
+　リストと似た表記として，我々は\texttt{($\mathtt{Q_1}$.($\mathtt{Q_2}$.($\cdot\cdot\cdot$.($\mathtt{Q_n}$.nil)$\cdot\cdot\cdot$)))}を
+リスト\texttt{($\mathtt{Q_1Q_2}\cdot\cdot\cdot\mathtt{Q_n}$)}と書き，
+\texttt{($\mathtt{Q_1}$.($\mathtt{Q_2}$.($\cdot\cdot\cdot$.($\mathtt{Q_{n-1}}$.$\mathtt{Q_n}$)$\cdot\cdot\cdot$)))}を
+不適切なリスト\texttt{($\mathtt{Q_1}\cdot\cdot\cdot\mathtt{Q_{n-1}Q_n}$)}と書く．\\
+　式\texttt{(list $\mathtt{E_1}\cdot\cdot\cdot\mathtt{E_n}$)}は式\texttt{(cons
+$\mathtt{E_1}\cdot\cdot\cdot$(cons $\mathtt{E_n}$nil)$\cdot\cdot\cdot$)}の省略法として用いら
+れる．また，式\texttt{(cons*$\mathtt{E_1}\cdot\cdot\cdot\mathtt{E_{n-1}E_n}$)}
+は式\texttt{(cons $\mathtt{E_1}\cdot\cdot\cdot$(cons
+$\mathtt{E_{n-1}E_n}$)$\cdot\cdot\cdot$)}として用いられる．\\
 \begin{figure}[t]
 \begin{alltt}
                 E,F \(::=\) X | d | cons E F | hd E | tl E | =? E F    式
@@ -118,9 +116,7 @@ $\mathtt{E_{n-1}E_n}$)・・・)}として用いられる．\\
 \caption{言語\texttt{R-WHILE}の構文規則}\label{fig:regR}
 \end{figure}
 \subsection{意味論}
-
-
-　ここでは\texttt{R-WHILE}のための表示的意味論を定義する．まず，いくつかの表記
+ここでは\texttt{R-WHILE}のための表示的意味論を定義する．まず，いくつかの表記
 法を始め，図\ref{fig:sem}の４つの意味関数について説明する．\\
 　プログラム\texttt{P}の中にある変数の組と式\texttt{E}はそれぞれ
 $Var$(\texttt{P})，$Var$(\texttt{E})と示される．ブール値は明確な二つの
@@ -146,43 +142,43 @@ $Var$(\texttt{P})=\{\texttt{X,$\mathtt{Y_1}$,...,$\mathtt{Y_n}$}\}内のそ
 よって示す．\\
 \vspace{-6mm}
 \begin{flushleft}
-$\mathcal{E}$ : \texttt{Expressions} $\to$ ($\mathtt{Stores^P}
+　$\mathcal{E}$ : \texttt{Expressions} $\to$ ($\mathtt{Stores^P}
  \hookrightarrow \mathbb{D}_{\bot}$) \\ 
-$\mathcal{Q}$ : \texttt{Patterns} $\to$ ($\mathtt{Stores^P}
+　$\mathcal{Q}$ : \texttt{Patterns} $\to$ ($\mathtt{Stores^P}
  \hookrightarrow \mathbb{D}_{\bot} \times \mathtt{Stores^P_{\bot}}$) \\
-$\mathcal{C}$ : \texttt{commands} $\to$ ($\mathtt{Stores^P}
+　$\mathcal{C}$ : \texttt{commands} $\to$ ($\mathtt{Stores^P}
  \hookrightarrow \mathtt{Stores^P_{\bot}}$) \\
-$\mathcal{P}$ : \texttt{Programs} $\to$ ($\mathbb{D}
+　$\mathcal{P}$ : \texttt{Programs} $\to$ ($\mathbb{D}
  \hookrightarrow \mathbb{D}_{\bot}$) \\
 \end{flushleft}
 
 \vspace{-2mm}
-　プログラム\texttt{p}は部分関数$\mathcal{P}$\jump{\texttt{p}}を示す．本
+プログラム\texttt{p}は部分関数$\mathcal{P}$\jump{\texttt{p}}を示す．本
 稿では\texttt{p}が\texttt{R-WHILE}のプログラムであることを明示するために
 $\jump{\texttt{p}}^\texttt{R-WHILE}$の様に示す．\\
-　式評価$\mathcal{E}$は状態$\sigma$の式\texttt{E}を$\mathbb{D}$の値へ評
+　式評価$\mathcal{E}$\jump{\texttt{E}}は状態$\sigma$の式\texttt{E}を$\mathbb{D}$の値へ評
 価する．変数\texttt{X}，定数\texttt{d}，または複数の演算子からなる(先
 頭とそれ以降を表す\texttt{hd}と\texttt{tail}，組を表す\texttt{cons}また
-等号を表す\texttt{=?})の評価は予想されるとおりである．また$\mathcal{E}$
+等号を表す\texttt{=?})の評価は予想されるとおりである．また$\mathcal{E}$\jump{\texttt{E}}
 は$\bot$へ評価することができる．もし\texttt{E}の値が\texttt{nil}だった場
 合\texttt{hd E}と\texttt{tl E}の値は定義されないからである．\\
-　パターン評価$\mathcal{Q}$は状態$\sigma$のパターン\texttt{Q}を値と状態
+　パターン評価$\mathcal{Q}$\jump{\texttt{Q}}は状態$\sigma$のパターン\texttt{Q}を値と状態
 の組へ評価する．\texttt{Q}において使われるすべての変数は結果の状態で
 \texttt{nil}に束縛される．これは，結果の状態を構築するすべての値を状態から
 移動する．いくつかの$\sigma$のために
-$\mathcal{Q}$\jump{\texttt{Q}}$\sigma$ =
+$\mathcal{Q}\jump{\texttt{Q}}\sigma$ =
 ($\mathcal{E}\jump{\mathtt{Q}}$,$\sigma'$)とする．任意の\texttt{Q}におい
 て，表示$\mathcal{Q}\jump{\mathtt{Q}}$は単射関数である．そのため，逆関数
 $\mathcal{Q}\jump{\texttt{Q}}^{-1}$はただ一つである．逆パターン評価
 $\mathcal{Q}\jump{\texttt{Q}}^{-1}$(\texttt{d},$\sigma$')は値と状態の組
 から\texttt{Q}のすべての変数の新しい状態をとる．またこれは，定数
-\texttt{d}の対応する部分に縛られており，与えられるそれらの変数は状態
-$\sigma$において\texttt{nil}に縛られる．もし$\mathcal{Q}$が\texttt{Q}と
+\texttt{d}の対応する部分に束縛されており，与えられるそれらの変数は状態
+$\sigma$において\texttt{nil}に縛られる．もし$\mathcal{Q}$\jump{\texttt{Q}}が\texttt{Q}と
 $\sigma$について定義されている場合，
 $\mathcal{Q}\jump{\texttt{Q}}^{-1}$($\mathcal{Q}\jump{\texttt{Q}}\sigma$) = $\sigma$が成り
 立つ．パターン評価とその逆は可逆置換の意味を定義するために用いられ
 る．\\
-　 ここからは命令評価$\mathcal{C}$について述べる．非可逆な言語における代
+　 ここからは命令評価$\mathcal{C}$\jump{\texttt{C}}について述べる．非可逆な言語における代
  入は破壊的である．それらは左辺の変数の値を上書きする．そして，代入を
  行った後，元の値を再び構築することはできない．そのため，可逆プログラミ
  ング言語では基本
@@ -193,7 +189,7 @@ $\mathcal{Q}\jump{\texttt{Q}}^{-1}$($\mathcal{Q}\jump{\texttt{Q}}\sigma$) = $\si
  \texttt{E}は複製される．また，後者の場合\texttt{X}と\texttt{E}の等しさ
  が主張される．
  以下で，更新演算子$\odot$を定義することによって意味論を正式なものにする．
- $\odot$は\\
+ $\odot$は
 %意味論
 \begin{figure}
 \begin{subfigure}[t]{0.3\textwidth}
@@ -329,12 +325,12 @@ $\mathcal{C}$\jump{\texttt{X \textasciicircum= X}}は単射ではなくなってし
 ことによって変数を更新する．$\mathcal{C}$\jump{\texttt{Q <= R}}$\sigma$
 は最初の評価$\mathcal{Q}$\jump{\texttt{R}}$\sigma$によって定義される．
 このとき，$\mathcal{Q}$\jump{\texttt{R}}$\sigma$は
-(\texttt{d},$\sigma'$)である．また，$Var$(\texttt{R})のすべての変数が
+(\texttt{d},$\sigma'$)である．また，$Vars$(\texttt{R})のすべての変数が
 \texttt{nil}である場合を除き，\texttt{d}は
 $\mathcal{E}$\jump{\texttt{R}}$\sigma$であり，状態$\sigma'$は$\sigma$であ
 る．そしてこれに逆評価の$\mathcal{Q}\jump{\texttt{Q}}^{-1}$(\texttt{d},$\sigma'$)が実行され，
 可逆置換の最終状態である$\sigma''$を得る．このとき
-$Var$(\texttt{Q})のすべての変数は状態$\sigma$において\texttt{nil}になら
+$Vars$(\texttt{Q})のすべての変数は状態$\sigma$において\texttt{nil}になら
 なくてはならない．逆評価の
 $\mathcal{Q}\jump{\texttt{Q}}^{-1}$(\texttt{d},$\sigma'$)はd =
 $\mathcal{E}\jump{Q}\sigma''$のような\texttt{d}の一部に束縛される．\\
@@ -346,7 +342,7 @@ $\mathcal{E}\jump{Q}\sigma''$のような\texttt{d}の一部に束縛される．\\
 \texttt{false}でなくてはならない．もしアサーション\texttt{F}の値とテストの
 \texttt{E}の値が対応していない場合，条件分岐は定義されない．アサーション
 \texttt{F}は条件分岐の実行が後方決定的であることを主張する．\\
-　可逆的繰り返し\texttt{from E do C loop D until F}はフローチャートの様
+　可逆ループ\texttt{from E do C loop D until F}はフローチャートの様
 に図式化することができる（図\ref{fig:loop}）．
 意味論は以下のとおりである．繰り返しの入口において，アサーション\texttt{E}は\texttt{true}
 でなくてはならない（図\ref{fig:loop}の\texttt{t}の部分）．その後，命令
@@ -381,7 +377,7 @@ $\mathcal{I}$が定義されている(図\ref{fig:i})．それによって反転されたプロ
 $\mathcal{I}$ \jump{\texttt{reverse}}は\texttt{X}と\texttt{Y}の位置が入
 れ替わっていることを除き，\texttt{reverse}と同じプログラムの構造をしてい
 ることがわかる．\\
-　プログラム\texttt{P}は二回逆変換を行うことで元のプログラムが求められる
+　プログラム\texttt{P}は2回逆変換を行うことで元のプログラムが求められる
 （\texttt{P} = $\mathcal{I}\jump{\mathcal{I\jump{\texttt{P}}}}$）．
 \subsection{糖類構文としての書き換え規則}
 プログラムは糖類構文としての可逆版の書き換え規則を用いることで読みやす
@@ -459,6 +455,8 @@ $\mathtt{X_1}$,...,$\mathtt{X_n}$が$\mathtt{E_1}$,...,$\mathtt{E_n}$に束
 \subsection{可逆チューリング機械を模倣する\texttt{R-WHILE}プログラム}
 図\ref{fig:rtmprog:main}にチューリング機械プログラムからの変換で得られた
 \texttt{R-WHILE}プログラムを示す．なお記述には変換規則を用いた．\\
+またプログラムにマクロを使用した．マクロ展開することで，右辺の変数は実引数に置き
+換えられる．チューリング機械に対応する\texttt{R-WHILE}の記述を$\overline{\cdot}$を用いて表す．\\
 　mainプログラム（図\ref{fig:rtmprog:main}）は入力としてチューリング機械
 のテープ上に書かれている記号列\texttt{R}を読み込む．その後，計算を実行し，
 書き換えられた記号列\texttt{R'}を出力するというものである．mainプログラ
@@ -565,10 +563,10 @@ rewrite [S,STK] by
 変換が正しいことを示す．\\
 ここでは，$\mathcal{T}\jump{(q,(l,s,r))}$ = \{\texttt{Q} $\mapsto${$\overline{q}$},
 \texttt{T} $\mapsto$ \texttt{(}$\overline{l}$ $\overline{s}$ $\overline{r}$\texttt{)}\}と
-する．また，$\mathcal{T}\jump{x}$を$\overline{x}$の様に記述している．\\
+する．また，$\mathcal{T}\jump{x}$を$\overline{x}$の様に記述している．
+$\xRightarrow[T]{}$は可逆チューリング機械の計算ステップにおいて，様相$\sigma$を様相$\sigma'$に遷移していることを表す．\\
 　まず\textbf{補題 1}では，可逆チューリング機械の様相の遷移に命令マクロ
-\texttt{STEP(Q.T)}を実行することによる状態の変化が対応していることを示す．
-任意の変数$y$を書き換えたものを$y'$と記す．
+\texttt{STEP(Q,T)}を実行することによる状態の変化が対応していることを示す．
 \begin{lemma}
 \label{lemma:1}
 任意の様相$\sigma$，$\sigma'$に対して，
@@ -577,7 +575,7 @@ $\sigma$ $\xRightarrow[T]{}$ $\sigma'$
 \end{center}
 のとき，
 \begin{center}
-$\mathcal{C}$\jump{\texttt{STEP(Q.T)}}$(\overline{\sigma})$ = $\overline{\sigma'}$
+$\mathcal{C}$\jump{\texttt{STEP(Q,T)}}$(\overline{\sigma})$ = $\overline{\sigma'}$
 \end{center}
 \vspace{-2mm}
 が成り立つ．\
@@ -616,13 +614,13 @@ $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}$(\overline{\sigma})$ = $\overline{\sigma'
 %いる．\\
 \textbf{証明} 可逆チューリング機械における4パター
 ンの遷移規則において，\textbf{補題 1}が成り立つことを示す．\\
-　マクロ\texttt{STEP(Q.T)}は図\ref{fig:rtmprog:STEP}で定義し
- たように，可逆チューリング機械の遷移規則に応じて\texttt{[Q.T]}の
+　マクロ\texttt{STEP(Q,T)}は図\ref{fig:rtmprog:STEP}で定義し
+ たように，可逆チューリング機械の遷移規則に応じて\texttt{[Q,T]}の
  \texttt{Q}と\texttt{T}に束縛されている値を書き換
  える．なお，可逆チューリング機械は局所的に前方決定的かつ局所的に後
  方決定的であるという性質をもつため，どの状態においても適応される遷移規
  則は高々一
- つに定まる．そのため，マクロ\texttt{STEP(Q.T)}の書き変え規則もただ一つ
+ つに定まる．そのため，マクロ\texttt{STEP(Q,T)}の書き変え規則もただ一つ
  に定まる．\\
 (i)遷移規則が$[q,\langle s,s' \rangle ,q']$の場合\\
 可逆チューリング機械の様相の遷移は\\
@@ -632,17 +630,17 @@ $(q,(l,s,r))$ $\xRightarrow[T]{}$ $(q',(l,s',r))$
 \end{center}
 の様になる．一方\texttt{R-WHILE}では，
 \begin{center}
- $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(l,s,r))}$)
+ $\mathcal{C}$\jump{\texttt{STEP(Q,T)}}($\overline{(q,(l,s,r))}$)
 \end{center}
-が実行される．適用される規則は
+で\texttt{STEP(Q,T)}は実行される．適用される規則は
 \begin{center}
  \texttt{[}$\overline{q}$\texttt{,(L $\overline{s}$  R)]} \texttt{=>}
  \texttt{[}$\overline{q'}$\texttt{,(L $\overline{s'}$ R)]}
 \end{center}
-である（このとき\texttt{L}，\texttt{R}，\texttt{Q}そして\texttt{T}は互い
+である（このとき\texttt{L}，\texttt{R}，\texttt{Q}および\texttt{T}は互い
  に異なる変数を表す）．この書き換え規則により，
- $\overline{q}$は$\overline{q'}$へ束縛する．また$\overline{s}$を
- $\overline{s'}$へ束縛する． 状態
+ \texttt{Qは}$\overline{q'}$を束縛する．また\texttt{T}は
+ $\overline{s'}$を束縛する． 状態
  $\overline{(q,(l,s,r))}$は状態$\overline{(q',(l,s',r))}$となり，
 \begin{center}
  $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(l,s,r))}$) = $\overline{(q',(l,s',r))}$
