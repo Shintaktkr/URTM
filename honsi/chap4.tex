@@ -30,7 +30,7 @@
 された場合，繰り返しが行われ，\texttt{X}が\texttt{nil}の場合に繰り返しが
 終了する．\texttt{loop}内の命令はテストとアサーションが偽である
 限り繰り返す．\texttt{loop}内の最初の命令(\texttt{(Z.X) <= X})では\texttt{X}の値を先頭とそれ以降の部分に分解している．
-2番目の命令（\texttt{Y <= (Z.X)}）では，\texttt{Z}と\texttt{Y}を組に
+２番目の命令（\texttt{Y <= (Z.X)}）では，\texttt{Z}と\texttt{Y}を組に
 した値を構成している．可逆置換は右辺の元の値を左辺の変数に束縛する前に，右辺の値を
 \texttt{nil}にセットする（たとえば\texttt{Y <= (Z.Y)}が実行された後
 \texttt{Z}は\texttt{nil}である）．出力の変数である\texttt{Y}を除くすべて
@@ -86,7 +86,7 @@ until F}である．繰り返し文はテスト\texttt{E}をもち，条件
 い（図\ref{fig:loop}の\texttt{t}）．そして，命令\texttt{C}が実行される．実
 行後のテスト\texttt{F}が真であれば繰り返しは続行される．もし\texttt{F}
 が偽であった場合, 命令\texttt{D}が実行される．また，アサーション
-\texttt{E}は偽でなくてはならない（図\ref{fig:if}の\texttt{f}）．\\
+\texttt{E}は偽でなくてはならない（図\ref{fig:loop}の\texttt{f}）．\\
 　我々は
 \texttt{($\mathtt{d_1}\cdot$($\mathtt{d_2}$.($\cdot\cdot\cdot$.($\mathtt{d_n}$.nil)$\cdot\cdot\cdot$)))}を
 リスト\texttt{($\mathtt{d_1d_2}\cdot\cdot\cdot\mathtt{d_n}$)}と書き，
@@ -137,7 +137,9 @@ $Var$(\texttt{P})=\{\texttt{X,$\mathtt{Y_1}$,...,$\mathtt{Y_n}$}\}内のそ
 　$\mathtt{\sigma^P_X}$($D$) = [\texttt{X} $\mapsto D$,$\mathtt{Y_1} 			    \mapsto \mathtt{nil}$,...,$\mathtt{Y_n}
 			    \mapsto \mathtt{nil}$]\\
 となる．\\
-　意味関数は以下の様に式(\texttt{Expressions})，パターン(\texttt{Patterns})，命令(\texttt{Commands})またはプログラム(\texttt{Programs})の四種類によって定義される(図
+　意味関数は以下の様に式(\texttt{Expressions})，パターン
+(\texttt{Patterns})，命令(\texttt{Commands})またはプログラム
+(\texttt{Programs})の４種類によって定義される(図
 \ref{fig:sem})．この場合，AからBへの単射の写像をA $\hookrightarrow$ Bに
 よって示す．\\
 \vspace{-6mm}
@@ -377,7 +379,7 @@ $\mathcal{I}$が定義されている(図\ref{fig:i})．それによって反転されたプロ
 $\mathcal{I}$ \jump{\texttt{reverse}}は\texttt{X}と\texttt{Y}の位置が入
 れ替わっていることを除き，\texttt{reverse}と同じプログラムの構造をしてい
 ることがわかる．\\
-　プログラム\texttt{P}は2回逆変換を行うことで元のプログラムが求められる
+　プログラム\texttt{P}は２回逆変換を行うことで元のプログラムが求められる
 （\texttt{P} = $\mathcal{I}\jump{\mathcal{I\jump{\texttt{P}}}}$）．
 \subsection{糖類構文としての書き換え規則}
 プログラムは糖類構文としての可逆版の書き換え規則を用いることで読みやす
@@ -461,9 +463,9 @@ $\mathtt{X_1}$,...,$\mathtt{X_n}$が$\mathtt{E_1}$,...,$\mathtt{E_n}$に束
 のテープ上に書かれている記号列\texttt{R}を読み込む．その後，計算を実行し，
 書き換えられた記号列\texttt{R'}を出力するというものである．mainプログラ
 ム本体の\texttt{Q}はチューリング機械の内部状態を表している．また，
-\texttt{T}はチューリング機械のテープの状態を表している．そのため，可逆的
+\texttt{T}はチューリング機械のテープの状態を表している．そのため，可逆
 代入\texttt{Q} \texttt{\string^=} \(\overline{q\sb{s}}\);によって，
-内部状態を表す\texttt{Q}は初期状態になる．また可逆的置換\texttt{T <=}
+内部状態を表す\texttt{Q}は初期状態になる．また可逆置換\texttt{T <=}
 \texttt{(nil }\(\overline{b}\) \texttt{R);}によって，ヘッドがテープに書
 かれている記号列の一つ左を指している状態を表している．
 そして，組\texttt{(Q,T)}はチューリング機械の様相を表している．プロ
@@ -643,7 +645,7 @@ $(q,(l,s,r))$ $\xRightarrow[T]{}$ $(q',(l,s',r))$
  $\overline{s'}$を束縛する． 状態
  $\overline{(q,(l,s,r))}$は状態$\overline{(q',(l,s',r))}$となり，
 \begin{center}
- $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(l,s,r))}$) = $\overline{(q',(l,s',r))}$
+ $\mathcal{C}$\jump{\texttt{STEP(Q,T)}}($\overline{(q,(l,s,r))}$) = $\overline{(q',(l,s',r))}$
 \end{center}
 である．よって遷移規則が$[q,\langle s,s' \rangle ,q']$の場合，\textbf{補
  題 1}は成り立つ．\\
@@ -662,7 +664,7 @@ $(q,(l,s,r))$ $\xRightarrow[T]{}$ $(q',(l,s',r))$
 \end{center}
 の３パターンである．一方\texttt{R-WHILE}では(i)と同様に，
 \begin{center}
- $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(l,s,r))}$)
+ $\mathcal{C}$\jump{\texttt{STEP(Q,T)}}($\overline{(q,(l,s,r))}$)
 \end{center}
 が実行される．適用される規則は
 \begin{center}
@@ -670,27 +672,41 @@ $(q,(l,s,r))$ $\xRightarrow[T]{}$ $(q',(l,s',r))$
  \textasciicircum=}$\overline{q}$\texttt{; Q \textasciicircum=}$\overline{q'}$\}
 \end{center}
 である．この規則の右辺は直交性があるため，３パターンすべてに適応すること
-が可能である．まずマクロ\texttt{MOVEL(T)}が実行される．それにより\texttt{T}に束縛さ
-れる変数はそれぞれ
+が可能である．まずマクロ\texttt{MOVEL(T)}が実行される．
+%る．そのなかで
+%マクロ\texttt{PUSH(S,R)}が実行され，$\overline{s}$と\texttt{R}の状態に応
+%じてそれらは書き換えられる．直前に示した３パターンの$\overline{s}$と
+%\texttt{R}は上から順番に
+%\begin{center}
+%\texttt{(L.}$\overline{s'} \ \overline{s}$ \ \texttt{R)} \texttt{=>}
+% \texttt{(L} \ $\overline{s'} \ \overline{s}$ \texttt{.R)}
+%\end{center}
+\texttt{T}に束縛さ
+れる変数は３パターンそれぞれ
 \begin{center}
+\texttt{(L}$ \ \overline{s}$ \ \texttt{R)} \texttt{=>}
+ \texttt{(L} \ $\overline{b} \ \overline{s}$ \texttt{.R)}\\
 \texttt{(L.}$\overline{s'} \ \overline{s}$ \ \texttt{R)} \texttt{=>}
- \texttt{(L} \ $\overline{s'} \ \overline{s}$ \texttt{.R)}
+ \texttt{(L} \ $\overline{s'} \ \overline{s}$ \texttt{.R)}\\
+\texttt{(L.}$\overline{s'} \ \overline{b}$ \ \texttt{R)} \texttt{=>}
+ \texttt{(L} \ $\overline{s'} \ $\texttt{R)}\\
 \end{center}
-
+となる．次に１回目の可逆代入を行い\texttt{Q}に束縛される値は\texttt{nil}
+となる．そして，２回目の可逆を行うことで\texttt{Q}に束縛される値は
+$\overline{q'}$となる．そのため\texttt{[Q,T]}が束縛する値はそれぞれ
 \begin{center}
-\texttt{(L.}$\overline{s'} \ \overline{s}$ \ \texttt{R)} \texttt{=>}
- \texttt{(L} \ $\overline{s'} \ \overline{s}$ \texttt{.R)}
+\texttt{[}$\overline{q}$\texttt{,(L}\ $\overline{s}$ \
+ \texttt{R)]} \texttt{=>} \texttt{[}$\overline{q'}$\texttt{,(L} \
+ $\overline{b} \ \overline{s}$ \texttt{.R)]}\\
+\texttt{[}$\overline{q}$\texttt{,(L.}$\overline{s'} \ \overline{s}$ \ \texttt{R)]} \texttt{=>} \texttt{[}$\overline{q'}$\texttt{,(L} \ $\overline{s'} \ \overline{s}$ \texttt{.R)]}\\
+\texttt{[}$\overline{q}$\texttt{,(L.}$\overline{s} \ \overline{b}$ \ \texttt{R)]} \texttt{=>} \texttt{[}$\overline{q'}$\texttt{,(L} \ $\overline{s} \ $ \texttt{R)]}\\
 \end{center}
-となる．次に１回目の可逆代入を行い\texttt{Q}に束縛される変数は\texttt{nil}
-となる．そして，２回目の可逆を行うことで\texttt{Q}に束縛される変数は
-$\overline{q'}$となる．そのため\texttt{[Q.T]}が束縛する変数は
+の様に書き換えられ，それぞれ
 \begin{center}
-\texttt{[}$\overline{q}$\texttt{,(L.}$\overline{s'} \ \overline{s}$ \ \texttt{R)]} \texttt{=>} \texttt{[}$\overline{q'}$\texttt{,(L} \ $\overline{s'} \ \overline{s}$ \texttt{.R)]}
-\end{center}
-の様に書き換えられ，状態$\overline{(q,(ls',s,r))}$は状態
-$\overline{(q',(l,s',sr))}$となり，
-\begin{center}
- $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(ls',s,r))}$) = $\overline{(q',(l,s',sr))}$
+ $\mathcal{C}$\jump{\texttt{STEP(Q,T)}}($\overline{(q,(\lambda',b,r))}$) = $\overline{(q',(\lambda,b,sr))}$\\
+ $\mathcal{C}$\jump{\texttt{STEP(Q,T)}}($\overline{(q,(ls',s,r))}$) =
+ $\overline{(q',(l,s',sr))}$\\
+ $\mathcal{C}$\jump{\texttt{STEP(Q,T)}}($\overline{(q,(ls,b,\lambda))}$) = $\overline{(q',(l,s,\lambda))}$
 \end{center}
 である．よって遷移規則が$[q,\leftarrow ,q']$の場合，\textbf{補
  題 1}は成り立つ．\\
@@ -709,7 +725,7 @@ $\overline{(q',(l,s',sr))}$となり，
 \end{center}
 の3パターンである．一方\texttt{R-WHILE}では(i)と同様に，
 \begin{center}
- $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(l,s,r))}$)
+ $\mathcal{C}$\jump{\texttt{STEP(Q,T)}}($\overline{(q,(l,s,r))}$)
 \end{center}
 が実行される．適用される規則は
 \begin{center}
@@ -717,21 +733,35 @@ $\overline{(q',(l,s',sr))}$となり，
  \textasciicircum=}$\overline{q}$\texttt{; Q \textasciicircum=}$\overline{q'}$\}
 \end{center}
 である．この規則の右辺は直交性があるため，3パターンすべてに適応すること
-が可能である．まずマクロ\texttt{MOVER(T)}が実行され，\texttt{T}に束縛される値は
+が可能である．まずマクロ\texttt{MOVER(T)}が実行され，\texttt{T}に束縛さ
+れる値はそれぞれ
 \begin{center}
+\texttt{(L} \ $\overline{s}$ \ \texttt{R)} \texttt{=>}
+ \texttt{(L.}$\overline{s} \ \overline{b}$ \ \texttt{R)}\\
 \texttt{(L} \ $\overline{s}$ \ $\overline{s'}$\texttt{.R)} \texttt{=>}
- \texttt{(L.}$\overline{s} \ \overline{s'}$ \ \texttt{R)}
+ \texttt{(L.}$\overline{s} \ \overline{s'}$ \ \texttt{R)}\\
+\texttt{(L} \ $\overline{b}$ \ $\overline{s}$\texttt{.R)} \texttt{=>}
+ \texttt{(L}$\ \overline{s}$ \ \texttt{R)}\\
 \end{center}
-となる．次に1回目の可逆代入を行い\texttt{Q}に束縛される値は\texttt{nil}
+となる．次に１回目の可逆代入を行い\texttt{Q}に束縛される値は\texttt{nil}
 となる．そして，２回目の可逆を行うことで\texttt{Q}に束縛される値は
-$\overline{q'}$となる．そのため\texttt{[Q.T]}が束縛する値は
+$\overline{q'}$となる．そのため\texttt{[Q.T]}が束縛する値はそれぞれ
 \begin{center}
-\texttt{[}$\overline{q}$\texttt{,(L} \ $\overline{s}$ \ $\overline{s'}$\texttt{.R)]} \texttt{=>} \texttt{[}$\overline{q'}$\texttt{,(L.}$\overline{s} \ \overline{s'}$ \ \texttt{R)]}
+\texttt{[}$\overline{q}$\texttt{,(L} \ $\overline{s}$ \ \texttt{R)]} \texttt{=>} \texttt{[}$\overline{q'}$\texttt{,(L.}$\overline{s} \ \overline{b}$ \ \texttt{R)]}\\
+\texttt{[}$\overline{q}$\texttt{,(L} \ $\overline{s}$ \
+ $\overline{s'}$\texttt{.R)]} \texttt{=>}
+ \texttt{[}$\overline{q'}$\texttt{,(L.}$\overline{s} \ \overline{s'}$ \
+ \texttt{R)]}\\
+\texttt{[}$\overline{q}$\texttt{,(L} \ $\overline{b}$ \
+ $\overline{s}$\texttt{.R)]} \texttt{=>}
+ \texttt{[}$\overline{q'}$\texttt{,(L}\ $\overline{s}$ \ \texttt{R)]}\\
 \end{center}
-の様に書き換えられ，状態$\overline{(q,(l,s,s'r))}$は状態
-$\overline{(q',(ls,s',r))}$となり，
+の様に書き換えられ，それぞれ
 \begin{center}
- $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(l,s,s'r))}$) = $\overline{(q',(ls,s',r))}$
+$\mathcal{C}$\jump{\texttt{STEP(Q,T)}}($\overline{(q,(l,s,\lambda))}$) = $\overline{(q',(ls,b,\lambda))}$\\
+ $\mathcal{C}$\jump{\texttt{STEP(Q,T)}}($\overline{(q,(l,s,s'r))}$) =
+ $\overline{(q',(ls,s',r))}$\\
+$\mathcal{C}$\jump{\texttt{STEP(Q,T)}}($\overline{(q,(\lambda,b,sr))}$) = $\overline{(q',(\lambda,s,r))}$\\
 \end{center}
 である．よって遷移規則が$[q,\rightarrow ,q']$の場合，\textbf{補
  題 1}は成り立つ．\\
@@ -742,7 +772,7 @@ $(q,(l,s,r))$ $\xRightarrow[T]{}$ $(q',(l,s,r))$
 \end{center}
 の様になる．一方\texttt{R-WHILE}では(i)と同様に，
 \begin{center}
- $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(l,s,r))}$)
+ $\mathcal{C}$\jump{\texttt{STEP(Q,T)}}($\overline{(q,(l,s,r))}$)
 \end{center}
 が実行される．適用される規則は
 \begin{center}
@@ -757,7 +787,7 @@ $\overline{[q,\downarrow,q']}$ =
  となる．状態
  $\overline{(q,(l,s,r))}$は状態$\overline{(q',(l,s',r))}$となり，
 \begin{center}
- $\mathcal{C}$\jump{\texttt{STEP(Q.T)}}($\overline{(q,(l,s,r))}$) = $\overline{(q',(l,s',r))}$
+ $\mathcal{C}$\jump{\texttt{STEP(Q,T)}}($\overline{(q,(l,s,r))}$) = $\overline{(q',(l,s',r))}$
 \end{center}
 である．よって遷移規則が$[q,\downarrow ,q']$の場合，\textbf{補
  題 1}は成り立つ．\\
@@ -777,7 +807,7 @@ $\sigma$ $\xRightarrow[T]{}^n$ $\sigma'$
 であるならば，
 \vspace{-2mm}
 \begin{center}
-$(\mathcal{C}\jump{\texttt{STEP(Q.T)}}(\overline{\sigma}))^n$ = $\overline{\sigma'}$ 
+$(\mathcal{C}\jump{\texttt{STEP(Q,T)}}(\overline{\sigma}))^n$ = $\overline{\sigma'}$ 
 \end{center}
 \vspace{-2mm}
 が成り立つ．
@@ -791,13 +821,13 @@ $(\mathcal{C}\jump{\texttt{STEP(Q.T)}}(\overline{\sigma}))^n$ = $\overline{\sigm
 　\textbf{補題 2}が成り立つとすると
 \vspace{-2mm}
 \begin{center}
-$\sigma$ $\xRightarrow[T]{}^k$ $\sigma'$ $\Longleftrightarrow$ $(\mathcal{C}\jump{\texttt{STEP(Q.T)}}(\overline{\sigma}))^k$ = $\overline{\sigma'}$ 
+$\sigma$ $\xRightarrow[T]{}^k$ $\sigma'$ $\Longleftrightarrow$ $(\mathcal{C}\jump{\texttt{STEP(Q,T)}}(\overline{\sigma}))^k$ = $\overline{\sigma'}$ 
 \end{center}
 \vspace{-2mm}
 である．$n = k + 1$のとき
 \vspace{-2mm}
 \begin{center}
-($\mathcal{C}\jump{\texttt{STEP(Q.T)}}(\overline{\sigma}))^{k+1}$
+($\mathcal{C}\jump{\texttt{STEP(Q,T)}}(\overline{\sigma}))^{k+1}$
 \end{center}
 \vspace{-2mm}
 であり，
