@@ -30,7 +30,7 @@
 された場合，繰り返しが行われ，\texttt{X}が\texttt{nil}の場合に繰り返しが
 終了する．\texttt{loop}内の命令はテストとアサーションが偽である
 限り繰り返す．\texttt{loop}内の最初の命令(\texttt{(Z.X) <= X})では\texttt{X}の値を先頭とそれ以降の部分に分解している．
-2番目の命令（\texttt{Y <= (Z.X)}）では，\texttt{Z}と\texttt{Y}を組に
+２番目の命令（\texttt{Y <= (Z.X)}）では，\texttt{Z}と\texttt{Y}を組に
 した値を構成している．可逆置換は右辺の元の値を左辺の変数に束縛する前に，右辺の値を
 \texttt{nil}にセットする（たとえば\texttt{Y <= (Z.Y)}が実行された後
 \texttt{Z}は\texttt{nil}である）．出力の変数である\texttt{Y}を除くすべて
@@ -377,7 +377,7 @@ $\mathcal{I}$が定義されている(図\ref{fig:i})．それによって反転されたプロ
 $\mathcal{I}$ \jump{\texttt{reverse}}は\texttt{X}と\texttt{Y}の位置が入
 れ替わっていることを除き，\texttt{reverse}と同じプログラムの構造をしてい
 ることがわかる．\\
-　プログラム\texttt{P}は2回逆変換を行うことで元のプログラムが求められる
+　プログラム\texttt{P}は２回逆変換を行うことで元のプログラムが求められる
 （\texttt{P} = $\mathcal{I}\jump{\mathcal{I\jump{\texttt{P}}}}$）．
 \subsection{糖類構文としての書き換え規則}
 プログラムは糖類構文としての可逆版の書き換え規則を用いることで読みやす
@@ -666,7 +666,7 @@ $(q,(ls',s,r))$ $\xRightarrow[T]{}$ $(q',(l,s',sr))$
 \texttt{(L.}$\overline{s'} \ \overline{s}$ \ \texttt{R)} \texttt{=>}
  \texttt{(L} \ $\overline{s'} \ \overline{s}$ \texttt{.R)}
 \end{center}
-となる．次に1回目の可逆代入を行い\texttt{Q}に束縛される値は\texttt{nil}
+となる．次に１回目の可逆代入を行い\texttt{Q}に束縛される値は\texttt{nil}
 となる．そして，２回目の可逆を行うことで\texttt{Q}に束縛される値は
 $\overline{q'}$となる．そのため\texttt{[Q.T]}が束縛する値は
 \begin{center}
@@ -699,7 +699,7 @@ $(q,(l,s,s'r))$ $\xRightarrow[T]{}$ $(q',(ls,s',r))$
 \texttt{(L} \ $\overline{s}$ \ $\overline{s'}$\texttt{.R)} \texttt{=>}
  \texttt{(L.}$\overline{s} \ \overline{s'}$ \ \texttt{R)}
 \end{center}
-となる．次に1回目の可逆代入を行い\texttt{Q}に束縛される値は\texttt{nil}
+となる．次に１回目の可逆代入を行い\texttt{Q}に束縛される値は\texttt{nil}
 となる．そして，２回目の可逆を行うことで\texttt{Q}に束縛される値は
 $\overline{q'}$となる．そのため\texttt{[Q.T]}が束縛する値は
 \begin{center}
