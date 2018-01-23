@@ -153,7 +153,7 @@ RTMが計算できるのは単射な計算可能関数であることが知られている\cite{2}．
  の様相になるということを表している．
  \begin{figure}[t]
   \begin{center}
-  \includegraphics[width=10.0cm ,bb=0 0 320 140]{TM.png}
+  \includegraphics[width=9.0cm ,bb=0 0 303 108]{TM.png}
 　　　\caption{チューリング機械の模式図}\label{fig:TM}
 \vspace{-8.0mm}
   \end{center}
@@ -292,10 +292,9 @@ $\mathcal(I)$が定義されている．それにより反転されたプログラムを再帰
 図\ref{fig:rtmprog:main}にチューリング機械プログラムからの変換で得られた
 \texttt{R-WHILE}プログラムを示す．なお記述には変換規則を用いた．またプロ
 グラムにマクロを使用した．マクロ展開することで，右辺の変数は実引数に置き
-換えられる．チューリング機械に対応する\texttt{R-WHILE}の記述を
+換えられる．RTMに対応する\texttt{R-WHILE}の記述を
 $\overline{\cdot}$を用いて表す．\\
-　mainプログラム(図\ref{fig:rtmprog:main})は入力としてチューリング機械
-のテープ上に書かれている記号列\texttt{R}を読み込む．その後，計算を実行し，
+　mainプログラム(図\ref{fig:rtmprog:main})は入力としてRTMのテープ上に書かれている記号列\texttt{R}を読み込む．その後，計算を実行し，
 書き換えられた記号列\texttt{R'}を出力するというものである．mainプログラ
 ム本体の\texttt{Q}はTMの内部状態を表している．また，
 \texttt{T}はTMのテープの状態を表している．そのため，可逆
@@ -319,7 +318,7 @@ $\mathcal{T}$によって\\
 した場合，異なる書き換え規則は矢印\texttt{=>}の左側のパターンと右側で返
 却される値がそれぞれ重なることはない．\\ 
 　マクロ\texttt{MOVEL}(図\ref{fig:rtmprog:MOVEL})はヘッドを一つ左に動かすための
-マクロである．チューリング機械のテープ$(l,s,r)$はスタック\texttt{L}と\texttt{R}
+マクロである．RTMのテープ$(l,s,r)$はスタック\texttt{L}と\texttt{R}
 を用いて\texttt{(L S R)}として表す．マクロ\texttt{MOVEL}はマクロ
 \texttt{PUSH}と\texttt{POP}を実行し変化したテープの状態を\texttt{T}に置
 き換える．ヘッドを一つ右に動かす為のマクロ\texttt{MOVER}はマクロ
@@ -331,9 +330,7 @@ $\mathcal{T}$によって\\
 \texttt{STK}が\texttt{nil}だった場合，マクロ\texttt{POP}は空白記号をポッ
 プする．
 \texttt{POP(S,STK)}ではスタックが空の場合，空白記号がポップされる．
-この操作によってスタックのボトムが非空白記号である状態（無限のテー
-プの中で有限の記号列を表す）を保つことができる為，任意の回数行うことができる．
-%
+この操作によって無限のテープの中で有限の記号列を表している状態を保つことができる．
 プッシュの逆操作であるポップ\texttt{POP(S,STK)}は
 $\mathcal{I}\jump{\texttt{PUSH(S,STK)}}$とする．
 \begin{figure}[t]
