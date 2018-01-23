@@ -560,24 +560,23 @@ rewrite [S,STK] by
 \end{figure}
 \newpage
 \section{証明}
-
 この節では，4.2節で与えた遷移規則から\texttt{R-WHILE}の書き変え規則への
 変換が正しいことを示す．\\
-ここでは，$\mathcal{T}\jump{(q,(l,s,r))}$ = \{\texttt{Q} $\mapsto${$\overline{q}$},
+　可逆チューリング機械の様相を表す$(q,(l,s,r))$は$(q,(l,s,r))\in Q\times ((\Sigma \backslash \{b\})^* \times \Sigma\times (\Sigma \backslash \{b\})^*)$である．ここでは，$\mathcal{T}\jump{(q,(l,s,r))}$ = \{\texttt{Q} $\mapsto${$\overline{q}$},
 \texttt{T} $\mapsto$ \texttt{(}$\overline{l}$ $\overline{s}$ $\overline{r}$\texttt{)}\}と
 する．また，$\mathcal{T}\jump{x}$を$\overline{x}$の様に記述している．
-$\xRightarrow[T]{}$は可逆チューリング機械の計算ステップにおいて，様相$\sigma$を様相$\sigma'$に遷移していることを表す．\\
+可逆チューリング機械における任意の様相を$c$または$c$の様に表し，$\xRightarrow[T]{}$は可逆チューリング機械の計算ステップにおいて，様相$c$を様相$c'$に遷移していることを表す．\\
 　まず\textbf{補題 1}では，可逆チューリング機械の様相の遷移に命令マクロ
 \texttt{STEP(Q,T)}を実行することによる状態の変化が対応していることを示す．
 \begin{lemma}
 \label{lemma:1}
-任意の様相$\sigma$，$\sigma'$に対して，
+任意の様相$c$，$c'$に対して，
 \begin{center}
-$\sigma$ $\xRightarrow[T]{}$ $\sigma'$
+$c$ $\xRightarrow[T]{}$ $c'$
 \end{center}
 のとき，
 \begin{center}
-$\mathcal{C}$\jump{\texttt{STEP(Q,T)}}$(\overline{\sigma})$ = $\overline{\sigma'}$
+$\mathcal{C}$\jump{\texttt{STEP(Q,T)}}$(\overline{c})$ = $\overline{c'}$
 \end{center}
 \vspace{-2mm}
 が成り立つ．\
@@ -614,16 +613,26 @@ $\mathcal{C}$\jump{\texttt{STEP(Q,T)}}$(\overline{\sigma})$ = $\overline{\sigma'
 %\end{lemma}
 %このとき，$\mathcal{C}$\jump{}は対象がプログラムであることを示して
 %いる．\\
-\textbf{証明} 可逆チューリング機械における４パター
-ンの遷移規則において，\textbf{補題 1}が成り立つことを示す．\\
+\textbf{証明} 可逆チューリング機械の遷移規則において，\textbf{補題 1}が
+成り立つことを示す．\\
 　マクロ\texttt{STEP(Q,T)}は図\ref{fig:rtmprog:STEP}で定義し
  たように，可逆チューリング機械の遷移規則に応じて\texttt{[Q,T]}の
  \texttt{Q}と\texttt{T}に束縛されている値を書き換
- える．なお，可逆チューリング機械は局所的に前方決定的かつ局所的に後
- 方決定的であるという性質をもつため，どの状態においても適応される遷移規
- 則は高々一
- つに定まる．そのため，マクロ\texttt{STEP(Q,T)}の書き変え規則もただ一つ
- に定まる．\\
+ える．この一連の動作を書き換え規則を適用すると表現する．可逆チューリング機械は局所的に前方決定的という性質をもつため，どの様相に対しても書き換え規則は重
+ なることはない．そして，それらを書き換え規則によって書き換えた結果も重な
+ ることはない．そのため，マクロ\texttt{STEP(Q,T)}の書き変え規則
+ は高々一つに定まる．また可逆チューリング機械は局所的に後方決定的という
+ 性質をもつため，どの様相に対しても直前に適用された書き換え規則は重なる
+ ことはない．そして，書き換え規則によって書き換えられる前の様相も重なる
+ ことはない．そのためマクロ\texttt{STEP(Q,T)}の直前に適応された書き換え
+ 規則は高々一つに定まる．\\
+　可逆チューリング機械の性質より，変換前の様相$c$を一つ定めると，適用さ
+れる書き換え規則は高々1つに定まり，$[q,\langle s,s' \rangle ,q']$，
+$[q,\leftarrow,q']$，$[q,\rightarrow,q']$または$[q,\downarrow,q']$の４パ
+ターンである．そしてそれぞれにおける証明を(i)から(iv)にて行う．可逆チュー
+リング機械は直前に挙げた４パターンの遷移規則による様相の遷移以外の遷移は
+行わないため直交性があるといえる．すなわちこの４パターンのみを示せばよい．
+\\
 (i)遷移規則が$[q,\langle s,s' \rangle ,q']$の場合\\
 可逆チューリング機械の様相の遷移は\\
 
@@ -671,8 +680,7 @@ $(q,(l,s,r))$ $\xRightarrow[T]{}$ $(q',(l,s',r))$
  \texttt{[}$\overline{q}$\texttt{,T] => \{MOVEL(T); Q
  \textasciicircum=}$\overline{q}$\texttt{; Q \textasciicircum=}$\overline{q'}$\}
 \end{center}
-である．この規則の右辺は直交性があるため，３パターンすべてに適応すること
-が可能である．まずマクロ\texttt{MOVEL(T)}が実行される．
+である．まずマクロ\texttt{MOVEL(T)}が実行される．
 %る．そのなかで
 %マクロ\texttt{PUSH(S,R)}が実行され，$\overline{s}$と\texttt{R}の状態に応
 %じてそれらは書き換えられる．直前に示した３パターンの$\overline{s}$と
@@ -732,8 +740,7 @@ $\overline{q'}$となる．そのため\texttt{[Q,T]}が束縛する値はそれぞれ
  \texttt{[}$\overline{q}$\texttt{,T] => \{MOVER(T); Q
  \textasciicircum=}$\overline{q}$\texttt{; Q \textasciicircum=}$\overline{q'}$\}
 \end{center}
-である．この規則の右辺は直交性があるため，3パターンすべてに適応すること
-が可能である．まずマクロ\texttt{MOVER(T)}が実行され，\texttt{T}に束縛さ
+である．まずマクロ\texttt{MOVER(T)}が実行され，\texttt{T}に束縛さ
 れる値はそれぞれ
 \begin{center}
 \texttt{(L} \ $\overline{s}$ \ \texttt{R)} \texttt{=>}
@@ -798,16 +805,16 @@ $\overline{[q,\downarrow,q']}$ =
 
 \begin{lemma}
 \label{lemma:2}
-任意の様相$\sigma$，$\sigma'$と自然数$n$に対して，
+任意の様相$c$，$c'$と自然数$n$に対して，
 \vspace{-2mm}
 \begin{center}
-$\sigma$ $\xRightarrow[T]{}^n$ $\sigma'$
+$c$ $\xRightarrow[T]{}^n$ $c'$
 \end{center}
 \vspace{-2mm}
 であるならば，
 \vspace{-2mm}
 \begin{center}
-$(\mathcal{C}\jump{\texttt{STEP(Q,T)}}(\overline{\sigma}))^n$ = $\overline{\sigma'}$ 
+$(\mathcal{C}\jump{\texttt{STEP(Q,T)}}(\overline{c}))^n$ = $\overline{c'}$ 
 \end{center}
 \vspace{-2mm}
 が成り立つ．
@@ -821,20 +828,20 @@ $(\mathcal{C}\jump{\texttt{STEP(Q,T)}}(\overline{\sigma}))^n$ = $\overline{\sigm
 　\textbf{補題 2}が成り立つとすると
 \vspace{-2mm}
 \begin{center}
-$\sigma$ $\xRightarrow[T]{}^k$ $\sigma'$ $\Longleftrightarrow$ $(\mathcal{C}\jump{\texttt{STEP(Q,T)}}(\overline{\sigma}))^k$ = $\overline{\sigma'}$ 
+$c$ $\xRightarrow[T]{}^k$ $c'$ $\Longleftrightarrow$ $(\mathcal{C}\jump{\texttt{STEP(Q,T)}}(\overline{\sigma}))^k$ = $\overline{c'}$ 
 \end{center}
 \vspace{-2mm}
 である．$n = k + 1$のとき
 \vspace{-2mm}
 \begin{center}
-($\mathcal{C}\jump{\texttt{STEP(Q,T)}}(\overline{\sigma}))^{k+1}$
+($\mathcal{C}\jump{\texttt{STEP(Q,T)}}(\overline{c}))^{k+1}$
 \end{center}
 \vspace{-2mm}
 であり，
 \vspace{-2mm}
 \begin{center}
-$(\mathcal{C}\jump{\texttt{STEP(Q,T)}}(\overline{\sigma}))^{k+1}$　=
- $\mathcal{C}\jump{\texttt{STEP(Q,T)}}((\mathcal{C}\jump{\texttt{STEP(Q,T)}}(\overline{\sigma}))^k)$
+$(\mathcal{C}\jump{\texttt{STEP(Q,T)}}(\overline{c}))^{k+1}$　=
+ $\mathcal{C}\jump{\texttt{STEP(Q,T)}}((\mathcal{C}\jump{\texttt{STEP(Q,T)}}(\overline{c}))^k)$
 \end{center}
 \vspace{-2mm}
 である．よって，$n = k + 1$のときも\textbf{補題 2}は成立する．\\
