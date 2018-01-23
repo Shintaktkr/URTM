@@ -52,9 +52,10 @@
 計算できるという概念をチューリング機械(以下，TM)で計算できるということ
 にしようという主張は広く認められている\cite{1}． 
 %
-TMは計算の効率を問題としなければ現在のコンピュータをも模倣できるとされている強力な計算モデルであり，計算可能性理論を議論する際に重要である．
+TMは計算の効率を問題としなければ現在のコンピュータをも模倣できるとされて
+いる強力な計算モデルであり，計算可能性理論の議論の際に重要である．
 % 任意のチューリング機械に対して，それをシュミレートするような計算システムは計算万能性を持つといわれる.
-また，任意のTMを模倣できる計算システムは計算万能(チューリング完全)性をもつといわれる.
+また，任意のTMを模倣できる計算システムは計算万能性をもつといわれる.
 そのため，プログラミング言語の計算モデルが計算万能性をもつことを示すことは重要である．
 
 % 可逆計算システム
@@ -77,7 +78,7 @@ RTMが計算できるのは単射な計算可能関数であることが知られている\cite{2}．
 % 可逆的にチューリング完全とは，言語がチューリング完全であるということは，その言語が任意の可逆チューリング機械を模倣することができるということである．
 我々の知る範囲では，\texttt{R-WHILE}が可逆的計算万能性をもつという報告は
 ない．従って，本稿では可逆プログラミング言語\texttt{R-WHILE}によって万能可
-チューリング機械を構成することにより，\texttt{R-WHILE}が可逆的計算万能性
+チューリング機械（以下，URTM）を構成することにより，\texttt{R-WHILE}が可逆的計算万能性
 をもつことの証明を目的とする．
 
 \section{関連研究}
@@ -87,24 +88,19 @@ RTMが計算できるのは単射な計算可能関数であることが知られている\cite{2}．
 \texttt{Janus}は\texttt{R-WHILE}と同様に命令型の可逆プログラミング言語の
 一種で，C言語に似た構文に加えて可逆性を保証するための構文規則を持つ．
  \subsection{\texttt{WHILE}言語}
-\texttt{WHILE}言語とは，ローカル変数，整数，ブール式をもつ単純な命令型言
-語である.\texttt{WHILE}は構文規則や意味規則が他のプログラミング言語と比
-べ少なく，TMを模倣できるくらいの計算能力を持っているため，プログラムやプ
+\texttt{WHILE}言語とは，命令型言語
+である.\texttt{WHILE}は単純な言語でありながら．TMを模倣できるくらいの計算能力を持っているため，プログラムやプ
 ログラムの振る舞いについての定理を証明する場合に重宝される．
-
 \section{可逆チューリング機械}
-% さきほどチューリング機械と可逆チューリング機械がどのようなものを説明したが，この章ではそれらの定義について述べる．
-% ヘッドはテープ上の記号を読み書きする為のものであり，内部状態は有限制御部のことを表している．またチューリング機械はすべて１テープ・チューリング機械のことを表している．
 本章では，TMとTMに制限を加えたRTMの定義を述べる．
 本稿では，簡単のため1テープのTMのみを考える．また，文献\cite{4}の表記を用いる．
 \subsection{チューリング機械}
  TMはマス目に分割された左右に無限長のテープをもち，有限制御
  部，及びテープ上の記号を読み書きするためのヘッドから構成されている(図
- \ref{fig:TM}）．テープには予め入力情報(2進数の0と1や多数のアルファベット)が
- 格納されており，ヘッドが位置するマス目の記号を読み取る．そして,この記号
+ \ref{fig:TM}）．テープには予め記号列が格納されており，ヘッドが位置するマス目の記号を読み取る．そして,この記号
  と現在の有限制御部の状態(内部状態，図\ref{fig:TM}においては状態$q$を指す)に
  依存して，マス目の記号を書き換え，ヘッドを左か右に1コマ移動もしくは不動
- にし，内部状態を遷移させる．この一連の振る舞い(動作)を繰り返すことで計
+ にし，内部状態を遷移させる．この一連の動作を繰り返すことで計
  算を行う．\\
  　本稿では，1テープTMを$T=(Q,\Sigma,b,\delta,q_s,Q_f)$とし
  て定める．(以下，1テープTMのことをTMと呼ぶことにする．)た
@@ -115,20 +111,11 @@ RTMが計算できるのは単射な計算可能関数であることが知られている\cite{2}．
  $ [\Sigma\times\Sigma]\times Q) \cup (Q\times \{←,↓,→ \}\times Q)$
  の部分集合，$q_s(\in Q)$は初期状態，$Q_f(\subset Q)$は最終状態
  の集合とする．\par
- $ \delta $は遷移規則の集合である．矢印$(←,↓,→)$はそれぞれヘッドの移動(左，
+ $ \delta $は遷移規則の集合である．矢印$(←,↓,→)$はヘッドの移動(左，
  不動，右)を表す．遷移規則は3項組であり，$[q,\langle s,s'\rangle ,q']$または
- $[q,d,q']$である．
- \begin{figure}[b]
-  \begin{center}
-  \includegraphics[width=10.0cm ,bb=0 0 320 140]{TM.png}
-　　　\caption{チューリング機械の模式図}\label{fig:TM}
-\vspace{-8.0mm}
-  \end{center}
- \end{figure}
-
- $(q,q'\in Q, s,s'\in \Sigma, d\in \{←,↓,→ \})$．前者の3項組は$T$が
+ $[q,d,q']$である．$(q,q'\in Q, s,s'\in \Sigma, d\in \{←,↓,→ \})$．前者の3項組は$T$が
  状態$q$で記号$s$を読んだ場合，記号$s'$に書き換え，状態を$q'$にすること
- を意味する．また，後者の3項組は$T$が状態$q$の場合ヘッドを$d$の方向に動
+ を意味する．後者の3項組は$T$が状態$q$の場合ヘッドを$d$の方向に動
  かし, 状態を$q'$にすることを意味する．\par
  このとき，TM $ T = (Q,\Sigma,b,\delta,q_s,Q_f)$の様相とは
  組 $(q,(l,s,r))\in Q\times ((\Sigma \backslash \{b\})^* \times \Sigma
@@ -154,7 +141,6 @@ RTMが計算できるのは単射な計算可能関数であることが知られている\cite{2}．
  \end{array}
 \vspace{-2mm}
 \] 
-
  \noindent である．$ \xRightarrow[T]{} $の反射推移閉包を
  $\xRightarrow[T]{}^* $と記す．\par
  TM $T =(Q,\Sigma,b,\delta,q_s,Q_f)$の意味を
@@ -165,6 +151,13 @@ RTMが計算できるのは単射な計算可能関数であることが知られている\cite{2}．
  とする．これは初期状態$q_s$でテープ内が$(\lambda,b,r)$の様相であると
  き，遷移を繰り返し行った結果が最終状態$q_f$でテープ内が$(\lambda,b,r')$
  の様相になるということを表している．
+ \begin{figure}[t]
+  \begin{center}
+  \includegraphics[width=10.0cm ,bb=0 0 320 140]{TM.png}
+　　　\caption{チューリング機械の模式図}\label{fig:TM}
+\vspace{-8.0mm}
+  \end{center}
+ \end{figure}
  \subsection{チューリング機械の例}
  これまでに定義したTMに基づいて，簡単なTMを
  考えてみる．\par
@@ -268,15 +261,8 @@ $Vars$とする．\\
 \texttt{X}の値が\texttt{nil}のとき\texttt{X}の値を\texttt{E}の値にする．
 また，\texttt{X}の値が\texttt{E}の値と等しいとき，\texttt{X}の値を
 \texttt{nil}にする．\\
-可逆置換\texttt{Q <= R}は\texttt{Q}の変数を\texttt{R}の変数を使って更新する．
-例えば
-\begin{center}
-\texttt{
-\{Q = nil,R = a\}\\
-\ \ Q <= R;\\
-\ \{Q = a,R = nil\} }
-\end{center}
-となる．
+可逆置換\texttt{Q <= R}はまず，\texttt{R}の値を\texttt{nil}とし，
+\texttt{Q}の値を\texttt{R}の変数を使って更新する．
 可逆代入と比べ両辺に表されるのはパターンの\texttt{Q}と\texttt{R}である．
 \\
 　\texttt{R-WHILE}の２つの構造化された制御フロー演算子は条件文の
@@ -296,21 +282,7 @@ until F}である．繰り返し文はテスト\texttt{E}をもち，条件
 \texttt{E}は偽でなくてはならない．\\
 　可逆プログラミング言語である\texttt{R-WHILE}にはプログラミング逆変換器
 $\mathcal(I)$が定義されている．それにより反転されたプログラムを再帰
-的降下によって得ることができる．以下のプログラムはプログラム
-\texttt{reverse}を逆変換器$\mathcal(I)$によって得た逆プログラム$\mathcal{I}$\jump{\texttt{reverse}}である．
-\vspace{-1mm}
-\begin{alltt}
-  read Y;（リストを反転するプログラム）
-    from (=? X nil)
-    loop (Z.Y) <= Y;
-         X <= (Z.X)
-    until(=? Y nil);
-  write X
-\end{alltt}
-\vspace{-1mm}
-　このプログラムは元のプログラム\texttt{reverse}と同じ働きをする．またプ
-ログラムは\texttt{X}と\texttt{Y}の位置が入れ替わっていることを除き，同じ
-である．
+的降下によって得ることができる．この逆変換器によって求められたプログラムは元のプログラムと同じ働きをする．
 \section{RTMから\texttt{R-WHILE}への変換}
 図\ref{fig:rtmprog:main}にチューリング機械プログラムからの変換で得られた
 \texttt{R-WHILE}プログラムを示す．なお記述には変換規則を用いた．またプロ
@@ -326,6 +298,39 @@ $\overline{\cdot}$を用いて表す．\\
 内部状態を表す\texttt{Q}は初期状態になる．また可逆置換\texttt{T <=}
 \texttt{(nil }\(\overline{b}\) \texttt{R);}によって，ヘッドがテープにか
 かれている記号列の一つ左を指している状態を表している．
+
+組\texttt{(Q,T)}はTMの様相を表している．プロ
+グラム内のループでは，TMの内部状態が初期状態から最終状態に
+遷移するまでマクロ\texttt{STEP}が繰り返し実行される．繰り返しを終了した
+後，命令によって\texttt{T}と\texttt{Q}の値は\texttt{nil}となる．\\
+　図\ref{fig:rtmprog:STEP}で定義されるマクロ\texttt{STEP(Q,T)}では，様相
+\texttt{(Q,T)}を書き換え規則により書き換える．$\mathcal{T}\jump{t}^*$は
+遷移規則から\texttt{R-WHILE}の書き換え規則への変換器$\mathcal{T}$(図
+\ref{fig:regR})によって生成された書き換え規則の列である．変換器
+$\mathcal{T}$によって\\
+それぞれの書き換え規則は図\ref{fig:trans}の変換器$\mathcal{T}$によって
+遷移規則$t(\in \delta)$から生成される．$\overline{q}$は，状態$q$に対応す
+る\texttt{R-WHILE}のアトムである．RTMの遷移規則列を変換
+した場合，異なる書き換え規則は矢印\texttt{=>}の左側のパターンと右側で返
+却される値がそれぞれ重なることはない．\\ 
+　マクロ\texttt{MOVEL}(図\ref{fig:rtmprog:MOVEL})はヘッドを一つ左に動かすための
+マクロである．チューリング機械のテープ$(l,s,r)$はスタック\texttt{L}と\texttt{R}
+を用いて\texttt{(L S R)}として表す．マクロ\texttt{MOVEL}はマクロ
+\texttt{PUSH}と\texttt{POP}を実行し変化したテープの状態を\texttt{T}に置
+き換える．ヘッドを一つ右に動かす為のマクロ\texttt{MOVER}はマクロ
+\texttt{MOVEL}を逆変換することで得ることができる．
+マクロ\texttt{PUSH}は，アトム\texttt{S}をスタック\texttt{STK}にプッシュ
+するためのマクロである．\texttt{S}が空白記号の場合，\texttt{S}，
+\texttt{STK}ともに\texttt{nil}をかえす．マクロ\texttt{POP}はマクロ
+\texttt{PUSH}を逆変換することで得ることができる．ただし，スタック
+\texttt{STK}が\texttt{nil}だった場合，マクロ\texttt{POP}は空白記号をポッ
+プする．
+\texttt{POP(S,STK)}ではスタックが空の場合，空白記号がポップされる．
+この操作によってスタックのボトムが非空白記号である状態（無限のテー
+プの中で有限の記号列を表す）を保つことができる為，任意の回数行うことができる．
+%
+プッシュの逆操作であるポップ\texttt{POP(S,STK)}は
+$\mathcal{I}\jump{\texttt{PUSH(S,STK)}}$とする．
 \begin{figure}[t]
 \begin{subfigure}[t]{0.25\textwidth}
 \begin{alltt}
@@ -394,40 +399,13 @@ rewrite [S,STK] by
 \caption{遷移規則から\texttt{R-WHILE}の書き換え規則への変換}\label{fig:trans}
 \vspace{-3mm}
 \end{figure}
-組\texttt{(Q,T)}はTMの様相を表している．プロ
-グラム内のループでは，TMの内部状態が初期状態から最終状態に
-遷移するまでマクロ\texttt{STEP}が繰り返し実行される．繰り返しを終了した
-後，命令によって\texttt{T}と\texttt{Q}の値は\texttt{nil}となる．\\
-　図\ref{fig:rtmprog:STEP}で定義されるマクロ\texttt{STEP(Q,T)}では，様相
-\texttt{(Q,T)}を書き換え規則により書き換える．$\mathcal{T}\jump{t}^*$は
-遷移規則から\texttt{R-WHILE}の書き換え規則への変換器$\mathcal{T}$(図
-\ref{fig:regR})によって生成された書き換え規則の列である．変換器
-$\mathcal{T}$によって\\
-それぞれの書き換え規則は図\ref{fig:trans}の変換器$\mathcal{T}$によって
-遷移規則$t(\in \delta)$から生成される．$\overline{q}$は，状態$q$に対応す
-る\texttt{R-WHILE}のアトムである．RTMの遷移規則列を変換
-した場合，異なる書き換え規則は矢印\texttt{=>}の左側のパターンと右側で返
-却される値がそれぞれ重なることはない．\\ 
-　マクロ\texttt{MOVEL}(図\ref{fig:rtmprog:MOVEL})はヘッドを一つ左に動かすための
-マクロである．チューリング機械のテープ$(l,s,r)$はスタック\texttt{L}と\texttt{R}
-を用いて\texttt{(L S R)}として表す．マクロ\texttt{MOVEL}はマクロ
-\texttt{PUSH}と\texttt{POP}を実行し変化したテープの状態を\texttt{T}に置
-き換える．ヘッドを一つ右に動かす為のマクロ\texttt{MOVER}はマクロ
-\texttt{MOVEL}を逆変換することで得ることができる．
-マクロ\texttt{PUSH}は，アトム\texttt{S}をスタック\texttt{STK}にプッシュ
-するためのマクロである．\texttt{S}が空白記号の場合，\texttt{S}，
-\texttt{STK}ともに\texttt{nil}をかえす．マクロ\texttt{POP}はマクロ
-\texttt{PUSH}を逆変換することで得ることができる．ただし，スタック
-\texttt{STK}が\texttt{nil}だった場合，マクロ\texttt{POP}は空白記号をポッ
-プする．
-\texttt{POP(S,STK)}ではスタックが空の場合，空白記号がポップされる．
-この操作によってスタックのボトムが非空白記号である状態（無限のテー
-プの中で有限の記号列を表す）を保つことができる為，任意の回数行うことができる．
-%
-プッシュの逆操作であるポップ\texttt{POP(S,STK)}は$\mathcal{I}\jump{\texttt{PUSH(S,STK)}}$とする．
 \section{証明}
 ここでは，(図４)で与えた遷移規則から\texttt{R-WHILE}の書き変え規則への
-変換が正しいことを示す．\\
+変換が正しいことを示す．これを証明するために，\textbf{補題 １}と
+\textbf{補題 2}を証明する必要がある．それぞれの証明の詳細は本稿にて記述する．\\
+RTMの様相を表す$(q,(l,s,r))$は$(q,(l,s,r))\in Q\times ((\Sigma \backslash \{b\})^* \times \Sigma\times (\Sigma \backslash \{b\})^*)$である．ここでは，$\mathcal{T}\jump{(q,(l,s,r))}$ = \{\texttt{Q} $\mapsto${$\overline{q}$},
+\texttt{T} $\mapsto$ \texttt{(}$\overline{l}$ $\overline{s}$ $\overline{r}$\texttt{)}\}とする．また，$\mathcal{T}\jump{x}$を$\overline{x}$の様に記述している．
+可逆チューリング機械における任意の様相を$c$または$c$の様に表し，$\xRightarrow[T]{}$は可逆チューリング機械の計算ステップにおいて，様相$c$を様相$c'$に遷移していることを表す．\\
 \begin{lemma}
 \label{lemma:1}
 任意の様相$c$，$c'$に対して，
@@ -442,26 +420,10 @@ $\mathcal{C}$\jump{\texttt{STEP(Q,T)}}$(\overline{c})$ = $\overline{c'}$
 が成り立つ．\
 \end{lemma}
 
-\textbf{補題 1}では，可逆チューリング機械の様相の遷移に命令マクロ
-\texttt{STEP(Q,T)}を実行することによる状態の変化が対応していることを示
-した．RTMの様相を表す$(q,(l,s,r))$は$(q,(l,s,r))\in Q\times ((\Sigma \backslash \{b\})^* \times \Sigma\times (\Sigma \backslash \{b\})^*)$である．ここでは，$\mathcal{T}\jump{(q,(l,s,r))}$ = \{\texttt{Q} $\mapsto${$\overline{q}$},
-\texttt{T} $\mapsto$ \texttt{(}$\overline{l}$ $\overline{s}$ $\overline{r}$\texttt{)}\}とする．また，$\mathcal{T}\jump{x}$を$\overline{x}$の様に記述している．
-可逆チューリング機械における任意の様相を$c$または$c$の様に表し，$\xRightarrow[T]{}$は可逆チューリング機械の計算ステップにおいて，様相$c$を様相$c'$に遷移していることを表す．\\
-
-\textbf{証明} 可逆チューリング機械の遷移規則において，\textbf{補題 1}が
-成り立つことを示す．\\
-　マクロ\texttt{STEP(Q,T)}は図\ref{fig:rtmprog:STEP}で定義し
- たように，可逆チューリング機械の遷移規則に応じて\texttt{[Q,T]}の
- \texttt{Q}と\texttt{T}に束縛されている値を書き換
- える．この一連の動作を書き換え規則を適用すると表現する．
-　可逆チューリング機械の性質より，変換前の様相$c$を一つ定めると，適用さ
-れる書き換え規則は高々1つに定まり，$[q,\langle s,s' \rangle ,q']$，
-$[q,\leftarrow,q']$，$[q,\rightarrow,q']$または$[q,\downarrow,q']$の４パ
-ターンである．そしてそれぞれにおける証明を(i)から(iv)にて行う．可逆チュー
-リング機械は直前に挙げた４パターンの遷移規則による様相の遷移以外の遷移は
-行わないため直交性があるといえる．すなわちこの４パターンのみを示せばよい．
-\\
-
+\textbf{補題 1}を証明することで，可逆チューリング機械の様相の遷移に命令マクロ
+\texttt{STEP(Q,T)}を実行することによる状態の変化が対応していることが示さ
+れる．証明の手順としてはRTMの様相の遷移が\texttt{R-WHILE}における状態の
+変化に対応しているかを示した．
 \begin{lemma}
 \label{lemma:2}
 任意の様相$c$，$c'$と自然数$n$に対して，
@@ -478,18 +440,9 @@ $(\mathcal{C}\jump{\texttt{STEP(Q,T)}}(\overline{c}))^n$ = $\overline{c'}$
 \vspace{-2mm}
 が成り立つ．
 \end{lemma}
-\textbf{証明} 可逆チューリング機械の様相の遷移が$n$回実行される場合，
-\texttt{R-WHILE}では可逆ループによる繰り返しによって，マクロ
-\texttt{STEP(Q,T)}を$n$回実行する．\\
-(i)$n = 1$の場合\\
-　\textbf{補題 1}より\textbf{補題 2}が成り立つのは明らかである．\\
-(ii)$n = k$の場合\\
-　\textbf{補題 2}が成り立つとすると
-
-\textbf{補題 1}では，可逆チューリング機械の様相の遷移に命令マクロ
-\texttt{STEP(Q,T)}を実行することによる状態の変化が対応していることを示し
-た．また，\textbf{補題 2}では，様相の遷移が複数回行われた場合でも
-\textbf{補題 1}が成り立つことを示した．よって\textbf{定理 1}が成り立つ．
+\textbf{補題 2}を証明することで，様相の遷移が複数回行われた場合でも
+\textbf{補題 1}が成り立つことを示される．証明には数学的帰納法を用いた．
+二つの補題によって\textbf{定理 1}が成り立つ．
 \begin{theorem}
 任意の可逆チューリング機械$T$，任意の$r$に対して
 \vspace{-2mm}
@@ -509,16 +462,14 @@ $R2T$\jump{\texttt{(}\mathtt{d_1.d_2}\texttt{)}} = $1\cdot$
 $R2T$\jump{\mathtt{d_1}}$\cdot$ $R2T$\jump{\mathtt{d_2}}\\
 このとき，$\cdot$は連接を表す．また，$R2T$の逆である$\Sigma^+$を
 $\mathbb{D}$へ変換する変換器を$T2R$としている．\\
-
-したがって，\texttt{R-WHILE}はURTMを模倣できる．
-
+　したがって，\texttt{R-WHILE}はURTMを模倣できる．
 \section{おわりに}
 本稿の５，６章において任意のRTMから\texttt{R-WHILE}プログラムへの変換器
 $\mathcal T$を\texttt{R-WHILE}の書き換え規則によって定義し，それを証明し
 た．従って可逆プログラミング言語
 \texttt{R-WHILE}によって任意のRTMプログラムを書けるという
 ことである．以上より，\texttt{R-WHILE}はURTMを模倣できる．そのため，
-\texttt{R-WHILE}の計算モデルは可逆的にチューリング完全である．すなわち，可逆プログラ
+\texttt{R-WHILE}の計算モデルは可逆計算万能性をもつ．すなわち，可逆プログラ
 ミング言語\texttt{R-WHILE}は可逆計算万能性をもつ．
 
 
