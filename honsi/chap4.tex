@@ -565,7 +565,7 @@ rewrite [S,STK] by
 　可逆チューリング機械の様相を表す$(q,(l,s,r))$は$(q,(l,s,r))\in Q\times ((\Sigma \backslash \{b\})^* \times \Sigma\times (\Sigma \backslash \{b\})^*)$である．ここでは，$\mathcal{T}\jump{(q,(l,s,r))}$ = \{\texttt{Q} $\mapsto${$\overline{q}$},
 \texttt{T} $\mapsto$ \texttt{(}$\overline{l}$ $\overline{s}$ $\overline{r}$\texttt{)}\}と
 する．また，$\mathcal{T}\jump{x}$を$\overline{x}$の様に記述している．
-可逆チューリング機械における任意の様相を$c$または$c$の様に表し，$\xRightarrow[T]{}$は可逆チューリング機械の計算ステップにおいて，様相$c$を様相$c'$に遷移していることを表す．\\
+可逆チューリング機械における任意の様相を$c$または$c'$の様に表し，$\xRightarrow[T]{}$は可逆チューリング機械の計算ステップにおいて，様相$c$を様相$c'$に遷移していることを表す．\\
 　まず\textbf{補題 1}では，可逆チューリング機械の様相の遷移に命令マクロ
 \texttt{STEP(Q,T)}を実行することによる状態の変化が対応していることを示す．
 \begin{lemma}
@@ -649,7 +649,7 @@ $(q,(l,s,r))$ $\xRightarrow[T]{}$ $(q',(l,s',r))$
  \texttt{[}$\overline{q'}$\texttt{,($\overline{l}$ ($\overline{s'}$ $\overline{r}$))]}
 \end{center}
 である．この書き換え規則により，
- \texttt{Qは}$\overline{q'}$を束縛する．また\texttt{T}は
+ \texttt{Q}は$\overline{q'}$を束縛する．また\texttt{T}は
  \texttt{($\overline{l}$ $\overline{s}$  $\overline{r}$)}を束縛する．よって
 \begin{center}
  $\mathcal{C}$\jump{\texttt{STEP(Q,T)}}($\overline{(q,(l,s,r))}$) = $\overline{(q',(l,s',r))}$
@@ -752,7 +752,7 @@ $\overline{q'}$となる．そのため\texttt{[Q,T]}が束縛する値はそれぞれ
 $\overline{q'}$となる．そのため\texttt{[Q.T]}が束縛する値はそれぞれ
 \begin{center}
 \texttt{[}$\overline{q}$\texttt{,($\overline{l}$}\ \ \texttt{(}$\overline{s}$ \ \texttt{$\overline{r}$))]} \texttt{=>} \texttt{[}$\overline{q'}$\texttt{,($\overline{l}$.$\overline{s}$} \ \texttt{(}$\overline{b}$ \ \ \texttt{$\overline{r}$))]}\\
-\texttt{[}$\overline{q}$\texttt{($\overline{l}$} \ \texttt{(}$\overline{s}$ \ \texttt{$\overline{s'}$.$\overline{r}$))]} \texttt{=>}
+\texttt{[}$\overline{q}$\texttt{,($\overline{l}$} \ \texttt{(}$\overline{s}$ \ \texttt{$\overline{s'}$.$\overline{r}$))]} \texttt{=>}
  \texttt{[}$\overline{q'}$\texttt{,($\overline{l}$.$\overline{s}$} \ \texttt{(}$\overline{s'}$ \ \texttt{$\overline{r}$))]}\\
 \texttt{[}$\overline{q}$\texttt{,($\overline{l}$} \ \texttt{(}$\overline{b}$ \ \texttt{$\overline{s}$.$\overline{r}$))]} \texttt{=>}
  \texttt{[}$\overline{q'}$\texttt{,($\overline{l}$} \ \texttt{(}$\overline{s'}$ \ \texttt{$\overline{r}$))]}\\
@@ -781,7 +781,7 @@ $\overline{[q,\downarrow,q']}$ =
  \texttt{[}$\overline{q}$\texttt{,T] => } \texttt{[}$\overline{q'}$\texttt{,T]}
 \end{center}
 であり，この書き換え規則により，
- \texttt{Qは}$\overline{q'}$を束縛する．そして，２回目の可逆を行うことで\texttt{Q}に束縛される値は
+ \texttt{Q}は$\overline{q'}$を束縛する．そして，２回目の可逆を行うことで\texttt{Q}に束縛される値は
 $\overline{q'}$となる．
 \begin{center}
 \texttt{[}$\overline{q}$\texttt{,($\overline{l}$} $\overline{s}$ \texttt{$\overline{r}$)]} \texttt{=>} \texttt{[}$\overline{q'}$\texttt{,($\overline{l}$} $\overline{s}$ \texttt{$\overline{r}$)]}
